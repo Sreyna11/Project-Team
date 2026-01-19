@@ -1,0 +1,40 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+/* Root Variables */
+:root{
+    --primary: rgb(18, 129, 208);
+    --primary-foreground: #fff;
+    --secondary: #f3f4f6;
+    --secondary-foreground: #1f2937;
+    --muted: rgb(120, 115, 115);
+    --muted-foreground: rgb(100, 88, 88);
+    --border: rgb(41, 38, 38);
+    --background: #fff;
+    --foreground: #111827;
+    --card: #fff;
+    --success: rgb(75, 121, 75);
+    --warning: rgba(209, 156, 58, 0.734);
+    --destructive: rgba(206, 70, 70, 0.897);
+}
+.dark {
+    --primary: rgb(85, 151, 226);
+    --primary-foreground: #0f172a;
+    --secondary: rgba(36, 33, 33, 0.951);
+    --muted: rgba(176, 167, 167, 0.949);
+    --muted-foreground: #94a3b8;
+    --border: #334155;
+    --background: #0f172a;
+    --foreground: #f1f5f9;
+    --card: #1e293b;
+    --success: rgba(106, 194, 106, 0.941);
+    --warning: rgba(233, 220, 70, 0.945);
+    --destructive: rgba(128, 50, 50, 0.944);
+}
+*{
+    box-sizing: border-box;
+}
+body{
+    background-color: var(--background);
+    color: var(--foreground);
+    min-height: 100vh;
+}
