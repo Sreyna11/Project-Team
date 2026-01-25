@@ -2,477 +2,704 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LearnHub-E-Learning Platform</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>LearnHub - Master Tech Skills with Expert-Led Courses</title>
     <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <!-- Tailwind -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body class="bg-background text-foreground">
+  <body class="min-h-screen">
     <!-- Navigation -->
     <nav
-      class="sticky top-0 border-b border-border bg-background/80 backdrop-blur-md"
+      class="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md"
     >
       <div class="container mx-auto px-4">
-        <div class="flex items-center justify-between h-16">
-          <div class="flex items-center space-x-2">
+        <div class="flex h-16 items-center justify-between">
+          <!-- Logo -->
+          <div
+            class="flex items-center gap-2 cursor-pointer logo-container"
+            onclick="window.location.hash = 'home'"
+          >
             <div
-              class="h-8 w-8 rounded-lg bg-primary flex items-center justify-center"
+              class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-purple-500 logo-icon"
             >
-              <i class="fas fa-book text-primary-foreground"></i>
+              <i class="fas fa-graduation-cap text-lg animated-logo"></i>
             </div>
-            <span class="font-bold text-xl">LearnHub</span>
+            <span
+              class="text-xl font-bold bg-gradient-to-r from-primary to-purple-500 bg-clip-text logo-text"
+            >
+              LearnHub
+            </span>
           </div>
 
-          <div class="hidden md:flex items-center space-x-6">
-            <a href="#home" class="text-sm font-medium hover:text-primary"
+          <!-- Desktop Navigation -->
+          <div class="hidden items-center gap-6 md:flex">
+            <a
+              href="#home"
+              class="nav-link text-sm font-medium hover:text-primary transition-colors"
               >Home</a
             >
-            <a href="#about" class="text-sm font-medium hover:text-primary"
+            <a
+              href="#about"
+              class="nav-link text-sm font-medium hover:text-primary transition-colors"
               >About</a
             >
-            <a href="#courses" class="text-sm font-medium hover:text-primary"
+            <a
+              href="#courses"
+              class="nav-link text-sm font-medium hover:text-primary transition-colors"
               >Courses</a
             >
-            <a href="#documents" class="text-sm font-medium hover:text-primary"
+            <a
+              href="#documents"
+              class="nav-link text-sm font-medium hover:text-primary transition-colors"
               >Documents</a
             >
-            <a href="#contact" class="text-sm font-medium hover:text-primary"
+
+            <a
+              href="#contact"
+              class="nav-link text-sm font-medium hover:text-primary transition-colors"
               >Contact</a
             >
           </div>
-
-          <div class="flex items-center space-x-4">
-            <button id="theme-toggle" class="p-2 rounded-lg hover:bg-secondary">
-              <i class="fas fa-moon"></i>
+          <!-- Auth Buttons & Theme Toggle -->
+          <div class="flex items-center gap-2 md:gap-3">
+            <button
+              id="theme-toggle"
+              class="btn-theme p-2 h-9 w-9 md:h-10 md:w-10 flex items-center justify-center"
+            >
+              <i class="fas fa-sun text-sm md:text-base"></i>
             </button>
 
-            <div class="relative" id="auth-buttons">
-              <!-- Initially show login/register buttons -->
-              <div class="flex space-x-2" id="guest-buttons">
-                <a
-                  href="#login"
-                  class="px-4 py-2 text-sm font-medium rounded-lg border border-border hover:bg-secondary cursers:pointer"
-                  >Login</a
+            <div id="auth-buttons" class="flex items-center gap-2 md:gap-3">
+              <!-- Guest buttons (shown when NOT logged in) -->
+              <div class="flex gap-2 md:gap-3" id="guest-buttons">
+                <button
+                  class="btn btn-outline text-xs md:text-sm px-3 py-1.5 md:px-4 md:py-2"
+                  onclick="showLoginModal()"
                 >
-                <a
-                  href="#register"
-                  class="px-4 py-2 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:opacity-90 curser:pointer"
-                  >Rigister</a
+                  <span class="hidden sm:inline">Login</span>
+                  <i class="fas fa-sign-in-alt sm:hidden"></i>
+                </button>
+                <button
+                  class="btn btn-primary text-xs md:text-sm px-3 py-1.5 md:px-4 md:py-2"
+                  onclick="showRegisterModal()"
                 >
+                  <span class="hidden sm:inline">Register</span>
+                  <i class="fas fa-user-plus sm:hidden"></i>
+                </button>
               </div>
-              <!-- User menu (hidden by default) -->
-              <div id="user-menu" class="hidden items-center space-x-2-x-3">
-                <div
-                  class="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center"
-                >
-                  <i class="fas fa-user text-primary"></i>
+              <!-- User menu (shown when logged in) -->
+              <div id="user-menu" class="hidden items-center gap-2 md:gap-3">
+                <div class="flex items-center gap-2 user-info">
+                  <div
+                    class="h-8 w-8 md:h-9 md:w-9 rounded-full bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center"
+                    title="User Profile"
+                  >
+                    <i class="fas fa-user text-xs"></i>
+                  </div>
+                  <span
+                    class="text-sm font-medium hidden lg:inline"
+                    id="user-name"
+                  ></span>
                 </div>
-                <span class="text-sm font-medium" id="user-name"
-                  >Aok Sreyna</span
+                <button
+                  class="btn btn-outline text-xs md:text-sm px-2 md:px-3 py-2"
+                  onclick="window.location.hash = 'dashboard'"
+                  title="Dashboard"
                 >
+                  <i class="fas fa-tachometer-alt"></i>
+                  <span class="hidden md:inline ml-1 md:ml-2">Dashboard</span>
+                </button>
                 <button
                   id="logout-btn"
-                  class="px-3 py-1 text-sm rounded-lg border border-border hover:bg-secondary curser:pointer"
+                  class="btn btn-outline text-xs md:text-sm px-2 md:px-3 py-2"
+                  title="Logout"
                 >
-                  Logout
+                  <i class="fas fa-sign-out-alt"></i>
+                  <span class="hidden md:inline ml-1 md:ml-2">Logout</span>
                 </button>
               </div>
             </div>
 
-            <button class="md:hidden p-2 rounded-lg hover:bg-secondary">
-              <i class="fas fa-bars"></i>
+            <button
+              id="mobile-menu-btn"
+              class="btn-theme p-2 h-9 w-9 md:h-10 md:w-10 flex items-center justify-center md:hidden"
+            >
+              <i class="fas fa-bars text-sm"></i>
             </button>
+          </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div
+          id="mobile-menu"
+          class="hidden border-t border-border py-4 md:hidden"
+        >
+          <div class="flex flex-col gap-3">
+            <a
+              href="#home"
+              class="nav-link font-medium hover:text-primary transition-colors"
+              >Home</a
+            >
+            <a
+              href="#about"
+              class="nav-link font-medium hover:text-primary transition-colors"
+              >About</a
+            >
+            <a
+              href="#courses"
+              class="nav-link font-medium hover:text-primary transition-colors"
+              >Courses</a
+            >
+            <a
+              href="#documents"
+              class="nav-link font-medium hover:text-primary transition-colors"
+              >Documents</a
+            >
+
+            <a
+              href="#contact"
+              class="nav-link font-medium hover:text-primary transition-colors"
+              >Contact</a
+            >
           </div>
         </div>
       </div>
     </nav>
 
-    <!-- Main Content Container -->
-    <main class="flex-1" id="main-content">
-      <!-- Home Page (Default) -->
-      <div id="home-page">
+    <!-- Main Content -->
+    <main id="main-content">
+      <!-- Home Page -->
+      <div id="home-page" class="page">
         <!-- Hero Section -->
-        <section class="relative py-20 lg:py-32 overflow:hidden">
-          <div
-            class="absolute inset-0 bg-gradient-to-b from-primary/20 via-background to-background"
-          ></div>
-          <div class="container mx-auto px-4 relative">
-            <div class="max-w-3xl mx-auto text-center space-y-6">
+        <section
+          class="hero-background w-full min-h-[80vh] md:min-h-[90vh] flex items-center"
+        >
+          <div class="container mx-auto px-4 w-full">
+            <div class="mx-auto w-full max-w-6xl text-center text-content">
               <span
-                class="inline-block px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-sm font-medium mb-4"
-                >Start Learning Today
+                class="badge badge-primary mb-4 md:mb-6 px-4 py-2 md:px-6 md:py-3 text-xs md:text-sm"
+              >
+                <i class="fas fa-rocket mr-2"></i>START LEARNING TODAY
               </span>
+
               <h1
-                class="text-4xl md:text-sxl lg:text-6xl font-bold tracking-tight text-balance"
+                class="mb-4 md:mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-gradient rainbow-text px-2"
               >
-                Master Computer Science & Design Skills
+                Master Tech Skills with Expert-Led Courses
               </h1>
+
+              <div class="flex justify-center mb-6 md:mb-8">
+                <div
+                  class="w-16 h-1 bg-gradient-to-r from-primary to-pink rounded-full"
+                ></div>
+              </div>
+
               <p
-                class="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-pretty"
+                class="mb-6 md:mb-8 text-base sm:text-lg md:text-xl text-foreground/90 max-w-3xl mx-auto px-4 md:px-0 hero-subtitle"
               >
-                Comprehensive video courses and free documentation to help you
-                become a professional developer. Start your learning journey
-                today.
+                <i class="fas fa-arrow-right text-primary mr-3"></i>
+                From web development to data science, our comprehensive courses
+                help you build the skills needed for a successful tech career.
               </p>
-              <div class="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-                <a
-                  href="#courses"
-                  class="px-6 py-3 bg-primary text-primary-foreground font-medium rounded-lg hover:opacity-90 inline-flex items-center justify-center"
+
+              <div
+                class="flex flex-col sm:flex-row justify-center items-center gap-3 md:gap-6 px-4 sm:px-0"
+              >
+                <button
+                  class="btn btn-primary w-full sm:w-auto text-sm md:text-base px-6 md:px-8 py-3 md:py-4"
+                  onclick="window.location.hash = 'courses'"
                 >
-                  Brose Courses
-                  <i class="fas fa-arrow-right ml-2"></i>
-                </a>
-                <a
-                  href="#documents"
-                  class="px-6 py-3 border-border font-medium rounded-lg hover:bg-secondary inline-flex items-center justify-center"
+                  <span>Browse Courses</span>
+                  <i class="fas fa-arrow-right ml-2 md:ml-3"></i>
+                </button>
+                <button
+                  class="btn btn-outline w-full sm:w-auto text-sm md:text-base px-6 md:px-8 py-3 md:py-4"
+                  onclick="window.location.hash = 'documents'"
                 >
-                  Free Document
-                </a>
+                  <span>Free Documents</span>
+                  <i class="fas fa-book-open ml-2 md:ml-3"></i>
+                </button>
               </div>
             </div>
           </div>
         </section>
+
+        <!-- Stats Section -->
+        <section
+          class="w-full border-y border-border bg-gradient-to-r from-blue-50/50 to-pink-50/50 py-8 md:py-12 lg:py-16"
+        >
+          <div class="container mx-auto px-4 w-full">
+            <div
+              class="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-6 lg:gap-8"
+            >
+              <div class="stat-card text-center p-4 md:p-6">
+                <div
+                  class="stat-number mb-2 text-2xl sm:text-3xl md:text-4xl font-bold"
+                >
+                  <span class="text-gradient font-bold">15</span>
+                  <span class="text-primary ml-1">+</span>
+                </div>
+                <div
+                  class="stat-label text-xs sm:text-sm md:text-base text-muted-foreground font-medium"
+                >
+                  Courses Available
+                </div>
+              </div>
+
+              <div class="stat-card text-center p-4 md:p-6">
+                <div
+                  class="stat-number mb-2 text-2xl sm:text-3xl md:text-4xl font-bold"
+                >
+                  <span class="text-gradient font-bold">7</span>
+                  <span class="text-primary ml-1">+</span>
+                </div>
+                <div
+                  class="stat-label text-xs sm:text-sm md:text-base text-muted-foreground font-medium"
+                >
+                  Categories
+                </div>
+              </div>
+
+              <div class="stat-card text-center p-4 md:p-6">
+                <div
+                  class="stat-number mb-2 text-2xl sm:text-3xl md:text-4xl font-bold"
+                >
+                  <span class="text-gradient font-bold">21</span>
+                  <span class="text-primary ml-1">+</span>
+                </div>
+                <div
+                  class="stat-label text-xs sm:text-sm md:text-base text-muted-foreground font-medium"
+                >
+                  Free Documents
+                </div>
+              </div>
+
+              <div class="stat-card text-center p-4 md:p-6">
+                <div
+                  class="stat-number mb-2 text-2xl sm:text-3xl md:text-4xl font-bold"
+                >
+                  <span class="text-gradient font-bold">24/7</span>
+                  <span class="text-primary ml-1">+</span>
+                </div>
+                <div
+                  class="stat-label text-xs sm:text-sm md:text-base text-muted-foreground font-medium"
+                >
+                  Online Access
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <!-- Featured Courses -->
-        <section class="py-20" id="courses">
+        <section
+          class="bg-gradient-to-b from-blue-50/30 to-transparent py-16 lg:py-24"
+        >
           <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center mb-10">
+            <div
+              class="mb-12 flex flex-col items-center justify-between gap-4 sm:flex-row"
+            >
               <div>
-                <h2 class="text-3xl font-bold">Features Video Courses</h2>
-                <p class="text-muted-foreground mt-2">
+                <h2 class="mb-2 text-3xl font-bold">Featured Courses</h2>
+                <p class="text-muted-foreground">
                   Start your learning journey with our popular courses
                 </p>
               </div>
-              <a
-                href="#coures-page"
-                class="px-4 py-2 border border-border rounded-lg hover:bg-secondary"
-                >View all courses
-                <i class="fas fa-arrow-right ml-2"></i>
-              </a>
+              <button
+                class="btn btn-outline"
+                onclick="window.location.hash = 'courses'"
+              >
+                View All Courses <i class="fas fa-arrow-right ml-2"></i>
+              </button>
             </div>
-            <div
-              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-              id="featured-courses"
-            >
-              <!-- Courses will be loaded dynamically -->
+            <div class="course-grid" id="featured-courses-grid">
+              <!-- Featured courses will be loaded here -->
             </div>
           </div>
         </section>
 
         <!-- Featured Documents -->
-        <section class="py-20 bg-card" id="documents">
+        <section class="py-16 lg:py-24">
           <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center mb-10">
+            <div
+              class="mb-12 flex flex-col items-center justify-between gap-4 sm:flex-row"
+            >
               <div>
-                <h2 class="text-3xl font-bold">Free Learning Documents</h2>
-                <p class="text-muted-foreground mt-2">
+                <h2 class="mb-2 text-3xl font-bold">Free Learning Documents</h2>
+                <p class="text-muted-foreground">
                   Access comprehensive documentation (login required)
                 </p>
               </div>
-              <a
-                href="#documents-page"
-                class="px-4 py-2 border border-border rounded-lg hover:bg-secondary"
-                >View all documents
-                <i class="fas fa-arrow-right ml-2"></i>
-              </a>
+              <button
+                class="btn btn-outline"
+                onclick="window.location.hash = 'documents'"
+              >
+                View All Documents <i class="fas fa-arrow-right ml-2"></i>
+              </button>
             </div>
-            <div
-              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-              id="featured-documents"
-            >
-              <!-- Documents will be loaded dynamically -->
+            <div class="course-grid" id="featured-documents-grid">
+              <!-- Featured documents will be loaded here -->
             </div>
           </div>
         </section>
 
         <!-- CTA Section -->
-        <section class="py-20">
-          <div class="container mx-auto px-4">
-            <div
-              class="bg-primary/10 border border-primary/20 rounded-2xl p-8 md:p-12 text-center"
+        <section class="bg-gradient-to-r from-primary to-purple-500 py-16">
+          <div class="container mx-auto px-4 text-center">
+            <h2
+              class="mb-4 text-3xl font-bold text-sky-500"
+              style="text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2)"
             >
-              <h2 class="text-3xl font-bold mb-4">Ready to Start Learning?</h2>
-              <p class="text-muted-foreground mb-8 max-w-2xl mx-auto">
-                Join our platform today and get access to comprehensive video
-                courses and free documentation to boost your programming skills.
-              </p>
-              <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a
-                  href="#register"
-                  class="px-6 py-3 bg-primary text-primary-foreground font-medium rounded-lg hover:opacity-90 inline-flex items-center justify-center"
-                  >Create Free Account
-                  <i class="fas fa-arrow-right ml-2"></i>
-                </a>
-                <a
-                  href="#login"
-                  class="px-6 py-3 border border-border font-medium rounded-lg hover:bg-secondary inline-flex items-center justify-center"
-                  >Already have an account?</a
-                >
-              </div>
-            </div>
+              Ready to Start Learning?
+            </h2>
+            <p
+              class="mb-8 text-sky-400"
+              style="text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1)"
+            >
+              Join thousands of students already mastering new tech skills
+            </p>
+            <button class="btn btn-accent" onclick="showRegisterModal()">
+              Create Free Account <i class="fas fa-arrow-right ml-2"></i>
+            </button>
           </div>
         </section>
       </div>
 
-      <!-- About Page -->
-      <div id="about-page" class="about-page">
+      <!-- Courses Page -->
+      <div id="courses-page" class="page page-hidden">
         <div class="py-10">
           <div class="container mx-auto px-4">
-            <!-- Hero -->
-            <div class="text-center max-w-3xl mx-auto mb-16">
-              <h1 class="text-4xl font-bold mb-4">About LearnHub</h1>
+            <!-- Header -->
+            <div class="mb-10">
+              <h1 class="mb-4 text-4xl font-bold">Video Courses</h1>
               <p class="text-lg text-muted-foreground">
-                We are dedicated to providing high-quality computer science and
-                design education through comprehensive video courses and free
-                documentation resources.
+                Premium video courses to help you master programming and
+                development skills.
               </p>
             </div>
-            <!-- Mission -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
-              <div class="space-y-6">
-                <h2 class="text-3xl font-bold">Our Mission</h2>
-                <p class="text-muted-foreground">
-                  At LearnHub, we believe that quality education should be
-                  accessible to everyone. Our mission is to bridge the gap
-                  between theoretical knowledge and practical skills in the
-                  field of computer science and software development.
+
+            <!-- Filters -->
+            <div class="mb-10 flex flex-col gap-6 lg:flex-row">
+              <!-- Search -->
+              <div class="relative flex-1">
+                <div class="search-container">
+                  <i class="fas fa-search search-icon"></i>
+                  <input
+                    type="text"
+                    id="course-search"
+                    class="search-input"
+                    placeholder="Search courses..."
+                  />
+                </div>
+              </div>
+
+              <!-- Category Filter -->
+              <div class="flex flex-wrap gap-2" id="course-categories-filter">
+                <!-- Categories will be loaded here -->
+              </div>
+            </div>
+
+            <!-- Results Count -->
+            <p class="mb-6 text-muted-foreground">
+              Showing
+              <span id="course-results-count" class="font-semibold">0</span> of
+              <span id="course-total-count" class="font-semibold">0</span>
+              courses
+            </p>
+
+            <!-- Course Grid -->
+            <div class="course-grid" id="all-courses-grid">
+              <!-- All courses will be loaded here -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Documents Page -->
+      <div id="documents-page" class="page page-hidden">
+        <div class="py-10">
+          <div class="container mx-auto px-4">
+            <!-- Header -->
+            <div class="mb-10">
+              <h1 class="mb-4 text-4xl font-bold">Learning Documents</h1>
+              <p class="text-lg text-muted-foreground">
+                Free comprehensive documentation to supplement your learning
+                journey.
+              </p>
+              <div class="mt-4">
+                <button class="btn btn-primary" onclick="showLoginModal()">
+                  <i class="fas fa-sign-in-alt mr-2"></i> Login to Access
+                  Documents
+                </button>
+              </div>
+            </div>
+
+            <!-- Login Notice -->
+            <div id="login-notice" class="alert alert-warning mb-8">
+              <i class="fas fa-lock"></i>
+              <div>
+                <h4 class="font-medium">Login Required to Read Documents</h4>
+                <p class="text-sm">
+                  You need to
+                  <button
+                    onclick="showLoginModal()"
+                    class="text-primary hover:underline font-medium"
+                  >
+                    login
+                  </button>
+                  to access document content. Documents are free for all
+                  registered users.
                 </p>
-                <p class="text-muted-foreground">
-                  We provide structured learning paths through video courses for
-                  in-depth understanding, complemented by free documentation
-                  that serves as quick reference materials for all learners.
+              </div>
+            </div>
+
+            <!-- Disclaimer -->
+            <div class="alert alert-info mb-8">
+              <i class="fas fa-info-circle"></i>
+              <div>
+                <h4 class="font-medium">External Resources</h4>
+                <p class="text-sm">
+                  Content accessed from external educational resources (MDN Web
+                  Docs, W3Schools, GeeksforGeeks, etc.) for academic
+                  demonstration purposes only.
                 </p>
               </div>
-              <div class="grid grid-cols-2 gap-4">
-                <div class="border border-border rounded-xl p-6 text-center">
-                  <div
-                    class="h-10 w-10 mx-auto mb-4 text-primary flex items-center justify-center"
-                  >
-                    <i class="fas fa-bullseye text-2xl"></i>
-                  </div>
-                  <h3 class="font-semibold mb-2">Our Goal</h3>
-                  <p class="text-sm text-muted-foreground">
-                    Make programming education accessible to all
-                  </p>
-                </div>
+            </div>
 
-                <div class="border border-border rounded p-6 text-center">
-                  <div
-                    class="h-10 w-10 mx-auto mb-4 text-primary flex items-center justify-center"
-                  >
-                    <i class="fas fa-lightbulb text-2xl"></i>
-                  </div>
-                  <h3 class="font-semibold mb-2">Our Approach</h3>
-                  <p class="text-sm text-muted-foreground">
-                    Practical, hands-on learning experience
-                  </p>
+            <!-- Filters -->
+            <div class="mb-10 flex flex-col gap-6 lg:flex-row">
+              <!-- Search -->
+              <div class="relative flex-1">
+                <div class="search-container">
+                  <i class="fas fa-search search-icon"></i>
+                  <input
+                    type="text"
+                    id="document-search"
+                    class="search-input"
+                    placeholder="Search documents..."
+                  />
                 </div>
+              </div>
 
-                <div class="border border-border rounded p-6 text-center">
-                  <div
-                    class="h-10 w-10 mx-auto mb-4 text-primary flex items-center justify-center"
-                  >
-                    <i class="fas fa-code text-2xl"></i>
-                  </div>
-                  <h3 class="font-semibold mb-2">Our Content</h3>
-                  <p class="text-sm text-muted-foreground">
-                    Industry-relevant curriculum
-                  </p>
-                </div>
-
-                <div class="border border-border rounded p-6 text-center">
-                  <div
-                    class="h-10 w-10 mx-auto mb-4 text-primary flex items-center justify-center"
-                  >
-                    <i class="fas fa-users text-2xl"></i>
-                  </div>
-                  <h3 class="font-semibold mb-2">Our Community</h3>
-                  <p class="text-sm text-muted-foreground">
-                    Supportive learning environment
-                  </p>
-                </div>
+              <!-- Category Filter -->
+              <div class="flex flex-wrap gap-2" id="document-categories-filter">
+                <!-- Categories will be loaded here -->
               </div>
             </div>
 
-            <!-- What We Offer -->
-            <div class="mb-20">
-              <h2 class="text-3xl font-bold text-center mb-10">
-                What We Offer
-              </h2>
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="border border-border rounded-xl p-8 text-center">
-                  <div
-                    class="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6"
-                  >
-                    <i class="fas fa-book-open text-primary text-2xl"></i>
-                  </div>
-                  <h3 class="text-xl font-semibold mb-4">Video Courses</h3>
-                  <p class="text-muted-foreground">
-                    Comprehensive paid video courses covering Web Development,
-                    Programming Languages, Mobile Development, Data Structures,
-                    Networking, and Database Systems.
-                  </p>
-                </div>
+            <!-- Results Count -->
+            <p class="mb-6 text-muted-foreground">
+              Showing
+              <span id="document-results-count" class="font-semibold">0</span>
+              of
+              <span id="document-total-count" class="font-semibold">0</span>
+              documents
+            </p>
 
-                <div class="border border-border rounded-xl p-8 text-center">
-                  <div
-                    class="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6"
-                  >
-                    <i class="fas fa-users text-primary text-2xl"></i>
-                  </div>
-                  <h3 class="text-xl font-semibold mb-4">Free Documents</h3>
-                  <p class="text-muted-foreground">
-                    Access to curated documentation from trusted sources like
-                    MDN Web Docs, W3Schools, and GeeksforGeeks - completely free
-                    for registered users.
-                  </p>
-                </div>
+            <!-- Documents Grid -->
+            <div class="course-grid" id="all-documents-grid">
+              <!-- All documents will be loaded here -->
+            </div>
+          </div>
+        </div>
+      </div>
 
-                <div class="border border-border rounded-xl p-8 text-center">
-                  <div
-                    class="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6"
-                  >
-                    <i class="fas fa-award text-primary text-2xl"></i>
-                  </div>
-                  <h3 class="text-xl font-semibold mb-4">Lifetime Access</h3>
-                  <p class="text-muted-foreground">
-                    Once you purchase a course, you have lifetime access to all
-                    its content. Learn at your own pace, revisit materials
-                    whenever you need.
-                  </p>
-                </div>
+      <!-- Course Detail Page -->
+      <div id="course-detail-page" class="page page-hidden">
+        <div class="py-10">
+          <div class="container mx-auto px-4">
+            <!-- Back Button -->
+            <button
+              class="back-button mb-6"
+              onclick="window.location.hash = 'courses'"
+            >
+              <i class="fas fa-arrow-left mr-2"></i> Back to Courses
+            </button>
+
+            <!-- Purchase Message -->
+            <div id="purchase-message" class="alert alert-success mb-6 hidden">
+              <i class="fas fa-check-circle"></i>
+              <div>
+                <h4 class="font-medium">Success!</h4>
+                <p id="purchase-message-text" class="text-sm">
+                  Course purchased successfully! You now have access to all
+                  modules.
+                </p>
               </div>
             </div>
 
-            <!-- Categories -->
-            <div class="mb-20">
-              <h2 class="text-3xl font-bold text-center mb-10">
-                Our Courses Categrories
-              </h2>
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div
-                  class="group rounded-lg border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-md"
-                >
-                  <i class="fas fa-book-open"></i>
-                  <h3 class="font-medium text-sm">Web Development</h3>
-                  <p class="text-sm">Learn modern web technologies</p>
+            <div class="grid gap-8 lg:grid-cols-3">
+              <!-- Course Info -->
+              <div class="lg:col-span-2 space-y-6">
+                <!-- Video Player -->
+                <div class="video-container" id="course-video-player">
+                  <div class="video-placeholder">
+                    <i
+                      class="fas fa-play-circle text-5xl text-primary mb-4"
+                    ></i>
+                    <h3 class="text-xl font-bold mb-2">Course Preview</h3>
+                    <p class="text-gray-300 mb-4">
+                      Click below to watch this video
+                    </p>
+                    <button class="btn btn-primary" id="watch-video-btn">
+                      <i class="fas fa-play mr-2"></i> Watch Video Now
+                    </button>
+                  </div>
                 </div>
 
-                <div
-                  class="group rounded-lg border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-md"
-                >
-                  <i class="fas fa-book-open"></i>
-                  <h3 class="font-medium text-sm">Programming Language</h3>
-                  <p class="text-sm">Learn modern web technologies</p>
+                <!-- Course Title & Description -->
+                <div>
+                  <span
+                    id="course-detail-category"
+                    class="badge badge-primary mb-3"
+                  ></span>
+                  <h1
+                    id="course-detail-title"
+                    class="mb-4 text-3xl font-bold"
+                  ></h1>
+                  <p
+                    id="course-detail-description"
+                    class="text-lg text-muted-foreground"
+                  ></p>
                 </div>
 
-                <div
-                  class="group rounded-lg border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-md"
-                >
-                  <i class="fas fa-book-open"></i>
-                  <h3 class="font-medium text-sm">Mobile Development</h3>
-                  <p class="text-sm">Learn modern web technologies</p>
+                <!-- Course Details -->
+                <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+                  <div class="stats-card">
+                    <i
+                      class="fas fa-video text-primary text-xl mx-auto mb-2"
+                    ></i>
+                    <p class="font-semibold" id="course-videos">1 Video</p>
+                    <p class="text-sm text-muted-foreground">Comprehensive</p>
+                  </div>
+                  <div class="stats-card">
+                    <i
+                      class="fas fa-clock text-primary text-xl mx-auto mb-2"
+                    ></i>
+                    <p class="font-semibold" id="course-duration">0h</p>
+                    <p class="text-sm text-muted-foreground">Duration</p>
+                  </div>
+                  <div class="stats-card">
+                    <i
+                      class="fas fa-award text-primary text-xl mx-auto mb-2"
+                    ></i>
+                    <p class="font-semibold">Certificate</p>
+                    <p class="text-sm text-muted-foreground">Included</p>
+                  </div>
+                  <div class="stats-card">
+                    <i
+                      class="fas fa-play text-primary text-xl mx-auto mb-2"
+                    ></i>
+                    <p class="font-semibold">Lifetime</p>
+                    <p class="text-sm text-muted-foreground">Access</p>
+                  </div>
                 </div>
 
-                <div
-                  class="group rounded-lg border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-md"
-                >
-                  <i class="fas fa-book-open"></i>
-                  <h3 class="font-medium text-sm">
-                    Data Structures & Algorithms
-                  </h3>
-                  <p class="text-sm">Learn modern web technologies</p>
-                </div>
-
-                <div
-                  class="group rounded-lg border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-md"
-                >
-                  <i class="fas fa-book-open"></i>
-                  <h3 class="font-medium text-sm">Computer Network</h3>
-                  <p class="text-sm">Learn modern web technologies</p>
-                </div>
-
-                <div
-                  class="group rounded-lg border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-md"
-                >
-                  <i class="fas fa-book-open"></i>
-                  <h3 class="font-medium text-sm">
-                    Database Mananfement System
-                  </h3>
-                  <p class="text-sm">Learn modern web technologies</p>
+                <!-- What You'll Learn -->
+                <div class="card">
+                  <div class="p-6">
+                    <h2 class="text-xl font-bold mb-4">What You'll Learn</h2>
+                    <ul id="course-learning-points" class="space-y-3">
+                      <!-- Learning points will be loaded here -->
+                    </ul>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Why Choose Us -->
-
-            <div class="bg-card border border-border rounded-2xl p-8 md:p-12">
-              <h2 class="text-3xl font-bold text-center mb-10">
-                Why Choose CodeLearn?
-              </h2>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="flex gap-4">
-                  <div
-                    class="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0"
-                  >
-                    <span class="font-bold text-primary">1</span>
-                  </div>
-                  <div>
-                    <h3 class="font-semibold mb-2">Structured Learning Path</h3>
-                    <p class="text-muted-foreground text-sm">
-                      Our courses are designed to take you from beginner to
-                      advanced level with clear progression.
+              <!-- Purchase Card -->
+              <div class="lg:col-span-1">
+                <div class="card sticky top-24">
+                  <div class="p-6 border-b border-border">
+                    <div
+                      id="course-detail-price"
+                      class="text-4xl font-bold text-primary"
+                    >
+                      $49.99
+                    </div>
+                    <p class="text-muted-foreground">
+                      One-time purchase for single video
                     </p>
                   </div>
-                </div>
-                <div class="flex gap-4">
+
+                  <!-- System Status -->
                   <div
-                    class="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0"
+                    id="system-status-card"
+                    class="p-6 border-b border-border"
                   >
-                    <span class="font-bold text-primary">2</span>
+                    <!-- Status will be updated by JavaScript -->
                   </div>
-                  <div>
-                    <h3 class="font-semibold mb-2">
-                      Industry-Relevant Content
+
+                  <!-- Purchase Button -->
+                  <div class="p-6 border-b border-border">
+                    <button
+                      id="purchase-button"
+                      class="btn btn-primary w-full"
+                      disabled
+                    >
+                      Purchase Unavailable
+                    </button>
+                    <p
+                      id="purchase-status-text"
+                      class="text-center text-sm text-muted-foreground mt-2"
+                    ></p>
+                  </div>
+
+                  <!-- Course Features -->
+                  <div class="p-6">
+                    <h3 class="font-bold mb-4 text-lg">
+                      This Course Includes:
                     </h3>
-                    <p class="text-muted-foreground text-sm">
-                      Learn technologies and skills that are in demand in the
-                      job market today.
-                    </p>
-                  </div>
-                </div>
-                <div class="flex gap-4">
-                  <div
-                    class="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0"
-                  >
-                    <span class="font-bold text-primary">3</span>
-                  </div>
-                  <div>
-                    <h3 class="font-semibold mb-2">Affordable Pricing</h3>
-                    <p class="text-muted-foreground text-sm">
-                      Quality education at competitive prices with one-time
-                      payment for lifetime access.
-                    </p>
-                  </div>
-                </div>
-                <div class="flex gap-4">
-                  <div
-                    class="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0"
-                  >
-                    <span class="font-bold text-primary">4</span>
-                  </div>
-                  <div>
-                    <h3 class="font-semibold mb-2">Free Resources</h3>
-                    <p class="text-muted-foreground text-sm">
-                      Complement your learning with free documentation from
-                      trusted educational sources.
-                    </p>
+                    <div class="space-y-3">
+                      <div class="flex items-center">
+                        <div
+                          class="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center mr-3"
+                        >
+                          <i
+                            class="fas fa-check text-green-600 dark:text-green-400 text-xs"
+                          ></i>
+                        </div>
+                        <span>1 comprehensive video lesson</span>
+                      </div>
+                      <div class="flex items-center">
+                        <div
+                          class="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center mr-3"
+                        >
+                          <i
+                            class="fas fa-check text-green-600 dark:text-green-400 text-xs"
+                          ></i>
+                        </div>
+                        <span>Downloadable resources</span>
+                      </div>
+                      <div class="flex items-center">
+                        <div
+                          class="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center mr-3"
+                        >
+                          <i
+                            class="fas fa-check text-green-600 dark:text-green-400 text-xs"
+                          ></i>
+                        </div>
+                        <span>Certificate of completion</span>
+                      </div>
+                      <div class="flex items-center">
+                        <div
+                          class="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center mr-3"
+                        >
+                          <i
+                            class="fas fa-check text-green-600 dark:text-green-400 text-xs"
+                          ></i>
+                        </div>
+                        <span>Lifetime access</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -481,213 +708,374 @@
         </div>
       </div>
 
-      <!-- Contact Page-->
-      <div id="contact-page" class="contact-page">
-        <div class="py-10">
-          <div class="container mx-auto px-4">
-            <!-- Header -->
-            <div class="text-center max-w-3xl mx-auto mb-16">
-              <h1 class="text-4xl font-bold mb-4">Contact Us</h1>
-              <p class="text-lg text-muted-foreground">
-                Have questions or feedback? We would love to hear from you. Get
-                in touch with our team.
+      <!-- About Page -->
+      <div id="about-page" class="page page-hidden">
+        <div class="min-h-screen">
+          <!-- Hero Section -->
+          <section class="hero-gradient py-16 lg:py-24">
+            <div class="container mx-auto px-4 text-center">
+              <h1 class="mb-4 text-4xl font-bold lg:text-5xl">
+                About LearnHub
+              </h1>
+              <p class="mx-auto max-w-2xl text-lg text-muted-foreground">
+                We're on a mission to make quality tech education accessible to
+                everyone. Our expert-led courses help you build the skills
+                needed for a successful career in technology.
               </p>
             </div>
+          </section>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-              <!-- Contact Info -->
+          <!-- Mission Section -->
+          <section class="py-16">
+            <div class="container mx-auto px-4">
+              <div class="grid gap-12 lg:grid-cols-2 lg:items-center">
+                <div>
+                  <h2 class="mb-4 text-3xl font-bold">Our Mission</h2>
+                  <p class="mb-6 text-muted-foreground">
+                    LearnHub was founded with a simple belief: everyone deserves
+                    access to high-quality tech education. We partner with
+                    industry experts to create comprehensive, practical courses
+                    that prepare you for real-world challenges.
+                  </p>
+                  <p class="text-muted-foreground">
+                    Whether you're starting your coding journey or advancing
+                    your career, our structured curriculum and hands-on approach
+                    will help you achieve your goals. From web development to
+                    data science, we cover the skills that matter most in
+                    today's tech landscape.
+                  </p>
+                </div>
+                <div class="grid gap-4 sm:grid-cols-2">
+                  <div class="card card-hover">
+                    <div class="flex flex-col items-center p-6 text-center">
+                      <div
+                        class="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary to-purple-500"
+                      >
+                        <i class="fas fa-bullseye"></i>
+                      </div>
+                      <h3 class="mb-2 font-semibold">Focused Learning</h3>
+                      <p class="text-sm text-muted-foreground">
+                        Structured paths for efficient skill building
+                      </p>
+                    </div>
+                  </div>
+                  <div class="card card-hover">
+                    <div class="flex flex-col items-center p-6 text-center">
+                      <div
+                        class="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary to-purple-500"
+                      >
+                        <i class="fas fa-code"></i>
+                      </div>
+                      <h3 class="mb-2 font-semibold">Practical Skills</h3>
+                      <p class="text-sm text-muted-foreground">
+                        Real-world projects and applications
+                      </p>
+                    </div>
+                  </div>
+                  <div class="card card-hover">
+                    <div class="flex flex-col items-center p-6 text-center">
+                      <div
+                        class="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary to-purple-500"
+                      >
+                        <i class="fas fa-users"></i>
+                      </div>
+                      <h3 class="mb-2 font-semibold">Expert Instructors</h3>
+                      <p class="text-sm text-muted-foreground">
+                        Learn from industry professionals
+                      </p>
+                    </div>
+                  </div>
+                  <div class="card card-hover">
+                    <div class="flex flex-col items-center p-6 text-center">
+                      <div
+                        class="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary to-purple-500"
+                      >
+                        <i class="fas fa-lightbulb"></i>
+                      </div>
+                      <h3 class="mb-2 font-semibold">Modern Content</h3>
+                      <p class="text-sm text-muted-foreground">
+                        Up-to-date with latest technologies
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Values Section -->
+          <section class="bg-gradient-to-r from-blue-50/30 to-pink-50/30 py-16">
+            <div class="container mx-auto px-4">
+              <h2 class="mb-12 text-center text-3xl font-bold">Our Values</h2>
+              <div class="grid gap-8 md:grid-cols-3">
+                <div class="text-center">
+                  <div class="stats-icon mx-auto mb-4">
+                    <i class="fas fa-book-open"></i>
+                  </div>
+                  <h3 class="mb-2 text-xl font-semibold">Quality Education</h3>
+                  <p class="text-muted-foreground">
+                    We believe in providing the highest quality educational
+                    content that truly prepares students for success.
+                  </p>
+                </div>
+                <div class="text-center">
+                  <div class="stats-icon mx-auto mb-4">
+                    <i class="fas fa-users"></i>
+                  </div>
+                  <h3 class="mb-2 text-xl font-semibold">Accessibility</h3>
+                  <p class="text-muted-foreground">
+                    Tech education should be available to everyone, regardless
+                    of background or location.
+                  </p>
+                </div>
+                <div class="text-center">
+                  <div class="stats-icon mx-auto mb-4">
+                    <i class="fas fa-award"></i>
+                  </div>
+                  <h3 class="mb-2 text-xl font-semibold">Excellence</h3>
+                  <p class="text-muted-foreground">
+                    We strive for excellence in everything we do, from course
+                    content to student support.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Stats Section -->
+          <section class="py-16">
+            <div class="container mx-auto px-4">
+              <div class="card card-hover p-8">
+                <div
+                  class="grid gap-8 text-center sm:grid-cols-2 lg:grid-cols-4"
+                >
+                  <div>
+                    <div
+                      class="mb-2 text-4xl font-bold bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent"
+                    >
+                      9
+                    </div>
+                    <div class="text-muted-foreground">Course Categories</div>
+                  </div>
+                  <div>
+                    <div
+                      class="mb-2 text-4xl font-bold bg-gradient-to-r from-primary to-purple-500 bg-clip-text"
+                    >
+                      15
+                    </div>
+                    <div class="text-muted-foreground">Video Courses</div>
+                  </div>
+                  <div>
+                    <div
+                      class="mb-2 text-4xl font-bold bg-gradient-to-r from-primary to-purple-500 bg-clip-text"
+                    >
+                      24
+                    </div>
+                    <div class="text-muted-foreground">Free Documents</div>
+                  </div>
+                  <div>
+                    <div
+                      class="mb-2 text-4xl font-bold bg-gradient-to-r from-primary to-purple-500 bg-clip-text"
+                    >
+                      24/7
+                    </div>
+                    <div class="text-muted-foreground">Access to Courses</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Contact Page -->
+      <div id="contact-page" class="page page-hidden">
+        <div class="min-h-screen">
+          <!-- Header -->
+          <section class="hero-gradient py-16">
+            <div class="container mx-auto px-4 text-center">
+              <h1 class="mb-4 text-4xl font-bold">Contact Us</h1>
+              <p class="mx-auto max-w-2xl text-lg text-muted-foreground">
+                Have questions about our courses? We're here to help. Reach out
+                to us and we'll respond as soon as possible.
+              </p>
+            </div>
+          </section>
+
+          <div class="container mx-auto px-4 py-12">
+            <div class="grid gap-8 lg:grid-cols-3">
+              <!-- Contact Information -->
               <div class="space-y-6">
-                <div class="border border-border rounded-xl p-6">
-                  <div class="flex items-start gap-4">
-                    <div
-                      class="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0"
-                    >
-                      <i class="fas fa-envelope text-primary"></i>
-                    </div>
-                    <div>
-                      <h3 class="font-semibold mb-1">Email</h3>
-                      <p class="text-muted-foreground text-sm">
-                        support@codelearn.com
-                      </p>
-                      <p class="text-muted-foreground text-sm">
-                        info@codelearn.com
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                <div class="card card-hover">
+                  <div class="p-6">
+                    <h3 class="mb-4 text-lg font-bold">Get in Touch</h3>
+                    <div class="space-y-6">
+                      <div class="flex items-start gap-4">
+                        <div
+                          class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary to-purple-500"
+                        >
+                          <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                          <p class="font-medium">Email</p>
+                          <a
+                            href="mailto:support@learnhub.com"
+                            class="text-muted-foreground hover:text-primary"
+                            >support@learnhub.com</a
+                          >
+                        </div>
+                      </div>
 
-                <div class="border border-border rounded-xl p-6">
-                  <div class="flex items-start gap-4">
-                    <div
-                      class="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0"
-                    >
-                      <i class="fas fa-phone text-primary"></i>
-                    </div>
-                    <div>
-                      <h3 class="font-semibold mb-1">Phone</h3>
-                      <p class="text-muted-foreground text-sm">
-                        +1 (555) 123-4567
-                      </p>
-                      <p class="text-muted-foreground text-sm">
-                        +1 (555) 987-6543
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                      <div class="flex items-start gap-4">
+                        <div
+                          class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary to-purple-500"
+                        >
+                          <i class="fas fa-phone"></i>
+                        </div>
+                        <div>
+                          <p class="font-medium">Phone</p>
+                          <a
+                            href="tel:+15551234567"
+                            class="text-muted-foreground hover:text-primary"
+                            >+1 (555) 123-4567</a
+                          >
+                        </div>
+                      </div>
 
-                <div class="border border-border rounded-xl p-6">
-                  <div class="flex items-start gap-4">
-                    <div
-                      class="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0"
-                    >
-                      <i class="fas fa-map-marker-alt text-primary"></i>
-                    </div>
-                    <div>
-                      <h3 class="font-semibold mb-1">Address</h3>
-                      <p class="text-muted-foreground text-sm">
-                        123 Learning Street
-                        <br />
-                        Tech City, TC 12345
-                        <br />
-                        United States
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                      <div class="flex items-start gap-4">
+                        <div
+                          class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary to-purple-500"
+                        >
+                          <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                          <p class="font-medium">Address</p>
+                          <p class="text-muted-foreground">
+                            123 Learning Street<br />
+                            Tech City, TC 12345
+                          </p>
+                        </div>
+                      </div>
 
-                <div class="border border-border rounded-xl p-6">
-                  <div class="flex items-start gap-4">
-                    <div
-                      class="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0"
-                    >
-                      <i class="fas fa-clock text-primary"></i>
-                    </div>
-                    <div>
-                      <h3 class="font-semibold mb-1">Business Hours</h3>
-                      <p class="text-muted-foreground text-sm">
-                        Monday - Friday: 8:00 AM - 10:00 PM
-                        <br />
-                        Saturday: 9:00 AM - 6:00 PM
-                        <br />
-                        Sunday: Closed
-                      </p>
+                      <div class="flex items-start gap-4">
+                        <div
+                          class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary to-purple-500"
+                        >
+                          <i class="fas fa-clock"></i>
+                        </div>
+                        <div>
+                          <p class="font-medium">Operating Hours</p>
+                          <p class="text-muted-foreground">
+                            8:00 AM - 10:00 PM (EST)
+                          </p>
+                          <p class="mt-1 text-sm text-muted-foreground">
+                            Purchases available during these hours only
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 <!-- Social Links -->
-                <div class="border border-border rounded-xl p-6">
-                  <h3 class="font-semibold mb-4">Follow Us</h3>
-                  <div class="flex gap-4">
-                    <a
-                      href="#"
-                      class="h-10 w-10 rounded-lg bg-secondary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
-                      aria-label="GitHub"
-                    >
-                      <i class="fab fa-github"></i>
-                    </a>
-                    <a
-                      href="#"
-                      class="h-10 w-10 rounded-lg bg-secondary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
-                      aria-label="Twitter"
-                    >
-                      <i class="fab fa-twitter"></i>
-                    </a>
-                    <a
-                      href="#"
-                      class="h-10 w-10 rounded-lg bg-secondary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
-                      aria-label="LinkedIn"
-                    >
-                      <i class="fab fa-linkedin"></i>
-                    </a>
+                <div class="card card-hover">
+                  <div class="p-6">
+                    <h3 class="mb-4 font-bold">Follow Us</h3>
+                    <div class="flex gap-4">
+                      <a href="#" class="social-icon">
+                        <i class="fab fa-facebook"></i>
+                      </a>
+                      <a href="#" class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                      </a>
+                      <a href="#" class="social-icon">
+                        <i class="fab fa-linkedin"></i>
+                      </a>
+                      <a href="#" class="social-icon">
+                        <i class="fab fa-github"></i>
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
 
               <!-- Contact Form -->
               <div class="lg:col-span-2">
-                <div class="border border-border rounded-xl">
-                  <div class="p-6 border-b border-border">
-                    <h2 class="text-xl font-bold">Send us a Message</h2>
-                    <p class="text-muted-foreground">
-                      Fill out the form below and we will get back to you as
-                      soon as possible.
-                    </p>
-                  </div>
+                <div class="card card-hover">
                   <div class="p-6">
+                    <h3 class="mb-2 text-xl font-bold">Send us a Message</h3>
+                    <p class="mb-6 text-muted-foreground">
+                      Fill out the form below and we'll get back to you shortly
+                    </p>
+
                     <div
                       id="contact-success"
-                      class="hidden mb-6 border border-success bg-success/10 p-4 rounded-lg"
+                      class="alert alert-success mb-6 hidden"
                     >
-                      <div class="flex items-center">
-                        <i class="fas fa-check-circle text-success mr-2"></i>
-                        <p class="text-success">
-                          Thank you for your message! We will get back to you
-                          soon.
+                      <i class="fas fa-check-circle"></i>
+                      <div>
+                        <h4 class="font-medium">Thank you!</h4>
+                        <p class="text-sm">
+                          Your message has been sent successfully.
                         </p>
                       </div>
                     </div>
 
                     <form id="contact-form" class="space-y-6">
-                      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-2">
-                          <label for="name" class="text-sm font-medium"
-                            >Your Name</label
+                      <div class="grid gap-6 sm:grid-cols-2">
+                        <div>
+                          <label class="mb-2 block text-sm font-medium"
+                            >Full Name</label
                           >
                           <input
                             type="text"
-                            id="name"
+                            id="contact-name"
+                            class="input"
                             placeholder="John Doe"
-                            class="w-full px-4 py-2 border border-border rounded-lg bg-background"
                             required
                           />
                         </div>
-                        <div class="space-y-2">
-                          <label for="email" class="text-sm font-medium"
-                            >Your Email</label
+                        <div>
+                          <label class="mb-2 block text-sm font-medium"
+                            >Email Address</label
                           >
                           <input
                             type="email"
-                            id="email"
+                            id="contact-email"
+                            class="input"
                             placeholder="john@example.com"
-                            class="w-full px-4 py-2 border border-border rounded-lg bg-background"
                             required
                           />
                         </div>
                       </div>
 
-                      <div class="space-y-2">
-                        <label for="subject" class="text-sm font-medium"
+                      <div>
+                        <label class="mb-2 block text-sm font-medium"
                           >Subject</label
                         >
                         <input
                           type="text"
-                          id="subject"
+                          id="contact-subject"
+                          class="input"
                           placeholder="How can we help you?"
-                          class="w-full px-4 py-2 border border-border rounded-lg bg-background"
                           required
                         />
                       </div>
 
-                      <div class="space-y-2">
-                        <label for="message" class="text-sm font-medium"
+                      <div>
+                        <label class="mb-2 block text-sm font-medium"
                           >Message</label
                         >
                         <textarea
-                          id="message"
-                          placeholder="Write your message here..."
-                          rows="6"
-                          class="w-full px-4 py-2 border border-border rounded-lg bg-background"
+                          id="contact-message"
+                          class="input min-h-[150px]"
+                          placeholder="Tell us more about your inquiry..."
                           required
                         ></textarea>
                       </div>
 
-                      <button
-                        type="submit"
-                        class="px-6 py-3 bg-primary text-primary-foreground font-medium rounded-lg hover:opacity-90 inline-flex items-center"
-                      >
-                        <i class="fas fa-paper-plane mr-2"></i>
-                        Send Message
+                      <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane mr-2"></i> Send Message
                       </button>
                     </form>
                   </div>
@@ -698,117 +1086,301 @@
         </div>
       </div>
 
-      <div id="courses-page" class="hidden">
-            <div class="py-10">
-                <div class="container mx-auto px-4">
-                    <!-- Header -->
-                    <div class="mb-10">
-                        <h1 class="text-4xl font-bold mb-4">Video Courses</h1>
-                        <p class="text-muted-foreground text-lg">
-                            Premium video courses to help you master programming and development skills.
-                        </p>
-                    </div>
-
-                    <!-- Filters -->
-                    <div class="flex flex-col lg:flex-row gap-6 mb-10">
-                        <!-- Search -->
-                        <div class="relative flex-1">
-                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"></i>
-                            <input type="text" id="course-search" placeholder="Search courses..." class="w-full pl-10 px-4 py-2 border border-border rounded-lg bg-background">
-                        </div>
-
-                        <!-- Category Filter -->
-                        <div class="flex flex-wrap gap-2" id="course-categories">
-                            <!-- Categories will be loaded dynamically -->
-                        </div>
-                    </div>
-
-                    <!-- Results Count -->
-                    <p class="text-muted-foreground mb-6">
-                        Showing <span id="course-results-count">12</span> of <span id="course-total-count">12</span> courses
+      <!-- Dashboard Page -->
+      <div id="dashboard-page" class="page page-hidden">
+        <div class="min-h-screen">
+          <!-- Header -->
+          <section class="hero-gradient py-8">
+            <div class="container mx-auto px-4">
+              <div
+                class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+              >
+                <div class="flex items-center gap-4">
+                  <div
+                    class="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-primary to-purple-500"
+                  >
+                    <i class="fas fa-user text-2xl"></i>
+                  </div>
+                  <div>
+                    <h1 class="text-2xl font-bold" id="dashboard-user-name">
+                      Aok Sreyna
+                    </h1>
+                    <p class="text-muted-foreground" id="dashboard-user-email">
+                      aoksreyna@example.com
                     </p>
-
-                    <!-- Course Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="courses-grid">
-                        <!-- Courses will be loaded dynamically -->
-                    </div>
+                  </div>
                 </div>
+                <button
+                  class="btn btn-primary"
+                  onclick="window.location.hash = 'courses'"
+                >
+                  Browse Courses <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+              </div>
             </div>
-        </div>
+          </section>
 
-        <!-- Documents Page (Hidden by default) -->
-        <div id="documents-page" class="hidden">
-            <div class="py-10">
-                <div class="container mx-auto px-4">
-                    <!-- Header -->
-                    <div class="mb-10">
-                        <h1 class="text-4xl font-bold mb-4">Learning Documents</h1>
-                        <p class="text-muted-foreground text-lg">
-                            Free comprehensive documentation to supplement your learning journey.
+          <div class="container mx-auto px-4 py-8">
+            <!-- Stats Cards -->
+            <div class="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div class="stats-card card-hover">
+                <div class="stats-icon">
+                  <i class="fas fa-book-open"></i>
+                </div>
+                <div class="stats-value" id="dashboard-courses-owned">0</div>
+                <div class="stats-label">Courses Owned</div>
+              </div>
+              <div class="stats-card card-hover">
+                <div class="stats-icon">
+                  <i class="fas fa-play-circle"></i>
+                </div>
+                <div class="stats-value" id="dashboard-modules-available">
+                  0
+                </div>
+                <div class="stats-label">Modules Available</div>
+              </div>
+              <div class="stats-card card-hover">
+                <div class="stats-icon">
+                  <i class="fas fa-receipt"></i>
+                </div>
+                <div class="stats-value" id="dashboard-transactions">0</div>
+                <div class="stats-label">Transactions</div>
+              </div>
+              <div class="stats-card card-hover">
+                <div class="stats-icon">
+                  <i class="fas fa-dollar-sign"></i>
+                </div>
+                <div class="stats-value" id="dashboard-total-invested">
+                  $0.00
+                </div>
+                <div class="stats-label">Total Invested</div>
+              </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+              <button class="tab active" data-tab="courses">
+                <i class="fas fa-book-open mr-2"></i> My Courses
+              </button>
+              <button class="tab" data-tab="receipts">
+                <i class="fas fa-receipt mr-2"></i> Purchase History
+              </button>
+              <button class="tab" data-tab="profile">
+                <i class="fas fa-user mr-2"></i> Profile
+              </button>
+            </div>
+
+            <!-- My Courses Tab -->
+            <div id="courses-tab" class="tab-content">
+              <div class="card card-hover">
+                <div class="p-6">
+                  <h3 class="mb-2 text-xl font-bold">My Courses</h3>
+                  <p class="mb-6 text-muted-foreground">
+                    Access all your purchased courses and continue learning
+                  </p>
+                  <div id="my-courses-list">
+                    <!-- Purchased courses will be loaded here -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Receipts Tab -->
+            <div id="receipts-tab" class="tab-content hidden">
+              <div class="card card-hover">
+                <div class="p-6">
+                  <h3 class="mb-2 text-xl font-bold">Purchase History</h3>
+                  <p class="mb-6 text-muted-foreground">
+                    View all your transaction receipts
+                  </p>
+                  <div id="receipts-list">
+                    <!-- Receipts will be loaded here -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Profile Tab -->
+            <div id="profile-tab" class="tab-content hidden">
+              <div class="card card-hover">
+                <div class="p-6">
+                  <h3 class="mb-6 text-xl font-bold">Profile Information</h3>
+                  <div class="space-y-6">
+                    <div
+                      class="flex items-center gap-4 rounded-lg border border-border p-4"
+                    >
+                      <div
+                        class="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-primary to-purple-500"
+                      >
+                        <i class="fas fa-user text-2xl"></i>
+                      </div>
+                      <div>
+                        <p class="text-xl font-semibold" id="profile-name">
+                          John Doe
                         </p>
+                        <p class="text-muted-foreground" id="profile-joined">
+                          Member since Jan 2024
+                        </p>
+                      </div>
                     </div>
 
-                    <!-- Login Notice -->
-                    <div id="login-notice" class="hidden mb-8 border border-warning/50 bg-warning/10 p-4 rounded-lg">
-                        <div class="flex">
-                            <i class="fas fa-lock text-warning mr-2 mt-0.5"></i>
-                            <div>
-                                <h4 class="font-medium">Login Required</h4>
-                                <p class="text-sm text-muted-foreground">
-                                    You need to <a href="#login" class="underline font-medium">login</a> to access full document content. Documents are free for all registered users.
-                                </p>
-                            </div>
+                    <div class="grid gap-4 sm:grid-cols-2">
+                      <div class="rounded-lg border border-border p-4">
+                        <div
+                          class="flex items-center gap-2 text-muted-foreground"
+                        >
+                          <i class="fas fa-envelope"></i>
+                          <span class="text-sm">Email Address</span>
                         </div>
-                    </div>
-
-                    <!-- Disclaimer -->
-                    <div class="mb-8 border border-border p-4 rounded-lg">
-                        <div class="flex">
-                            <i class="fas fa-info-circle mr-2 mt-0.5"></i>
-                            <div>
-                                <h4 class="font-medium">External Resources</h4>
-                                <p class="text-sm text-muted-foreground">
-                                    Content accessed from external educational resources (MDN Web Docs, W3Schools, GeeksforGeeks, etc.) for academic demonstration purposes only.
-                                </p>
-                            </div>
+                        <p class="mt-1 font-medium" id="profile-email">
+                          john@example.com
+                        </p>
+                      </div>
+                      <div class="rounded-lg border border-border p-4">
+                        <div
+                          class="flex items-center gap-2 text-muted-foreground"
+                        >
+                          <i class="fas fa-calendar"></i>
+                          <span class="text-sm">Account Created</span>
                         </div>
+                        <p class="mt-1 font-medium" id="profile-created">
+                          Jan 15, 2024
+                        </p>
+                      </div>
                     </div>
-
-                    <!-- Filters -->
-                    <div class="flex flex-col lg:flex-row gap-6 mb-10">
-                        <!-- Search -->
-                        <div class="relative flex-1">
-                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"></i>
-                            <input type="text" id="document-search" placeholder="Search documents..." class="w-full pl-10 px-4 py-2 border border-border rounded-lg bg-background">
-                        </div>
-
-                        <!-- Category Filter -->
-                        <div class="flex flex-wrap gap-2" id="document-categories">
-                            <!-- Categories will be loaded dynamically -->
-                        </div>
-                    </div>
-
-                    <!-- Results Count -->
-                    <p class="text-muted-foreground mb-6">
-                        Showing <span id="document-results-count">24</span> of <span id="document-total-count">24</span> documents
-                    </p>
-
-                    <!-- Document Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="documents-grid">
-                        <!-- Documents will be loaded dynamically -->
-                    </div>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
-
-        <div id="course-detail-page" class="">
-            <div class="py-10">
-                <div class="container mx-auto px-4">
-                <!-- Back Button -->    
-                </div>
-            </div>
-        </div>
-        
+      </div>
     </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-border bg-card">
+      <div class="container mx-auto px-4 py-8">
+        <div class="grid gap-8 md:grid-cols-4">
+          <div>
+            <div class="flex items-center gap-2 mb-4">
+              <div
+                class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-purple-500"
+              >
+                <i class="fas fa-graduation-cap text-white"></i>
+              </div>
+              <span
+                class="text-xl font-bold bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent"
+                >LearnHub</span
+              >
+            </div>
+            <p class="text-sm text-muted-foreground">
+              Empowering learners with quality tech education through expert-led
+              video courses.
+            </p>
+          </div>
+
+          <div>
+            <h4 class="mb-4 font-semibold">Quick Links</h4>
+            <ul class="space-y-2 text-sm">
+              <li>
+                <a
+                  href="#home"
+                  class="text-muted-foreground hover:text-primary transition-colors"
+                  >Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#courses"
+                  class="text-muted-foreground hover:text-primary transition-colors"
+                  >Courses</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#documents"
+                  class="text-muted-foreground hover:text-primary transition-colors"
+                  >Documents</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#about"
+                  class="text-muted-foreground hover:text-primary transition-colors"
+                  >About</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#contact"
+                  class="text-muted-foreground hover:text-primary transition-colors"
+                  >Contact</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="mb-4 font-semibold">Support</h4>
+            <ul class="space-y-2 text-sm">
+              <li>
+                <a
+                  href="#contact"
+                  class="text-muted-foreground hover:text-primary transition-colors"
+                  >Help Center</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-muted-foreground hover:text-primary transition-colors"
+                  >Privacy Policy</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-muted-foreground hover:text-primary transition-colors"
+                  >Terms of Service</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-muted-foreground hover:text-primary transition-colors"
+                  >FAQ</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="mb-4 font-semibold">Stay Updated</h4>
+            <p class="mb-4 text-sm text-muted-foreground">
+              Subscribe to our newsletter for the latest course updates and
+              learning resources.
+            </p>
+            <div class="flex">
+              <input
+                type="email"
+                placeholder="Your email"
+                class="input rounded-r-none"
+              />
+              <button class="btn btn-primary rounded-l-none">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="mt-8 border-t border-border pt-8 text-center text-sm text-muted-foreground"
+        >
+          <p>&copy; 2024 LearnHub. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
   </body>
 </html>
