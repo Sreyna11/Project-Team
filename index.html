@@ -70,7 +70,7 @@
             >
           </div>
           <!-- Auth Buttons & Theme Toggle -->
-                    
+
           <div class="flex items-center gap-2 md:gap-3">
             <button
               id="theme-toggle"
@@ -80,21 +80,24 @@
             </button>
 
             <!-- Desktop Auth Buttons -->
-            <div id="auth-buttons" class="hidden md:flex items-center gap-2 md:gap-3">
+            <div
+              id="auth-buttons"
+              class="hidden md:flex items-center gap-2 md:gap-3"
+            >
               <!-- Guest buttons (shown when NOT logged in) -->
               <div class="flex gap-2 md:gap-3" id="guest-buttons">
                 <button
                   class="btn btn-outline text-xs md:text-sm px-3 py-1.5 md:px-4 md:py-2"
                   onclick="showLoginModal()"
                 >
-                  <span>Login</span>
+                  <span class="hidden sm:inline">Login</span>
                   <i class="fas fa-sign-in-alt sm:hidden"></i>
                 </button>
                 <button
                   class="btn btn-primary text-xs md:text-sm px-3 py-1.5 md:px-4 md:py-2"
                   onclick="showRegisterModal()"
                 >
-                  <span>Register</span>
+                  <span class="hidden sm:inline">Register</span>
                   <i class="fas fa-user-plus sm:hidden"></i>
                 </button>
               </div>
@@ -130,8 +133,8 @@
             </button>
           </div>
         </div>
-        
-                <!-- Mobile Menu -->
+
+        <!-- Mobile Menu -->
         <div
           id="mobile-menu"
           class="hidden border-t border-border py-4 md:hidden"
@@ -172,52 +175,73 @@
             >
               Contact
             </a>
-            
+
             <!-- Mobile Auth Section - ONLY THIS SECTION -->
             <div class="border-t border-border pt-4 mt-2">
               <!-- Guest buttons (shown when NOT logged in) -->
               <div id="mobile-guest-buttons" class="flex flex-col gap-2">
                 <button
                   class="btn btn-outline w-full justify-start py-3 px-4"
-                  onclick="showLoginModal(); closeMobileMenu();"
+                  onclick="
+                    showLoginModal();
+                    closeMobileMenu();
+                  "
                 >
-                  <i class="fas fa-sign-in-alt mr-3 w-5 text-center"></i> 
+                  <i class="fas fa-sign-in-alt mr-3 w-5 text-center"></i>
                   <span>Login</span>
                 </button>
                 <button
                   class="btn btn-primary w-full justify-start py-3 px-4"
-                  onclick="showRegisterModal(); closeMobileMenu();"
+                  onclick="
+                    showRegisterModal();
+                    closeMobileMenu();
+                  "
                 >
-                  <i class="fas fa-user-plus mr-3 w-5 text-center"></i> 
+                  <i class="fas fa-user-plus mr-3 w-5 text-center"></i>
                   <span>Register</span>
                 </button>
               </div>
-              
+
               <!-- User menu (shown when logged in) -->
               <div id="mobile-user-menu" class="hidden flex-col gap-2">
                 <div class="px-4 py-3 rounded-lg bg-card mb-2">
                   <div class="flex items-center gap-3">
-                    <div class="user-avatar w-10 h-10 rounded-full bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center">
+                    <div
+                      class="user-avatar w-10 h-10 rounded-full bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center"
+                    >
                       <i class="fas fa-user"></i>
                     </div>
                     <div>
-                      <p class="text-sm font-medium" id="mobile-user-name">User Name</p>
-                      <p class="text-xs text-muted-foreground" id="mobile-user-email">user@email.com</p>
+                      <p class="text-sm font-medium" id="mobile-user-name">
+                        User Name
+                      </p>
+                      <p
+                        class="text-xs text-muted-foreground"
+                        id="mobile-user-email"
+                      >
+                        user@email.com
+                      </p>
                     </div>
                   </div>
                 </div>
                 <button
                   class="btn btn-outline w-full justify-start py-3 px-4"
-                  onclick="window.location.hash = 'dashboard'; closeMobileMenu();"
+                  onclick="
+                    window.location.hash = 'dashboard';
+                    closeMobileMenu();
+                  "
                 >
-                  <i class="fas fa-tachometer-alt mr-3 w-5 text-center"></i> 
+                  <i class="fas fa-tachometer-alt mr-3 w-5 text-center"></i>
                   <span>Dashboard</span>
                 </button>
                 <button
                   class="btn btn-outline w-full justify-start py-3 px-4"
-                  onclick="logout(); closeMobileMenu();"
+                  onclick="
+                    logout();
+                    closeMobileMenu();
+                  "
                 >
-                  <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i> 
+                  <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i>
                   <span>Logout</span>
                 </button>
               </div>

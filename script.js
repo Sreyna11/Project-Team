@@ -562,1603 +562,1473 @@ const documentData = [
 
 // Initialize application
 function init() {
-  // Check for saved user
-  const savedUser = localStorage.getItem("learnhub_user");
-  try {
-    if (savedUser) {
-      currentUser = JSON.parse(savedUser);
-      purchasedCourses = JSON.parse(localStorage.getItem("learnhub_purchased") || "[]");
-      transactions = JSON.parse(localStorage.getItem("learnhub_transactions") || "[]");
-      currentVideoProgress = JSON.parse(localStorage.getItem("learnhub_video_progress") || "{}");
-      updateAuthUI();
+  
+
+    
+    // Check for saved user
+    const savedUser = localStorage.getItem("learnhub_user");
+    try {
+        if (savedUser) {
+            currentUser = JSON.parse(savedUser);
+            purchasedCourses = JSON.parse(localStorage.getItem("learnhub_purchased") || "[]");
+            transactions = JSON.parse(localStorage.getItem("learnhub_transactions") || "[]");
+            currentVideoProgress = JSON.parse(localStorage.getItem("learnhub_video_progress") || "{}");
+            console.log('User loaded from storage:', currentUser);
+        }
+    } catch {
+        localStorage.removeItem("learnhub_user");
     }
-  } catch {
-    localStorage.removeItem("learnhub_user");
-  }
 
-  // Load data
-  loadCategories();
-  loadFeaturedCourses();
-  loadAllCourses();
-  loadFeaturedDocuments();
-  loadAllDocuments();
-  updateSystemStatus();
+    // Load data
+    loadCategories();
+    loadFeaturedCourses();
+    loadAllCourses();
+    loadFeaturedDocuments();
+    loadAllDocuments();
+    updateSystemStatus();
 
-  // Set up event listeners
-  setupEventListeners();
+    // Set up event listeners
+    setupEventListeners();
 
-  // Set up hash change listener for navigation
-  window.addEventListener("hashchange", handleHashChange);
+    // Set up hash change listener for navigation
+    window.addEventListener("hashchange", handleHashChange);
 
-  // Handle initial hash
-  handleHashChange();
+    // Handle initial hash
+    handleHashChange();
 
-  // Load saved theme
-  const savedTheme = localStorage.getItem("learnhub_theme");
-  if (savedTheme === "dark") {
-    document.body.classList.add("dark");
-    if (themeIcon) {
-      themeIcon.className = "fas fa-moon";
+    // Load saved theme
+    const savedTheme = localStorage.getItem("learnhub_theme");
+    if (savedTheme === "dark") {
+        document.body.classList.add("dark");
+        if (themeIcon) {
+            themeIcon.className = "fas fa-moon";
+        }
+        isDarkMode = true;
     }
-    isDarkMode = false;
-  }
+    
+    // Update auth UI
+    updateAuthUI();
 }
 
 // Handle hash changes for navigation
 function handleHashChange() {
-  const hash = window.location.hash.substring(1);
-  const validPages = ["home", "about", "courses", "documents", "contact", "dashboard"];
-  
-  if (validPages.includes(hash)) {
-    showPage(hash);
-    if (hash === "documents") {
-      showLoginNotice();
+    const hash = window.location.hash.substring(1);
+    const validPages = ["home", "about", "courses", "documents", "contact", "dashboard"];
+    
+    if (validPages.includes(hash)) {
+        showPage(hash);
+        if (hash === "documents") {
+            showLoginNotice();
+        }
+    } else if (hash.startsWith("course-")) {
+        const courseId = parseInt(hash.split("-")[1]);
+        if (courseId) {
+            showCourseDetail(courseId);
+        }
+    } else {
+        showPage("home");
     }
-  } else if (hash.startsWith("course-")) {
-    const courseId = parseInt(hash.split("-")[1]);
-    if (courseId) {
-      showCourseDetail(courseId);
-    }
-  } else {
-    showPage("home");
-  }
 }
 
 // Set up event listeners
 function setupEventListeners() {
-  // Theme toggle
-  if (themeToggle) {
-    themeToggle.addEventListener("click", toggleTheme);
-  }
-
-  // Navigation links
-  navLinks.forEach((link) => {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      const page = link.getAttribute("href").substring(1);
-      window.location.hash = page;
-      if (mobileMenu) {
-        mobileMenu.classList.add("hidden");
-      }
-    });
-  });
-// Update the toggleAuthUI function
-function toggleAuthUI(isLoggedIn, userData) {
-    const guestButtons = document.getElementById('guest-buttons');
-    const userMenu = document.getElementById('user-menu');
-    const mobileGuestButtons = document.getElementById('mobile-guest-buttons');
-    const mobileUserMenu = document.getElementById('mobile-user-menu');
-    const userInfo = document.querySelector('.user-info');
-    
-    if (isLoggedIn && userData) {
-        // Desktop
-        if (guestButtons) guestButtons.style.display = 'none';
-        if (userMenu) userMenu.style.display = 'flex';
-        
-        // Update desktop user info
-        if (userInfo) {
-            userInfo.innerHTML = `
-                <div class="user-avatar w-8 h-8 rounded-full bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center">
-                    <i class="fas fa-user text-white text-sm"></i>
-                </div>
-                <div class="hidden md:block">
-                    <p class="text-sm font-medium">${userData.name}</p>
-                    <p class="text-xs text-muted-foreground">${userData.email}</p>
-                </div>
-            `;
-        }
-        
-        // Mobile
-        if (mobileGuestButtons) mobileGuestButtons.style.display = 'none';
-        if (mobileUserMenu) {
-            mobileUserMenu.style.display = 'flex';
-            // Update mobile user info
-            const mobileUserName = document.getElementById('mobile-user-name');
-            const mobileUserEmail = document.getElementById('mobile-user-email');
-            if (mobileUserName) mobileUserName.textContent = userData.name;
-            if (mobileUserEmail) mobileUserEmail.textContent = userData.email;
-        }
-    } else {
-        // Desktop
-        if (guestButtons) guestButtons.style.display = 'flex';
-        if (userMenu) userMenu.style.display = 'none';
-        
-        // Mobile
-        if (mobileGuestButtons) mobileGuestButtons.style.display = 'flex';
-        if (mobileUserMenu) mobileUserMenu.style.display = 'none';
+    // Theme toggle
+    if (themeToggle) {
+        themeToggle.addEventListener("click", toggleTheme);
     }
-}
 
-// Update the mobile menu toggle function
-document.addEventListener('DOMContentLoaded', function() {
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    
-    if (mobileMenuBtn && mobileMenu) {
-        mobileMenuBtn.addEventListener('click', function() {
-            mobileMenu.classList.toggle('hidden');
-            this.innerHTML = mobileMenu.classList.contains('hidden') 
-                ? '<i class="fas fa-bars text-sm"></i>' 
-                : '<i class="fas fa-times text-sm"></i>';
+    // Navigation links
+    const navLinks = document.querySelectorAll(".nav-link");
+    navLinks.forEach((link) => {
+        link.addEventListener("click", (e) => {
+            e.preventDefault();
+            const page = link.getAttribute("href").substring(1);
+            window.location.hash = page;
+            closeMobileMenu();
         });
+    });
+
+    // Logout button
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", logout);
+    }
+
+    // Mobile menu toggle
+    if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener("click", toggleMobileMenu);
         
         // Close mobile menu when clicking outside
-        document.addEventListener('click', function(event) {
-            const isClickInsideMenu = mobileMenu.contains(event.target);
-            const isClickOnMenuButton = mobileMenuBtn.contains(event.target);
-            
-            if (!isClickInsideMenu && !isClickOnMenuButton && !mobileMenu.classList.contains('hidden')) {
+        document.addEventListener("click", (e) => {
+            if (!mobileMenu.classList.contains("hidden") &&
+                !mobileMenu.contains(e.target) &&
+                !mobileMenuBtn.contains(e.target)) {
                 closeMobileMenu();
             }
         });
     }
-    
-    // Handle mobile logout button
-    const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
-    if (mobileLogoutBtn) {
-        mobileLogoutBtn.addEventListener('click', function() {
-            logout();
+
+    // Course search
+    const courseSearch = document.getElementById("course-search");
+    if (courseSearch) {
+        courseSearch.addEventListener("input", filterCourses);
+    }
+
+    // Document search
+    const documentSearch = document.getElementById("document-search");
+    if (documentSearch) {
+        documentSearch.addEventListener("input", filterDocuments);
+    }
+
+    // Contact form
+    const contactForm = document.getElementById("contact-form");
+    if (contactForm) {
+        contactForm.addEventListener("submit", handleContactSubmit);
+    }
+
+    // Dashboard tabs
+    const dashboardTabs = document.querySelectorAll(".tab[data-tab]");
+    dashboardTabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+            const tabName = tab.dataset.tab;
+            showDashboardTab(tabName);
         });
-    }
-});
-  // Logout button
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", logout);
-  }
-// Mobile menu toggle
-const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-const mobileMenu = document.getElementById('mobile-menu');
-
-if (mobileMenuBtn && mobileMenu) {
-  mobileMenuBtn.addEventListener('click', () => {
-    mobileMenu.classList.toggle('hidden');
-    const icon = mobileMenuBtn.querySelector('i');
-    if (mobileMenu.classList.contains('hidden')) {
-      icon.classList.remove('fa-times');
-      icon.classList.add('fa-bars');
-    } else {
-      icon.classList.remove('fa-bars');
-      icon.classList.add('fa-times');
-    }
-  });
-  
-  // Close mobile menu when clicking a link
-  const mobileLinks = mobileMenu.querySelectorAll('a');
-  mobileLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      mobileMenu.classList.add('hidden');
-      mobileMenuBtn.querySelector('i').classList.remove('fa-times');
-      mobileMenuBtn.querySelector('i').classList.add('fa-bars');
     });
-  });
-}
 
-// Window resize handler
-let resizeTimer;
-window.addEventListener('resize', () => {
-  document.body.classList.add('resizing');
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => {
-    document.body.classList.remove('resizing');
-  }, 250);
-});
+    // Event delegation for dynamic elements
+    document.addEventListener("click", (e) => {
+        // View details button
+        if (e.target.closest(".view-details-btn")) {
+            const btn = e.target.closest(".view-details-btn");
+            const courseId = parseInt(btn.dataset.courseId);
+            if (courseId) {
+                window.location.hash = `course-${courseId}`;
+            }
+        }
 
-  // Course search
-  const courseSearch = document.getElementById("course-search");
-  if (courseSearch) {
-    courseSearch.addEventListener("input", filterCourses);
-  }
+        // Purchase course button
+        if (e.target.closest(".purchase-course-btn")) {
+            const btn = e.target.closest(".purchase-course-btn");
+            const courseId = parseInt(btn.dataset.courseId);
+            if (courseId) {
+                purchaseCourse(courseId);
+            }
+        }
 
-  // Document search
-  const documentSearch = document.getElementById("document-search");
-  if (documentSearch) {
-    documentSearch.addEventListener("input", filterDocuments);
-  }
+        // Watch video button
+        if (e.target.closest("#watch-video-btn")) {
+            const courseId = localStorage.getItem("current_course_id");
+            if (courseId) {
+                playCourseVideo(parseInt(courseId));
+            }
+        }
 
-  // Contact form
-  const contactForm = document.getElementById("contact-form");
-  if (contactForm) {
-    contactForm.addEventListener("submit", handleContactSubmit);
-  }
+        // View document button
+        if (e.target.closest(".view-document-btn")) {
+            const btn = e.target.closest(".view-document-btn");
+            const docId = parseInt(btn.dataset.docId);
+            if (docId) {
+                viewDocument(docId);
+            }
+        }
 
-  // Dashboard tabs
-  const dashboardTabs = document.querySelectorAll(".tab[data-tab]");
-  dashboardTabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-      const tabName = tab.dataset.tab;
-      showDashboardTab(tabName);
+        // Login to read button
+        if (e.target.closest(".login-to-read-btn")) {
+            const btn = e.target.closest(".login-to-read-btn");
+            const docId = parseInt(btn.dataset.docId);
+            if (docId) {
+                showLoginModal();
+            }
+        }
+
+        // Course category filter buttons
+        if (e.target.closest("[data-category]") && e.target.closest("#course-categories-filter")) {
+            const btn = e.target.closest("[data-category]");
+            const category = btn.dataset.category;
+            filterCoursesByCategory(category);
+
+            // Update active state
+            document.querySelectorAll("#course-categories-filter button").forEach((b) => {
+                b.classList.remove("bg-primary", "text-primary-foreground");
+                b.classList.add("bg-transparent", "text-foreground", "border-border");
+            });
+            btn.classList.add("bg-primary", "text-primary-foreground");
+            btn.classList.remove("bg-transparent", "text-foreground", "border-border");
+        }
+
+        // Document category filter buttons
+        if (e.target.closest("[data-category]") && e.target.closest("#document-categories-filter")) {
+            const btn = e.target.closest("[data-category]");
+            const category = btn.dataset.category;
+            filterDocumentsByCategory(category);
+
+            // Update active state
+            document.querySelectorAll("#document-categories-filter button").forEach((b) => {
+                b.classList.remove("bg-primary", "text-primary-foreground");
+                b.classList.add("bg-transparent", "text-foreground", "border-border");
+            });
+            btn.classList.add("bg-primary", "text-primary-foreground");
+            btn.classList.remove("bg-transparent", "text-foreground", "border-border");
+        }
+
+        // Course card click
+        if (e.target.closest(".course-card")) {
+            const card = e.target.closest(".course-card");
+            const courseId = parseInt(card.dataset.courseId);
+            if (courseId) {
+                window.location.hash = `course-${courseId}`;
+            }
+        }
     });
-  });
-
-  // Event delegation for dynamic elements
-  document.addEventListener("click", (e) => {
-    // View details button
-    if (e.target.closest(".view-details-btn")) {
-      const btn = e.target.closest(".view-details-btn");
-      const courseId = parseInt(btn.dataset.courseId);
-      if (courseId) {
-        window.location.hash = `course-${courseId}`;
-      }
-    }
-
-    // Purchase course button
-    if (e.target.closest(".purchase-course-btn")) {
-      const btn = e.target.closest(".purchase-course-btn");
-      const courseId = parseInt(btn.dataset.courseId);
-      if (courseId) {
-        purchaseCourse(courseId);
-      }
-    }
-
-    // Watch video button
-    if (e.target.closest("#watch-video-btn")) {
-      const courseId = localStorage.getItem("current_course_id");
-      if (courseId) {
-        playCourseVideo(parseInt(courseId));
-      }
-    }
-
-    // View document button
-    if (e.target.closest(".view-document-btn")) {
-      const btn = e.target.closest(".view-document-btn");
-      const docId = parseInt(btn.dataset.docId);
-      if (docId) {
-        viewDocument(docId);
-      }
-    }
-
-    // Login to read button
-    if (e.target.closest(".login-to-read-btn")) {
-      const btn = e.target.closest(".login-to-read-btn");
-      const docId = parseInt(btn.dataset.docId);
-      if (docId) {
-        showLoginModal();
-      }
-    }
-
-    // Course category filter buttons
-    if (e.target.closest("[data-category]") && e.target.closest("#course-categories-filter")) {
-      const btn = e.target.closest("[data-category]");
-      const category = btn.dataset.category;
-      filterCoursesByCategory(category);
-
-      // Update active state
-      document.querySelectorAll("#course-categories-filter button").forEach((b) => {
-        b.classList.remove("bg-primary", "text-primary-foreground");
-        b.classList.add("bg-transparent", "text-foreground", "border-border");
-      });
-      btn.classList.add("bg-primary", "text-primary-foreground");
-      btn.classList.remove("bg-transparent", "text-foreground", "border-border");
-    }
-
-    // Document category filter buttons
-    if (e.target.closest("[data-category]") && e.target.closest("#document-categories-filter")) {
-      const btn = e.target.closest("[data-category]");
-      const category = btn.dataset.category;
-      filterDocumentsByCategory(category);
-
-      // Update active state
-      document.querySelectorAll("#document-categories-filter button").forEach((b) => {
-        b.classList.remove("bg-primary", "text-primary-foreground");
-        b.classList.add("bg-transparent", "text-foreground", "border-border");
-      });
-      btn.classList.add("bg-primary", "text-primary-foreground");
-      btn.classList.remove("bg-transparent", "text-foreground", "border-border");
-    }
-
-    // Course card click
-    if (e.target.closest(".course-card")) {
-      const card = e.target.closest(".course-card");
-      const courseId = parseInt(card.dataset.courseId);
-      if (courseId) {
-        window.location.hash = `course-${courseId}`;
-      }
-    }
-  });
 }
 
 // Theme functionality
 function toggleTheme() {
-  isDarkMode = !isDarkMode;
-  document.body.classList.toggle("dark");
-  if (themeIcon) {
-    themeIcon.className = isDarkMode ? "fas fa-sun text-yellow-400" : "fas fa-moon text-gray-700";
-  }
-  localStorage.setItem("learnhub_theme", isDarkMode ? "dark" : "light");
+    isDarkMode = !isDarkMode;
+    document.body.classList.toggle("dark");
+    if (themeIcon) {
+        themeIcon.className = isDarkMode ? "fas fa-sun text-yellow-400" : "fas fa-moon text-gray-700";
+    }
+    localStorage.setItem("learnhub_theme", isDarkMode ? "dark" : "light");
 }
 
 // Page management
 function showPage(page) {
-  // Don't show dashboard if not logged in
-  if (page === "dashboard" && !currentUser) {
-    showLoginModal();
-    return;
-  }
-
-  // Hide all pages
-  pages.forEach((p) => p.classList.add("page-hidden"));
-
-  // Show selected page
-  const targetPage = document.getElementById(`${page}-page`);
-  if (targetPage) {
-    targetPage.classList.remove("page-hidden");
-    currentPage = page;
-
-    // Update content if needed
-    if (page === "dashboard") {
-      updateDashboard();
-    } else if (page === "courses") {
-      updateCourseFilters();
-    } else if (page === "documents") {
-      updateDocumentFilters();
+    // Don't show dashboard if not logged in
+    if (page === "dashboard" && !currentUser) {
+        showLoginModal();
+        return;
     }
-  }
-}
-function logout() {
-  currentUser = null;
-  purchasedCourses = [];
-  transactions = [];
-  currentVideoProgress = {};
-  
-  // Clear all localStorage data
-  localStorage.removeItem("learnhub_user");
-  localStorage.removeItem("learnhub_purchased");
-  localStorage.removeItem("learnhub_transactions");
-  localStorage.removeItem("learnhub_video_progress");
-  localStorage.removeItem("current_course_id");
-  
-  // Update UI
-  updateAuthUI();
-  
-  // Refresh documents to show "Login to Read" buttons
-  loadAllDocuments();
-  loadFeaturedDocuments();
-  
-  // Update documents page if it's active
-  if (currentPage === "documents") {
-    showLoginNotice();
-  }
-  
-  // Go to home page
-  window.location.hash = "home";
-  showToast("Logged out successfully", "success");
+
+    // Hide all pages
+    pages.forEach((p) => p.classList.add("page-hidden"));
+
+    // Show selected page
+    const targetPage = document.getElementById(`${page}-page`);
+    if (targetPage) {
+        targetPage.classList.remove("page-hidden");
+        currentPage = page;
+
+        // Update content if needed
+        if (page === "dashboard") {
+            updateDashboard();
+        } else if (page === "courses") {
+            updateCourseFilters();
+        } else if (page === "documents") {
+            updateDocumentFilters();
+        }
+    }
 }
 
-// Show separate Login Modal
-function showLoginModal() {
-  // Create modal if it doesn't exist
-  if (!document.getElementById("login-modal")) {
-    createLoginModal();
-  }
-
-  const loginModal = document.getElementById("login-modal");
-  if (loginModal) {
-    loginModal.classList.add("active");
-    document.body.style.overflow = "hidden";
-  }
+// Mobile menu functions
+function toggleMobileMenu() {
+    if (mobileMenu && mobileMenuBtn) {
+        mobileMenu.classList.toggle("hidden");
+        const icon = mobileMenuBtn.querySelector("i");
+        if (mobileMenu.classList.contains("hidden")) {
+            icon.className = "fas fa-bars text-sm";
+        } else {
+            icon.className = "fas fa-times text-sm";
+        }
+    }
 }
 
-function createLoginModal() {
-  const modalHTML = `
-    <div id="login-modal" class="modal">
-      <div class="modal-content">
-        <div class="p-6">
-          <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold">Login to LearnHub</h2>
-            <button onclick="closeLoginModal()" class="p-2 hover:bg-secondary rounded-lg transition-colors">
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
-          
-          <form id="login-form" class="space-y-4">
-            <div>
-              <label class="mb-2 block text-sm font-medium">Email</label>
-              <input type="email" id="login-email" class="input" placeholder="name@example.com" required>
-            </div>
-            <div>
-              <label class="mb-2 block text-sm font-medium">Password</label>
-              <div class="relative">
-                <input type="password" id="login-password" class="input pr-10" placeholder="Enter your password" required>
-                <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground" id="toggle-login-password">
-                  <i class="fas fa-eye"></i>
-                </button>
-              </div>
-            </div>
-            <button type="submit" class="btn btn-primary w-full">
-              <i class="fas fa-sign-in-alt mr-2"></i> Login
-            </button>
-          </form>
-          
-          <p class="mt-4 text-center text-sm text-muted-foreground">
-            Don't have an account? <button onclick="closeLoginModal(); showRegisterModal();" class="text-primary hover:underline font-medium">Register here</button>
-          </p>
-        </div>
-      </div>
-    </div>
-  `;
-
-  document.body.insertAdjacentHTML("beforeend", modalHTML);
-
-  // Add event listeners
-  const loginForm = document.getElementById("login-form");
-  const togglePasswordBtn = document.getElementById("toggle-login-password");
-  const passwordInput = document.getElementById("login-password");
-
-  if (loginForm) {
-    loginForm.addEventListener("submit", handleLogin);
-  }
-
-  if (togglePasswordBtn && passwordInput) {
-    togglePasswordBtn.addEventListener("click", () => {
-      const type = passwordInput.type === "password" ? "text" : "password";
-      passwordInput.type = type;
-      togglePasswordBtn.innerHTML = type === "password" ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
-    });
-  }
-}
-
-function closeLoginModal() {
-  const modal = document.getElementById("login-modal");
-  if (modal) {
-    modal.classList.remove("active");
-    document.body.style.overflow = "auto";
-  }
-}
-
-// Show separate Register Modal
-function showRegisterModal() {
-  // Create modal if it doesn't exist
-  if (!document.getElementById("register-modal")) {
-    createRegisterModal();
-  }
-
-  const registerModal = document.getElementById("register-modal");
-  if (registerModal) {
-    registerModal.classList.add("active");
-    document.body.style.overflow = "hidden";
-  }
-}
-
-function createRegisterModal() {
-  const modalHTML = `
-    <div id="register-modal" class="modal">
-      <div class="modal-content">
-        <div class="p-6">
-          <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold">Create Account</h2>
-            <button onclick="closeRegisterModal()" class="p-2 hover:bg-secondary rounded-lg transition-colors">
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
-          
-          <form id="register-form" class="space-y-4">
-            <div>
-              <label class="mb-2 block text-sm font-medium">Full Name</label>
-              <input type="text" id="register-name" class="input" placeholder="John Doe" required>
-            </div>
-            <div>
-              <label class="mb-2 block text-sm font-medium">Email</label>
-              <input type="email" id="register-email" class="input" placeholder="name@example.com" required>
-            </div>
-            <div>
-              <label class="mb-2 block text-sm font-medium">Password</label>
-              <div class="relative">
-                <input type="password" id="register-password" class="input pr-10" placeholder="Create a password" required>
-                <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground" id="toggle-register-password">
-                  <i class="fas fa-eye"></i>
-                </button>
-              </div>
-            </div>
-            <div>
-              <label class="mb-2 block text-sm font-medium">Confirm Password</label>
-              <input type="password" id="register-confirm-password" class="input" placeholder="Confirm your password" required>
-            </div>
-            <button type="submit" class="btn btn-primary w-full">
-              <i class="fas fa-user-plus mr-2"></i> Create Account
-            </button>
-          </form>
-          
-          <p class="mt-4 text-center text-sm text-muted-foreground">
-            Already have an account? <button onclick="closeRegisterModal(); showLoginModal();" class="text-primary hover:underline font-medium">Login here</button>
-          </p>
-        </div>
-      </div>
-    </div>
-  `;
-
-  document.body.insertAdjacentHTML("beforeend", modalHTML);
-
-  // Add event listeners
-  const registerForm = document.getElementById("register-form");
-  const togglePasswordBtn = document.getElementById("toggle-register-password");
-  const passwordInput = document.getElementById("register-password");
-
-  if (registerForm) {
-    registerForm.addEventListener("submit", handleRegister);
-  }
-
-  if (togglePasswordBtn && passwordInput) {
-    togglePasswordBtn.addEventListener("click", () => {
-      const type = passwordInput.type === "password" ? "text" : "password";
-      passwordInput.type = type;
-      togglePasswordBtn.innerHTML = type === "password" ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
-    });
-  }
-}
-
-function closeRegisterModal() {
-  const modal = document.getElementById("register-modal");
-  if (modal) {
-    modal.classList.remove("active");
-    document.body.style.overflow = "auto";
-  }
+function closeMobileMenu() {
+    if (mobileMenu && mobileMenuBtn) {
+        mobileMenu.classList.add("hidden");
+        const icon = mobileMenuBtn.querySelector("i");
+        if (icon) {
+            icon.className = "fas fa-bars text-sm";
+        }
+    }
 }
 
 // Auth handlers
-
 function handleLogin(e) {
-  e.preventDefault();
-  const email = document.getElementById("login-email").value;
-  const password = document.getElementById("login-password").value;
+    e.preventDefault();
+    const email = document.getElementById("login-email").value;
+    const password = document.getElementById("login-password").value;
 
-  if (!email || !password) {
-    showToast("Please fill in all fields", "error");
-    return;
-  }
-
-  // Mock login
-  const user = {
-    id: Date.now(),
-    name: email.split("@")[0].charAt(0).toUpperCase() + email.split("@")[0].slice(1),
-    email: email,
-    createdAt: new Date().toISOString(),
-  };
-
-  currentUser = user;
-  localStorage.setItem("learnhub_user", JSON.stringify(user));
-
-  // Debug
-  console.log('User logged in:', user);
-  
-  // Update UI
-  updateAuthUI();
-  
-  // Debug again
-  debugAuthState();
-  
-  // Close modal
-  closeLoginModal();
-
-  // Reset form
-  const loginForm = document.getElementById("login-form");
-  if (loginForm) {
-    loginForm.reset();
-  }
-
-  // Refresh documents
-  loadAllDocuments();
-  loadFeaturedDocuments();
-
-  showToast("Login successful! Welcome to LearnHub.", "success");
-
-  // Close mobile menu if open
-  if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-    mobileMenu.classList.add('hidden');
-    if (mobileMenuBtn) {
-      const icon = mobileMenuBtn.querySelector("i");
-      if (icon) {
-        icon.classList.remove("fa-times");
-        icon.classList.add("fa-bars");
-      }
+    if (!email || !password) {
+        showToast("Please fill in all fields", "error");
+        return;
     }
-  }
 
-  // Redirect to dashboard
-  window.location.hash = "dashboard";
+    // Mock login
+    const user = {
+        id: Date.now(),
+        name: email.split("@")[0].charAt(0).toUpperCase() + email.split("@")[0].slice(1),
+        email: email,
+        createdAt: new Date().toISOString(),
+    };
+
+    currentUser = user;
+    localStorage.setItem("learnhub_user", JSON.stringify(user));
+
+    updateAuthUI();
+    closeLoginModal();
+
+    const loginForm = document.getElementById("login-form");
+    if (loginForm) {
+        loginForm.reset();
+    }
+
+    // Refresh documents
+    loadAllDocuments();
+    loadFeaturedDocuments();
+
+    showToast("Login successful! Welcome to LearnHub.", "success");
+
+    // Close mobile menu
+    closeMobileMenu();
+
+    // Redirect to dashboard
+    window.location.hash = "dashboard";
 }
 
 function handleRegister(e) {
-  e.preventDefault();
-  const name = document.getElementById("register-name").value;
-  const email = document.getElementById("register-email").value;
-  const password = document.getElementById("register-password").value;
-  const confirmPassword = document.getElementById("register-confirm-password").value;
+    e.preventDefault();
+    const name = document.getElementById("register-name").value;
+    const email = document.getElementById("register-email").value;
+    const password = document.getElementById("register-password").value;
+    const confirmPassword = document.getElementById("register-confirm-password").value;
 
-  if (!name || !email || !password || !confirmPassword) {
-    showToast("Please fill in all fields", "error");
-    return;
-  }
+    if (!name || !email || !password || !confirmPassword) {
+        showToast("Please fill in all fields", "error");
+        return;
+    }
 
-  if (password !== confirmPassword) {
-    showToast("Passwords do not match", "error");
-    return;
-  }
+    if (password !== confirmPassword) {
+        showToast("Passwords do not match", "error");
+        return;
+    }
 
-  if (password.length < 6) {
-    showToast("Password must be at least 6 characters", "error");
-    return;
-  }
+    if (password.length < 6) {
+        showToast("Password must be at least 6 characters", "error");
+        return;
+    }
 
-  // Mock registration
-  const user = {
-    id: Date.now(),
-    name: name,
-    email: email,
-    createdAt: new Date().toISOString(),
-  };
+    // Mock registration
+    const user = {
+        id: Date.now(),
+        name: name,
+        email: email,
+        createdAt: new Date().toISOString(),
+    };
 
-  currentUser = user;
-  localStorage.setItem("learnhub_user", JSON.stringify(user));
+    currentUser = user;
+    localStorage.setItem("learnhub_user", JSON.stringify(user));
 
-  updateAuthUI();
-  closeRegisterModal();
+    updateAuthUI();
+    closeRegisterModal();
 
-  const registerForm = document.getElementById("register-form");
-  if (registerForm) {
-    registerForm.reset();
-  }
+    const registerForm = document.getElementById("register-form");
+    if (registerForm) {
+        registerForm.reset();
+    }
 
-  // Refresh documents to show "View Document" instead of "Login to Read"
-  loadAllDocuments();
-  loadFeaturedDocuments();
+    // Refresh documents
+    loadAllDocuments();
+    loadFeaturedDocuments();
 
-  showToast("Registration successful! Welcome to LearnHub.", "success");
+    showToast("Registration successful! Welcome to LearnHub.", "success");
 
-  // Redirect to dashboard
-  window.location.hash = "dashboard";
+    // Close mobile menu
+    closeMobileMenu();
+
+    // Redirect to dashboard
+    window.location.hash = "dashboard";
 }
 
 function logout() {
-  currentUser = null;
-  localStorage.removeItem("learnhub_user");
-  updateAuthUI();
-
-  // Refresh documents to show "Login to Read" buttons
-  loadAllDocuments();
-  loadFeaturedDocuments();
-
-  // Update documents page if it's active
-  if (currentPage === "documents") {
-    showLoginNotice();
-  }
-
-  window.location.hash = "home";
-  showToast("Logged out successfully", "success");
+    currentUser = null;
+    purchasedCourses = [];
+    transactions = [];
+    currentVideoProgress = {};
+    
+    // Clear all localStorage data
+    localStorage.removeItem("learnhub_user");
+    localStorage.removeItem("learnhub_purchased");
+    localStorage.removeItem("learnhub_transactions");
+    localStorage.removeItem("learnhub_video_progress");
+    localStorage.removeItem("current_course_id");
+    
+    // Update UI
+    updateAuthUI();
+    
+    // Close mobile menu
+    closeMobileMenu();
+    
+    // Refresh documents
+    loadAllDocuments();
+    loadFeaturedDocuments();
+    
+    // Update documents page if it's active
+    if (currentPage === "documents") {
+        showLoginNotice();
+    }
+    
+    // Go to home page
+    window.location.hash = "home";
+    showToast("Logged out successfully", "success");
 }
 
-// Update auth UI - Show dashboard link when logged in
+// Update auth UI
+// Update auth UI
 function updateAuthUI() {
-  const isLoggedIn = currentUser !== null;
-  
-  console.log('updateAuthUI called. isLoggedIn:', isLoggedIn, 'User:', currentUser);
-  
-  // Desktop elements
-  const guestButtons = document.getElementById('guest-buttons');
-  const userMenu = document.getElementById('user-menu');
-  const userInfo = document.querySelector('.user-info');
-  
-  // Mobile elements
-  const mobileGuestButtons = document.getElementById('mobile-guest-buttons');
-  const mobileUserMenu = document.getElementById('mobile-user-menu');
-  const mobileUserName = document.getElementById('mobile-user-name');
-  const mobileUserEmail = document.getElementById('mobile-user-email');
-  
-  if (isLoggedIn) {
-    // Desktop
-    if (guestButtons) {
-      guestButtons.style.display = 'none';
-      guestButtons.style.visibility = 'hidden';
-    }
+    console.log('Updating auth UI. User:', currentUser);
     
-    if (userMenu) {
-      userMenu.style.display = 'flex';
-      userMenu.style.visibility = 'visible';
-      
-      // Update user info in desktop menu
-      if (userInfo) {
-        userInfo.innerHTML = `
-          <div class="flex items-center gap-2">
-            <div class="user-avatar w-8 h-8 rounded-full bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center">
-              <i class="fas fa-user text-sm"></i>
-            </div>
-            <div class="hidden md:block">
-              <p class="text-sm font-medium">${currentUser.name}</p>
-              <p class="text-xs text-muted-foreground">${currentUser.email}</p>
-            </div>
-          </div>
-        `;
-      }
-    }
+    const guestButtons = document.getElementById('guest-buttons');
+    const userMenu = document.getElementById('user-menu');
+    const userInfo = document.querySelector('.user-info');
     
-    // Mobile - HIDE guest buttons, SHOW user menu
-    if (mobileGuestButtons) {
-      mobileGuestButtons.style.display = 'none';
-      mobileGuestButtons.style.visibility = 'hidden';
-    }
+    // Mobile elements
+    const mobileGuestButtons = document.getElementById('mobile-guest-buttons');
+    const mobileUserMenu = document.getElementById('mobile-user-menu');
+    const mobileUserName = document.getElementById('mobile-user-name');
+    const mobileUserEmail = document.getElementById('mobile-user-email');
     
-    if (mobileUserMenu) {
-      mobileUserMenu.style.display = 'flex';
-      mobileUserMenu.style.visibility = 'visible';
-      
-      // Update mobile user info
-      if (mobileUserName) {
-        mobileUserName.textContent = currentUser.name;
-      }
-      if (mobileUserEmail) {
-        mobileUserEmail.textContent = currentUser.email;
-      }
+    if (currentUser) {
+        // User IS logged in
+        console.log('Showing user menu, hiding guest buttons');
+        
+        // Desktop
+        if (guestButtons) {
+            guestButtons.style.display = 'none';
+        }
+        
+        if (userMenu) {
+            userMenu.style.display = 'flex';
+            
+            // Update user info
+            if (userInfo) {
+                userInfo.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center">
+                            <i class="fas fa-user text-sm"></i>
+                        </div>
+                        <div class="hidden md:block">
+                            <p class="text-sm font-medium">${currentUser.name}</p>
+                            <p class="text-xs text-muted-foreground">${currentUser.email}</p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+        
+        // Mobile
+        if (mobileGuestButtons) {
+            mobileGuestButtons.style.display = 'none';
+        }
+        
+        if (mobileUserMenu) {
+            mobileUserMenu.style.display = 'flex';
+            
+            // Update mobile user info
+            if (mobileUserName) {
+                mobileUserName.textContent = currentUser.name;
+            }
+            if (mobileUserEmail) {
+                mobileUserEmail.textContent = currentUser.email;
+            }
+        }
+        
+    } else {
+        // User is NOT logged in
+        console.log('Showing guest buttons, hiding user menu');
+        
+        // Desktop
+        if (guestButtons) {
+            guestButtons.style.display = 'flex';
+        }
+        
+        if (userMenu) {
+            userMenu.style.display = 'none';
+        }
+        
+        // Mobile
+        if (mobileGuestButtons) {
+            mobileGuestButtons.style.display = 'flex';
+        }
+        
+        if (mobileUserMenu) {
+            mobileUserMenu.style.display = 'none';
+        }
     }
-    
-  } else {
-    // Not logged in
-    // Desktop - SHOW guest buttons, HIDE user menu
-    if (guestButtons) {
-      guestButtons.style.display = 'flex';
-      guestButtons.style.visibility = 'visible';
-    }
-    
-    if (userMenu) {
-      userMenu.style.display = 'none';
-      userMenu.style.visibility = 'hidden';
-    }
-    
-    // Mobile - SHOW guest buttons, HIDE user menu
-    if (mobileGuestButtons) {
-      mobileGuestButtons.style.display = 'flex';
-      mobileGuestButtons.style.visibility = 'visible';
-    }
-    
-    if (mobileUserMenu) {
-      mobileUserMenu.style.display = 'none';
-      mobileUserMenu.style.visibility = 'hidden';
-    }
-  }
 }
-function debugAuthState() {
-  console.log('=== DEBUG AUTH STATE ===');
-  console.log('currentUser:', currentUser);
-  console.log('localStorage user:', localStorage.getItem('learnhub_user'));
-  
-  const mobileGuestButtons = document.getElementById('mobile-guest-buttons');
-  const mobileUserMenu = document.getElementById('mobile-user-menu');
-  
-  console.log('mobileGuestButtons element:', mobileGuestButtons);
-  console.log('mobileUserMenu element:', mobileUserMenu);
-  console.log('mobileGuestButtons display:', mobileGuestButtons ? getComputedStyle(mobileGuestButtons).display : 'not found');
-  console.log('mobileUserMenu display:', mobileUserMenu ? getComputedStyle(mobileUserMenu).display : 'not found');
-  console.log('=== END DEBUG ===');
+
+// Modal functions
+function showLoginModal() {
+    // Create modal if it doesn't exist
+    if (!document.getElementById("login-modal")) {
+        createLoginModal();
+    }
+
+    const loginModal = document.getElementById("login-modal");
+    if (loginModal) {
+        loginModal.classList.add("active");
+        document.body.style.overflow = "hidden";
+    }
 }
+
+function createLoginModal() {
+    const modalHTML = `
+        <div id="login-modal" class="modal">
+            <div class="modal-content">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold">Login to LearnHub</h2>
+                        <button onclick="closeLoginModal()" class="p-2 hover:bg-secondary rounded-lg transition-colors">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <form id="login-form" class="space-y-4">
+                        <div>
+                            <label class="mb-2 block text-sm font-medium">Email</label>
+                            <input type="email" id="login-email" class="input" placeholder="name@example.com" required>
+                        </div>
+                        <div>
+                            <label class="mb-2 block text-sm font-medium">Password</label>
+                            <div class="relative">
+                                <input type="password" id="login-password" class="input pr-10" placeholder="Enter your password" required>
+                                <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground" id="toggle-login-password">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-full">
+                            <i class="fas fa-sign-in-alt mr-2"></i> Login
+                        </button>
+                    </form>
+                    
+                    <p class="mt-4 text-center text-sm text-muted-foreground">
+                        Don't have an account? <button onclick="closeLoginModal(); showRegisterModal();" class="text-primary hover:underline font-medium">Register here</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.body.insertAdjacentHTML("beforeend", modalHTML);
+
+    // Add event listeners
+    const loginForm = document.getElementById("login-form");
+    const togglePasswordBtn = document.getElementById("toggle-login-password");
+    const passwordInput = document.getElementById("login-password");
+
+    if (loginForm) {
+        loginForm.addEventListener("submit", handleLogin);
+    }
+
+    if (togglePasswordBtn && passwordInput) {
+        togglePasswordBtn.addEventListener("click", () => {
+            const type = passwordInput.type === "password" ? "text" : "password";
+            passwordInput.type = type;
+            togglePasswordBtn.innerHTML = type === "password" ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+        });
+    }
+}
+
+function closeLoginModal() {
+    const modal = document.getElementById("login-modal");
+    if (modal) {
+        modal.remove();
+        document.body.style.overflow = "auto";
+    }
+}
+
+function showRegisterModal() {
+    // Create modal if it doesn't exist
+    if (!document.getElementById("register-modal")) {
+        createRegisterModal();
+    }
+
+    const registerModal = document.getElementById("register-modal");
+    if (registerModal) {
+        registerModal.classList.add("active");
+        document.body.style.overflow = "hidden";
+    }
+}
+
+function createRegisterModal() {
+    const modalHTML = `
+        <div id="register-modal" class="modal">
+            <div class="modal-content">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold">Create Account</h2>
+                        <button onclick="closeRegisterModal()" class="p-2 hover:bg-secondary rounded-lg transition-colors">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <form id="register-form" class="space-y-4">
+                        <div>
+                            <label class="mb-2 block text-sm font-medium">Full Name</label>
+                            <input type="text" id="register-name" class="input" placeholder="John Doe" required>
+                        </div>
+                        <div>
+                            <label class="mb-2 block text-sm font-medium">Email</label>
+                            <input type="email" id="register-email" class="input" placeholder="name@example.com" required>
+                        </div>
+                        <div>
+                            <label class="mb-2 block text-sm font-medium">Password</label>
+                            <div class="relative">
+                                <input type="password" id="register-password" class="input pr-10" placeholder="Create a password" required>
+                                <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground" id="toggle-register-password">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="mb-2 block text-sm font-medium">Confirm Password</label>
+                            <input type="password" id="register-confirm-password" class="input" placeholder="Confirm your password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-full">
+                            <i class="fas fa-user-plus mr-2"></i> Create Account
+                        </button>
+                    </form>
+                    
+                    <p class="mt-4 text-center text-sm text-muted-foreground">
+                        Already have an account? <button onclick="closeRegisterModal(); showLoginModal();" class="text-primary hover:underline font-medium">Login here</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.body.insertAdjacentHTML("beforeend", modalHTML);
+
+    // Add event listeners
+    const registerForm = document.getElementById("register-form");
+    const togglePasswordBtn = document.getElementById("toggle-register-password");
+    const passwordInput = document.getElementById("register-password");
+
+    if (registerForm) {
+        registerForm.addEventListener("submit", handleRegister);
+    }
+
+    if (togglePasswordBtn && passwordInput) {
+        togglePasswordBtn.addEventListener("click", () => {
+            const type = passwordInput.type === "password" ? "text" : "password";
+            passwordInput.type = type;
+            togglePasswordBtn.innerHTML = type === "password" ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+        });
+    }
+}
+
+function closeRegisterModal() {
+    const modal = document.getElementById("register-modal");
+    if (modal) {
+        modal.remove();
+        document.body.style.overflow = "auto";
+    }
+}
+
 // Load categories
 function loadCategories() {
-  // Extract unique categories from courses
-  const uniqueCategories = [...new Set(courseData.map((course) => course.category))];
-  allCategories = uniqueCategories.map((category, index) => ({
-    id: index + 1,
-    name: category,
-    description: `Learn ${category} skills`,
-  }));
+    // Extract unique categories from courses
+    const uniqueCategories = [...new Set(courseData.map((course) => course.category))];
+    allCategories = uniqueCategories.map((category, index) => ({
+        id: index + 1,
+        name: category,
+        description: `Learn ${category} skills`,
+    }));
 
-  // Update counts
-  const coursesCount = document.getElementById("courses-count");
-  const categoriesCount = document.getElementById("categories-count");
-  const documentsCount = document.getElementById("documents-count");
+    // Update counts
+    const coursesCount = document.getElementById("courses-count");
+    const categoriesCount = document.getElementById("categories-count");
+    const documentsCount = document.getElementById("documents-count");
 
-  if (coursesCount) coursesCount.textContent = courseData.length;
-  if (categoriesCount) categoriesCount.textContent = allCategories.length;
-  if (documentsCount) documentsCount.textContent = documentData.length;
+    if (coursesCount) coursesCount.textContent = courseData.length;
+    if (categoriesCount) categoriesCount.textContent = allCategories.length;
+    if (documentsCount) documentsCount.textContent = documentData.length;
 }
 
 // Load featured courses
 function loadFeaturedCourses() {
-  const featured = courseData.filter((course) => course.featured);
-  const featuredCoursesGrid = document.getElementById("featured-courses-grid");
-  if (featuredCoursesGrid) {
-    featuredCoursesGrid.innerHTML = featured.map((course) => createCourseCard(course)).join("");
-  }
+    const featured = courseData.filter((course) => course.featured);
+    const featuredCoursesGrid = document.getElementById("featured-courses-grid");
+    if (featuredCoursesGrid) {
+        featuredCoursesGrid.innerHTML = featured.map((course) => createCourseCard(course)).join("");
+    }
 }
 
 // Load all courses
 function loadAllCourses() {
-  allCourses = [...courseData];
-  const allCoursesGrid = document.getElementById("all-courses-grid");
-  if (allCoursesGrid) {
-    allCoursesGrid.innerHTML = allCourses.map((course) => createCourseCard(course)).join("");
-  }
+    allCourses = [...courseData];
+    const allCoursesGrid = document.getElementById("all-courses-grid");
+    if (allCoursesGrid) {
+        allCoursesGrid.innerHTML = allCourses.map((course) => createCourseCard(course)).join("");
+    }
 
-  const courseResultsCount = document.getElementById("course-results-count");
-  const courseTotalCount = document.getElementById("course-total-count");
-  if (courseResultsCount && courseTotalCount) {
-    courseResultsCount.textContent = allCourses.length;
-    courseTotalCount.textContent = allCourses.length;
-  }
+    const courseResultsCount = document.getElementById("course-results-count");
+    const courseTotalCount = document.getElementById("course-total-count");
+    if (courseResultsCount && courseTotalCount) {
+        courseResultsCount.textContent = allCourses.length;
+        courseTotalCount.textContent = allCourses.length;
+    }
 }
 
 // Create course card HTML with images
 function createCourseCard(course) {
-  const isPurchased = purchasedCourses.includes(course.id);
+    const isPurchased = purchasedCourses.includes(course.id);
 
-  return `
-    <div class="card card-hover course-card" data-course-id="${course.id}">
-      <div class="relative aspect-video overflow-hidden rounded-t-xl">
-        <img src="${course.image}" alt="${course.title}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-        <div class="absolute bottom-4 right-4 bg-black/70 text-white text-xs px-2 py-1 rounded">
-          ${course.duration}
+    return `
+        <div class="card card-hover course-card" data-course-id="${course.id}">
+            <div class="relative aspect-video overflow-hidden rounded-t-xl">
+                <img src="${course.image}" alt="${course.title}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                <div class="absolute bottom-4 right-4 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                    ${course.duration}
+                </div>
+                <div class="absolute top-4 left-4">
+                    <span class="badge badge-primary text-xs">${course.category}</span>
+                </div>
+            </div>
+            <div class="p-5">
+                <h3 class="mb-2 font-bold text-lg line-clamp-2">${course.title}</h3>
+                <p class="mb-4 text-sm text-muted-foreground line-clamp-2">${course.description}</p>
+                <div class="flex items-center justify-between">
+                    <span class="font-bold text-lg text-primary">$${course.price.toFixed(2)}</span>
+                    <button class="btn ${isPurchased ? 'btn-outline' : 'btn-primary'} view-details-btn" data-course-id="${course.id}">
+                        ${isPurchased ? 'Watch Video' : 'View Details'}
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="absolute top-4 left-4">
-          <span class="badge badge-primary text-xs">${course.category}</span>
-        </div>
-      </div>
-      <div class="p-5">
-        <h3 class="mb-2 font-bold text-lg line-clamp-2">${course.title}</h3>
-        <p class="mb-4 text-sm text-muted-foreground line-clamp-2">${course.description}</p>
-        <div class="flex items-center justify-between">
-          <span class="font-bold text-lg text-primary">$${course.price.toFixed(2)}</span>
-          <button class="btn ${isPurchased ? 'btn-outline' : 'btn-primary'} view-details-btn" data-course-id="${course.id}">
-            ${isPurchased ? 'Watch Video' : 'View Details'}
-          </button>
-        </div>
-      </div>
-    </div>
-  `;
+    `;
 }
 
 // Update course filters
 function updateCourseFilters() {
-  const courseCategoriesFilter = document.getElementById("course-categories-filter");
-  if (!courseCategoriesFilter) return;
+    const courseCategoriesFilter = document.getElementById("course-categories-filter");
+    if (!courseCategoriesFilter) return;
 
-  // Add "All" category
-  const categoriesHtml = `
-    <button class="btn border px-4 py-2 rounded-lg bg-primary text-primary-foreground" data-category="all">All</button>
-    ${allCategories.map((category) => 
-      `<button class="btn border px-4 py-2 rounded-lg bg-transparent text-foreground border-border hover:bg-secondary" data-category="${category.name}">${category.name}</button>`
-    ).join("")}
-  `;
+    // Add "All" category
+    const categoriesHtml = `
+        <button class="btn border px-4 py-2 rounded-lg bg-primary text-primary-foreground" data-category="all">All</button>
+        ${allCategories.map((category) => 
+            `<button class="btn border px-4 py-2 rounded-lg bg-transparent text-foreground border-border hover:bg-secondary" data-category="${category.name}">${category.name}</button>`
+        ).join("")}
+    `;
 
-  courseCategoriesFilter.innerHTML = categoriesHtml;
+    courseCategoriesFilter.innerHTML = categoriesHtml;
 }
 
 // Filter courses by category
 function filterCoursesByCategory(category) {
-  const allCoursesGrid = document.getElementById("all-courses-grid");
-  const courseResultsCount = document.getElementById("course-results-count");
+    const allCoursesGrid = document.getElementById("all-courses-grid");
+    const courseResultsCount = document.getElementById("course-results-count");
 
-  if (category === "all") {
-    if (allCoursesGrid) {
-      allCoursesGrid.innerHTML = allCourses.map((course) => createCourseCard(course)).join("");
+    if (category === "all") {
+        if (allCoursesGrid) {
+            allCoursesGrid.innerHTML = allCourses.map((course) => createCourseCard(course)).join("");
+        }
+        if (courseResultsCount) {
+            courseResultsCount.textContent = allCourses.length;
+        }
+    } else {
+        const filtered = allCourses.filter((course) => course.category === category);
+        if (allCoursesGrid) {
+            allCoursesGrid.innerHTML = filtered.map((course) => createCourseCard(course)).join("");
+        }
+        if (courseResultsCount) {
+            courseResultsCount.textContent = filtered.length;
+        }
     }
-    if (courseResultsCount) {
-      courseResultsCount.textContent = allCourses.length;
-    }
-  } else {
-    const filtered = allCourses.filter((course) => course.category === category);
-    if (allCoursesGrid) {
-      allCoursesGrid.innerHTML = filtered.map((course) => createCourseCard(course)).join("");
-    }
-    if (courseResultsCount) {
-      courseResultsCount.textContent = filtered.length;
-    }
-  }
 }
 
 // Filter courses by search
 function filterCourses() {
-  const searchTerm = document.getElementById("course-search").value.toLowerCase();
-  const filtered = allCourses.filter((course) =>
-    course.title.toLowerCase().includes(searchTerm) ||
-    course.description.toLowerCase().includes(searchTerm) ||
-    course.category.toLowerCase().includes(searchTerm)
-  );
+    const searchTerm = document.getElementById("course-search").value.toLowerCase();
+    const filtered = allCourses.filter((course) =>
+        course.title.toLowerCase().includes(searchTerm) ||
+        course.description.toLowerCase().includes(searchTerm) ||
+        course.category.toLowerCase().includes(searchTerm)
+    );
 
-  const allCoursesGrid = document.getElementById("all-courses-grid");
-  const courseResultsCount = document.getElementById("course-results-count");
+    const allCoursesGrid = document.getElementById("all-courses-grid");
+    const courseResultsCount = document.getElementById("course-results-count");
 
-  if (allCoursesGrid) {
-    allCoursesGrid.innerHTML = filtered.map((course) => createCourseCard(course)).join("");
-  }
+    if (allCoursesGrid) {
+        allCoursesGrid.innerHTML = filtered.map((course) => createCourseCard(course)).join("");
+    }
 
-  if (courseResultsCount) {
-    courseResultsCount.textContent = filtered.length;
-  }
+    if (courseResultsCount) {
+        courseResultsCount.textContent = filtered.length;
+    }
 }
 
 // Load featured documents
 function loadFeaturedDocuments() {
-  const featured = documentData.filter((doc) => doc.featured);
-  const featuredDocumentsGrid = document.getElementById("featured-documents-grid");
-  if (featuredDocumentsGrid) {
-    featuredDocumentsGrid.innerHTML = featured.map((doc) => createDocumentCard(doc)).join("");
-  }
+    const featured = documentData.filter((doc) => doc.featured);
+    const featuredDocumentsGrid = document.getElementById("featured-documents-grid");
+    if (featuredDocumentsGrid) {
+        featuredDocumentsGrid.innerHTML = featured.map((doc) => createDocumentCard(doc)).join("");
+    }
 }
 
 // Load all documents
 function loadAllDocuments() {
-  allDocuments = [...documentData];
-  const allDocumentsGrid = document.getElementById("all-documents-grid");
-  if (allDocumentsGrid) {
-    allDocumentsGrid.innerHTML = allDocuments.map((doc) => createDocumentCard(doc)).join("");
-  }
+    allDocuments = [...documentData];
+    const allDocumentsGrid = document.getElementById("all-documents-grid");
+    if (allDocumentsGrid) {
+        allDocumentsGrid.innerHTML = allDocuments.map((doc) => createDocumentCard(doc)).join("");
+    }
 
-  const documentResultsCount = document.getElementById("document-results-count");
-  const documentTotalCount = document.getElementById("document-total-count");
-  if (documentResultsCount && documentTotalCount) {
-    documentResultsCount.textContent = allDocuments.length;
-    documentTotalCount.textContent = allDocuments.length;
-  }
+    const documentResultsCount = document.getElementById("document-results-count");
+    const documentTotalCount = document.getElementById("document-total-count");
+    if (documentResultsCount && documentTotalCount) {
+        documentResultsCount.textContent = allDocuments.length;
+        documentTotalCount.textContent = allDocuments.length;
+    }
 }
 
 // Create document card HTML with images
 function createDocumentCard(doc) {
-  const isLoggedIn = !!currentUser;
+    const isLoggedIn = !!currentUser;
 
-  return `
-    <div class="card card-hover">
-      <div class="p-5">
-        <div class="flex items-center justify-between mb-4">
-          <div class="h-12 w-12 rounded-lg overflow-hidden">
-            <img src="${doc.image}" alt="${doc.title}" class="w-full h-full object-cover">
-          </div>
-          <span class="text-xs px-3 py-1 rounded-full bg-secondary text-secondary-foreground">${doc.category}</span>
+    return `
+        <div class="card card-hover">
+            <div class="p-5">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="h-12 w-12 rounded-lg overflow-hidden">
+                        <img src="${doc.image}" alt="${doc.title}" class="w-full h-full object-cover">
+                    </div>
+                    <span class="text-xs px-3 py-1 rounded-full bg-secondary text-secondary-foreground">${doc.category}</span>
+                </div>
+                
+                <h3 class="mb-2 font-bold text-lg line-clamp-2">${doc.title}</h3>
+                <p class="mb-4 text-sm text-muted-foreground line-clamp-2">${doc.description}</p>
+                
+                <div class="flex items-center justify-between mb-5">
+                    <span class="text-xs text-muted-foreground">
+                        <i class="fas fa-external-link-alt mr-1"></i> ${doc.source}
+                    </span>
+                    ${doc.pages ? `<span class="text-xs text-muted-foreground">${doc.pages} pages</span>` : ""}
+                </div>
+                
+                ${isLoggedIn ? 
+                    `<a href="${doc.url}" target="_blank" class="btn btn-primary w-full view-document-btn" data-doc-id="${doc.id}">
+                        <i class="fas fa-external-link-alt mr-2"></i> View Document
+                    </a>` : 
+                    `<button class="btn btn-outline w-full login-to-read-btn" data-doc-id="${doc.id}">
+                        <i class="fas fa-lock mr-2"></i> Login to Read
+                    </button>`
+                }
+            </div>
         </div>
-        
-        <h3 class="mb-2 font-bold text-lg line-clamp-2">${doc.title}</h3>
-        <p class="mb-4 text-sm text-muted-foreground line-clamp-2">${doc.description}</p>
-        
-        <div class="flex items-center justify-between mb-5">
-          <span class="text-xs text-muted-foreground">
-            <i class="fas fa-external-link-alt mr-1"></i> ${doc.source}
-          </span>
-          ${doc.pages ? `<span class="text-xs text-muted-foreground">${doc.pages} pages</span>` : ""}
-        </div>
-        
-        ${isLoggedIn ? 
-          `<a href="${doc.url}" target="_blank" class="btn btn-primary w-full view-document-btn" data-doc-id="${doc.id}">
-            <i class="fas fa-external-link-alt mr-2"></i> View Document
-          </a>` : 
-          `<button class="btn btn-outline w-full login-to-read-btn" data-doc-id="${doc.id}">
-            <i class="fas fa-lock mr-2"></i> Login to Read
-          </button>`
-        }
-      </div>
-    </div>
-  `;
+    `;
 }
 
 // Update document filters
 function updateDocumentFilters() {
-  const documentCategoriesFilter = document.getElementById("document-categories-filter");
-  if (!documentCategoriesFilter) return;
+    const documentCategoriesFilter = document.getElementById("document-categories-filter");
+    if (!documentCategoriesFilter) return;
 
-  // Extract unique categories from documents
-  const uniqueCategories = [...new Set(documentData.map((doc) => doc.category))];
+    // Extract unique categories from documents
+    const uniqueCategories = [...new Set(documentData.map((doc) => doc.category))];
 
-  const categoriesHtml = `
-    <button class="btn border px-4 py-2 rounded-lg bg-primary text-primary-foreground" data-category="all">All</button>
-    ${uniqueCategories.map((category) => 
-      `<button class="btn border px-4 py-2 rounded-lg bg-transparent text-foreground border-border hover:bg-secondary" data-category="${category}">${category}</button>`
-    ).join("")}
-  `;
+    const categoriesHtml = `
+        <button class="btn border px-4 py-2 rounded-lg bg-primary text-primary-foreground" data-category="all">All</button>
+        ${uniqueCategories.map((category) => 
+            `<button class="btn border px-4 py-2 rounded-lg bg-transparent text-foreground border-border hover:bg-secondary" data-category="${category}">${category}</button>`
+        ).join("")}
+    `;
 
-  documentCategoriesFilter.innerHTML = categoriesHtml;
+    documentCategoriesFilter.innerHTML = categoriesHtml;
 }
 
 // Filter documents by category
 function filterDocumentsByCategory(category) {
-  const allDocumentsGrid = document.getElementById("all-documents-grid");
-  const documentResultsCount = document.getElementById("document-results-count");
+    const allDocumentsGrid = document.getElementById("all-documents-grid");
+    const documentResultsCount = document.getElementById("document-results-count");
 
-  if (category === "all") {
-    if (allDocumentsGrid) {
-      allDocumentsGrid.innerHTML = allDocuments.map((doc) => createDocumentCard(doc)).join("");
+    if (category === "all") {
+        if (allDocumentsGrid) {
+            allDocumentsGrid.innerHTML = allDocuments.map((doc) => createDocumentCard(doc)).join("");
+        }
+        if (documentResultsCount) {
+            documentResultsCount.textContent = allDocuments.length;
+        }
+    } else {
+        const filtered = allDocuments.filter((doc) => doc.category === category);
+        if (allDocumentsGrid) {
+            allDocumentsGrid.innerHTML = filtered.map((doc) => createDocumentCard(doc)).join("");
+        }
+        if (documentResultsCount) {
+            documentResultsCount.textContent = filtered.length;
+        }
     }
-    if (documentResultsCount) {
-      documentResultsCount.textContent = allDocuments.length;
-    }
-  } else {
-    const filtered = allDocuments.filter((doc) => doc.category === category);
-    if (allDocumentsGrid) {
-      allDocumentsGrid.innerHTML = filtered.map((doc) => createDocumentCard(doc)).join("");
-    }
-    if (documentResultsCount) {
-      documentResultsCount.textContent = filtered.length;
-    }
-  }
 }
 
 // Filter documents by search
 function filterDocuments() {
-  const searchTerm = document.getElementById("document-search").value.toLowerCase();
-  const filtered = allDocuments.filter((doc) =>
-    doc.title.toLowerCase().includes(searchTerm) ||
-    doc.description.toLowerCase().includes(searchTerm) ||
-    doc.category.toLowerCase().includes(searchTerm) ||
-    doc.source.toLowerCase().includes(searchTerm)
-  );
+    const searchTerm = document.getElementById("document-search").value.toLowerCase();
+    const filtered = allDocuments.filter((doc) =>
+        doc.title.toLowerCase().includes(searchTerm) ||
+        doc.description.toLowerCase().includes(searchTerm) ||
+        doc.category.toLowerCase().includes(searchTerm) ||
+        doc.source.toLowerCase().includes(searchTerm)
+    );
 
-  const allDocumentsGrid = document.getElementById("all-documents-grid");
-  const documentResultsCount = document.getElementById("document-results-count");
+    const allDocumentsGrid = document.getElementById("all-documents-grid");
+    const documentResultsCount = document.getElementById("document-results-count");
 
-  if (allDocumentsGrid) {
-    allDocumentsGrid.innerHTML = filtered.map((doc) => createDocumentCard(doc)).join("");
-  }
+    if (allDocumentsGrid) {
+        allDocumentsGrid.innerHTML = filtered.map((doc) => createDocumentCard(doc)).join("");
+    }
 
-  if (documentResultsCount) {
-    documentResultsCount.textContent = filtered.length;
-  }
+    if (documentResultsCount) {
+        documentResultsCount.textContent = filtered.length;
+    }
 }
 
 // Show login notice on documents page
 function showLoginNotice() {
-  const loginNotice = document.getElementById("login-notice");
-  if (loginNotice) {
-    if (!currentUser) {
-      // Show notice if user is not logged in
-      loginNotice.classList.remove("hidden");
-    } else {
-      // Hide notice if user is logged in
-      loginNotice.classList.add("hidden");
+    const loginNotice = document.getElementById("login-notice");
+    if (loginNotice) {
+        if (!currentUser) {
+            // Show notice if user is not logged in
+            loginNotice.classList.remove("hidden");
+        } else {
+            // Hide notice if user is logged in
+            loginNotice.classList.add("hidden");
+        }
     }
-  }
 }
 
 // View document
 function viewDocument(docId) {
-  const doc = documentData.find((d) => d.id === docId);
-  if (!doc) return;
+    const doc = documentData.find((d) => d.id === docId);
+    if (!doc) return;
 
-  // Check if user is logged in
-  if (!currentUser) {
-    showLoginModal();
-    return;
-  }
+    // Check if user is logged in
+    if (!currentUser) {
+        showLoginModal();
+        return;
+    }
 
-  // Open in new tab
-  window.open(doc.url, "_blank");
+    // Open in new tab
+    window.open(doc.url, "_blank");
 }
 
 // Show course detail
 function showCourseDetail(courseId) {
-  const course = courseData.find((c) => c.id === courseId);
-  if (!course) {
-    window.location.hash = "courses";
-    return;
-  }
+    const course = courseData.find((c) => c.id === courseId);
+    if (!course) {
+        window.location.hash = "courses";
+        return;
+    }
 
-  // Save current course ID
-  localStorage.setItem("current_course_id", courseId);
+    // Save current course ID
+    localStorage.setItem("current_course_id", courseId);
 
-  // Update course detail page
-  const courseDetailCategory = document.getElementById("course-detail-category");
-  const courseDetailTitle = document.getElementById("course-detail-title");
-  const courseDetailDescription = document.getElementById("course-detail-description");
-  const courseDetailPrice = document.getElementById("course-detail-price");
-  const courseDuration = document.getElementById("course-duration");
-  const courseVideos = document.getElementById("course-videos");
+    // Update course detail page
+    const courseDetailCategory = document.getElementById("course-detail-category");
+    const courseDetailTitle = document.getElementById("course-detail-title");
+    const courseDetailDescription = document.getElementById("course-detail-description");
+    const courseDetailPrice = document.getElementById("course-detail-price");
+    const courseDuration = document.getElementById("course-duration");
+    const courseVideos = document.getElementById("course-videos");
 
-  if (courseDetailCategory) courseDetailCategory.textContent = course.category;
-  if (courseDetailTitle) courseDetailTitle.textContent = course.title;
-  if (courseDetailDescription) courseDetailDescription.textContent = course.description;
-  if (courseDetailPrice) courseDetailPrice.textContent = `$${course.price.toFixed(2)}`;
-  if (courseDuration) courseDuration.textContent = course.duration;
-  if (courseVideos) courseVideos.textContent = "1 Video";
+    if (courseDetailCategory) courseDetailCategory.textContent = course.category;
+    if (courseDetailTitle) courseDetailTitle.textContent = course.title;
+    if (courseDetailDescription) courseDetailDescription.textContent = course.description;
+    if (courseDetailPrice) courseDetailPrice.textContent = `$${course.price.toFixed(2)}`;
+    if (courseDuration) courseDuration.textContent = course.duration;
+    if (courseVideos) courseVideos.textContent = "1 Video";
 
-  // Update learning points
-  const learningPointsList = document.getElementById("course-learning-points");
-  if (learningPointsList) {
-    learningPointsList.innerHTML = course.learningPoints.map((point) => `
-      <li class="flex items-start">
-        <i class="fas fa-check text-primary mt-1 mr-3"></i>
-        <span>${point}</span>
-      </li>
-    `).join("");
-  }
+    // Update learning points
+    const learningPointsList = document.getElementById("course-learning-points");
+    if (learningPointsList) {
+        learningPointsList.innerHTML = course.learningPoints.map((point) => `
+            <li class="flex items-start">
+                <i class="fas fa-check text-primary mt-1 mr-3"></i>
+                <span>${point}</span>
+            </li>
+        `).join("");
+    }
 
-  // Update system status and purchase button
-  updatePurchaseButton(courseId, course);
-  updateSystemStatusCard();
+    // Update system status and purchase button
+    updatePurchaseButton(courseId, course);
+    updateSystemStatusCard();
 
-  // Update video player based on purchase status
-  updateVideoPlayer(courseId, course, purchasedCourses.includes(courseId));
+    // Update video player based on purchase status
+    updateVideoPlayer(courseId, course, purchasedCourses.includes(courseId));
 
-  // Show course detail page
-  pages.forEach((p) => p.classList.add("page-hidden"));
-  const courseDetailPage = document.getElementById("course-detail-page");
-  if (courseDetailPage) {
-    courseDetailPage.classList.remove("page-hidden");
-  }
+    // Show course detail page
+    pages.forEach((p) => p.classList.add("page-hidden"));
+    const courseDetailPage = document.getElementById("course-detail-page");
+    if (courseDetailPage) {
+        courseDetailPage.classList.remove("page-hidden");
+    }
 }
 
 // Update purchase button
 function updatePurchaseButton(courseId, course) {
-  const purchaseButton = document.getElementById("purchase-button");
-  const purchaseStatusText = document.getElementById("purchase-status-text");
-  const isPurchased = purchasedCourses.includes(courseId);
+    const purchaseButton = document.getElementById("purchase-button");
+    const purchaseStatusText = document.getElementById("purchase-status-text");
+    const isPurchased = purchasedCourses.includes(courseId);
 
-  if (purchaseButton && purchaseStatusText) {
-    if (isPurchased) {
-      purchaseButton.innerHTML = '<i class="fas fa-play mr-2"></i>Watch Video Now';
-      purchaseButton.disabled = false;
-      purchaseButton.onclick = () => playCourseVideo(courseId);
-      purchaseStatusText.textContent = "You own this course • Lifetime access";
-    } else {
-      const isOpen = isSystemOpen();
-      if (isOpen) {
-        purchaseButton.innerHTML = `<i class="fas fa-shopping-cart mr-2"></i>Purchase Video ($${course.price.toFixed(2)})`;
-        purchaseButton.disabled = false;
-        purchaseButton.onclick = () => purchaseCourse(courseId);
-        purchaseStatusText.textContent = "One-time payment • Lifetime access";
-      } else {
-        purchaseButton.innerHTML = '<i class="fas fa-ban mr-2"></i>Purchase Unavailable';
-        purchaseButton.disabled = true;
-        purchaseStatusText.textContent = "Available 8:00 AM - 10:00 PM (EST)";
-      }
+    if (purchaseButton && purchaseStatusText) {
+        if (isPurchased) {
+            purchaseButton.innerHTML = '<i class="fas fa-play mr-2"></i>Watch Video Now';
+            purchaseButton.disabled = false;
+            purchaseButton.onclick = () => playCourseVideo(courseId);
+            purchaseStatusText.textContent = "You own this course • Lifetime access";
+        } else {
+            const isOpen = isSystemOpen();
+            if (isOpen) {
+                purchaseButton.innerHTML = `<i class="fas fa-shopping-cart mr-2"></i>Purchase Video ($${course.price.toFixed(2)})`;
+                purchaseButton.disabled = false;
+                purchaseButton.onclick = () => purchaseCourse(courseId);
+                purchaseStatusText.textContent = "One-time payment • Lifetime access";
+            } else {
+                purchaseButton.innerHTML = '<i class="fas fa-ban mr-2"></i>Purchase Unavailable';
+                purchaseButton.disabled = true;
+                purchaseStatusText.textContent = "Available 8:00 AM - 10:00 PM (EST)";
+            }
+        }
     }
-  }
 }
 
 // Update video player based on purchase status
 function updateVideoPlayer(courseId, course, isPurchased) {
-  const videoPlayer = document.getElementById("course-video-player");
-  if (!videoPlayer) return;
+    const videoPlayer = document.getElementById("course-video-player");
+    if (!videoPlayer) return;
 
-  if (isPurchased) {
-    // Show unlocked video placeholder
-    videoPlayer.innerHTML = `
-      <div class="video-placeholder">
-        <i class="fas fa-play-circle text-5xl text-primary mb-4"></i>
-        <h3 class="text-xl font-bold mb-2">Ready to Watch</h3>
-        <p class="text-gray-300 mb-4">Click below to start learning</p>
-        <button class="btn btn-primary" id="watch-video-btn">
-          <i class="fas fa-play mr-2"></i> Watch Video Now
-        </button>
-      </div>
-    `;
-  } else {
-    // Show locked video with overlay
-    videoPlayer.innerHTML = `
-      <div class="video-placeholder">
-        <i class="fas fa-play-circle text-5xl text-primary mb-4"></i>
-        <h3 class="text-xl font-bold mb-2">Course Preview</h3>
-        <p class="text-gray-300 mb-4">Purchase this course to unlock the video</p>
-        ${currentUser ? 
-          `<button class="btn btn-primary purchase-course-btn" data-course-id="${courseId}">
-            <i class="fas fa-shopping-cart mr-2"></i> Purchase to Unlock
-          </button>` : 
-          `<button class="btn btn-primary" onclick="showLoginModal()">
-            <i class="fas fa-sign-in-alt mr-2"></i> Login to Purchase
-          </button>`
-        }
-      </div>
-      <div class="video-lock-overlay">
-        <i class="fas fa-lock text-5xl text-warning mb-4"></i>
-        <h3 class="text-xl font-bold mb-2">Video Locked</h3>
-        <p class="text-gray-300 mb-4">Purchase this course to access the video content</p>
-      </div>
-    `;
-  }
+    if (isPurchased) {
+        // Show unlocked video placeholder
+        videoPlayer.innerHTML = `
+            <div class="video-placeholder">
+                <i class="fas fa-play-circle text-5xl text-primary mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Ready to Watch</h3>
+                <p class="text-gray-300 mb-4">Click below to start learning</p>
+                <button class="btn btn-primary" id="watch-video-btn">
+                    <i class="fas fa-play mr-2"></i> Watch Video Now
+                </button>
+            </div>
+        `;
+    } else {
+        // Show locked video with overlay
+        videoPlayer.innerHTML = `
+            <div class="video-placeholder">
+                <i class="fas fa-play-circle text-5xl text-primary mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Course Preview</h3>
+                <p class="text-gray-300 mb-4">Purchase this course to unlock the video</p>
+                ${currentUser ? 
+                    `<button class="btn btn-primary purchase-course-btn" data-course-id="${courseId}">
+                        <i class="fas fa-shopping-cart mr-2"></i> Purchase to Unlock
+                    </button>` : 
+                    `<button class="btn btn-primary" onclick="showLoginModal()">
+                        <i class="fas fa-sign-in-alt mr-2"></i> Login to Purchase
+                    </button>`
+                }
+            </div>
+            <div class="video-lock-overlay">
+                <i class="fas fa-lock text-5xl text-warning mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Video Locked</h3>
+                <p class="text-gray-300 mb-4">Purchase this course to access the video content</p>
+            </div>
+        `;
+    }
 }
 
 // Play course video
 function playCourseVideo(courseId) {
-  const course = courseData.find((c) => c.id === courseId);
-  if (!course) return;
+    const course = courseData.find((c) => c.id === courseId);
+    if (!course) return;
 
-  const videoPlayer = document.getElementById("course-video-player");
-  if (!videoPlayer) return;
+    const videoPlayer = document.getElementById("course-video-player");
+    if (!videoPlayer) return;
 
-  // Check if course is purchased
-  const isPurchased = purchasedCourses.includes(courseId);
-  if (!isPurchased) {
-    showToast("Please purchase this course to watch the video", "error");
-    return;
-  }
+    // Check if course is purchased
+    const isPurchased = purchasedCourses.includes(courseId);
+    if (!isPurchased) {
+        showToast("Please purchase this course to watch the video", "error");
+        return;
+    }
 
-  // Replace placeholder with YouTube iframe
-  videoPlayer.innerHTML = `
-    <iframe 
-      src="${course.videoUrl.replace('watch?v=', 'embed/')}?autoplay=1" 
-      frameborder="0" 
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-      allowfullscreen
-      style="width: 100%; height: 100%;"
-    ></iframe>
-  `;
+    // Replace placeholder with YouTube iframe
+    videoPlayer.innerHTML = `
+        <iframe 
+            src="${course.videoUrl.replace('watch?v=', 'embed/')}?autoplay=1" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen
+            style="width: 100%; height: 100%;"
+        ></iframe>
+    `;
 
-  // Save video progress
-  if (!currentVideoProgress[courseId]) {
-    currentVideoProgress[courseId] = {
-      started: new Date().toISOString(),
-      progress: 0,
-    };
-    localStorage.setItem("learnhub_video_progress", JSON.stringify(currentVideoProgress));
-  }
+    // Save video progress
+    if (!currentVideoProgress[courseId]) {
+        currentVideoProgress[courseId] = {
+            started: new Date().toISOString(),
+            progress: 0,
+        };
+        localStorage.setItem("learnhub_video_progress", JSON.stringify(currentVideoProgress));
+    }
 }
 
-// Purchase course function - FIXED
-// Purchase course function - FIXED
+// Purchase course function
 function purchaseCourse(courseId) {
-  if (!currentUser) {
-    showLoginModal();
-    return;
-  }
+    if (!currentUser) {
+        showLoginModal();
+        return;
+    }
 
-  if (!isSystemOpen()) {
-    showToast("System is closed. Purchases are only available from 8:00 AM to 10:00 PM (EST).", "error");
-    return;
-  }
+    if (!isSystemOpen()) {
+        showToast("System is closed. Purchases are only available from 8:00 AM to 10:00 PM (EST).", "error");
+        return;
+    }
 
-  const course = courseData.find((c) => c.id === courseId);
-  if (!course) return;
+    const course = courseData.find((c) => c.id === courseId);
+    if (!course) return;
 
-  // Check if already purchased
-  if (purchasedCourses.includes(courseId)) {
-    showToast("You already own this course!", "success");
-    return;
-  }
+    // Check if already purchased
+    if (purchasedCourses.includes(courseId)) {
+        showToast("You already own this course!", "success");
+        return;
+    }
 
-  // Create unique transaction number
-  const transactionNumber = "TXN-" + Date.now().toString().slice(-8) + "-" + Math.floor(Math.random() * 1000);
+    // Create unique transaction number
+    const transactionNumber = "TXN-" + Date.now().toString().slice(-8) + "-" + Math.floor(Math.random() * 1000);
 
-  // Create transaction with detailed receipt information
-  const transactionDate = new Date();
-  const transaction = {
-    id: Date.now(),
-    transactionNumber: transactionNumber,
-    courseId: courseId,
-    courseTitle: course.title,
-    courseCategory: course.category,
-    courseDuration: course.duration,
-    courseInstructor: course.instructor,
-    amount: course.price,
-    date: transactionDate.toISOString(),
-    userId: currentUser.id,
-    userName: currentUser.name,
-    userEmail: currentUser.email
-  };
+    // Create transaction with detailed receipt information
+    const transactionDate = new Date();
+    const transaction = {
+        id: Date.now(),
+        transactionNumber: transactionNumber,
+        courseId: courseId,
+        courseTitle: course.title,
+        courseCategory: course.category,
+        courseDuration: course.duration,
+        courseInstructor: course.instructor,
+        amount: course.price,
+        date: transactionDate.toISOString(),
+        userId: currentUser.id,
+        userName: currentUser.name,
+        userEmail: currentUser.email
+    };
 
-  // Update purchased courses
-  purchasedCourses.push(courseId);
-  transactions.push(transaction);
+    // Update purchased courses
+    purchasedCourses.push(courseId);
+    transactions.push(transaction);
 
-  // Save to localStorage
-  localStorage.setItem("learnhub_purchased", JSON.stringify(purchasedCourses));
-  localStorage.setItem("learnhub_transactions", JSON.stringify(transactions));
+    // Save to localStorage
+    localStorage.setItem("learnhub_purchased", JSON.stringify(purchasedCourses));
+    localStorage.setItem("learnhub_transactions", JSON.stringify(transactions));
 
-  // Hide any existing purchase message card
-  const purchaseMessage = document.getElementById("purchase-message");
-  if (purchaseMessage) {
-    purchaseMessage.classList.add("hidden");
-  }
+    // Hide any existing purchase message card
+    const purchaseMessage = document.getElementById("purchase-message");
+    if (purchaseMessage) {
+        purchaseMessage.classList.add("hidden");
+    }
 
-  // Update purchase button and video player
-  updatePurchaseButton(courseId, course);
-  updateVideoPlayer(courseId, course, true);
+    // Update purchase button and video player
+    updatePurchaseButton(courseId, course);
+    updateVideoPlayer(courseId, course, true);
 
-  // Show receipt as toast
-  showToast(`Purchase complete! Receipt #${transaction.transactionNumber} saved.`, "success");
+    // Show receipt as toast
+    showToast(`Purchase complete! Receipt #${transaction.transactionNumber} saved.`, "success");
 
-  // Show general success toast
-  showToast("Course purchased successfully! You can now watch the video.", "success");
+    // Show general success toast
+    showToast("Course purchased successfully! You can now watch the video.", "success");
 
-  // Update dashboard stats
-  updateDashboard();
-}
-// Show receipt as alert instead of card
-// Show receipt as toast instead of card
-function showReceiptAlert(transaction) {
-  // Just show a toast, don't create any card
-  showToast(`Purchase complete! Receipt #${transaction.transactionNumber} saved.`, "success");
+    // Update dashboard stats
+    updateDashboard();
 }
 
 // Update system status card
 function updateSystemStatusCard() {
-  const systemStatusCard = document.getElementById("system-status-card");
-  if (!systemStatusCard) return;
+    const systemStatusCard = document.getElementById("system-status-card");
+    if (!systemStatusCard) return;
 
-  const isOpen = isSystemOpen();
-  
-  if (isOpen) {
-    systemStatusCard.innerHTML = `
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="h-10 w-10 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center">
-            <i class="fas fa-check-circle text-green-600 dark:text-green-400"></i>
-          </div>
-          <div>
-            <h4 class="font-medium text-green-600 dark:text-green-400">System Open</h4>
-            <p class="text-sm text-muted-foreground">Purchases are now available</p>
-          </div>
-        </div>
-        <span class="text-sm text-muted-foreground">(08:00 - 22:00)</span>
-      </div>
-    `;
-  } else {
-    const now = new Date();
-    const nextOpenHour = 8; // 08:00 AM
-    let hoursUntilOpen = now.getHours() < 8 ? 8 - now.getHours() : 32 - now.getHours();
+    const isOpen = isSystemOpen();
     
-    systemStatusCard.innerHTML = `
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="h-10 w-10 rounded-full bg-red-100 dark:bg-red-900 flex items-center justify-center">
-            <i class="fas fa-ban text-red-600 dark:text-red-400"></i>
-          </div>
-          <div>
-            <h4 class="font-medium text-red-600 dark:text-red-400">System Closed</h4>
-            <p class="text-sm text-muted-foreground">Next opening in ${hoursUntilOpen} hours</p>
-          </div>
-        </div>
-        <span class="text-sm text-muted-foreground">(08:00 - 22:00)</span>
-      </div>
-    `;
-  }
+    if (isOpen) {
+        systemStatusCard.innerHTML = `
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="h-10 w-10 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center">
+                        <i class="fas fa-check-circle text-green-600 dark:text-green-400"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-green-600 dark:text-green-400">System Open</h4>
+                        <p class="text-sm text-muted-foreground">Purchases are now available</p>
+                    </div>
+                </div>
+                <span class="text-sm text-muted-foreground">(08:00 - 22:00)</span>
+            </div>
+        `;
+    } else {
+        const now = new Date();
+        const nextOpenHour = 8; // 08:00 AM
+        let hoursUntilOpen = now.getHours() < 8 ? 8 - now.getHours() : 32 - now.getHours();
+        
+        systemStatusCard.innerHTML = `
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="h-10 w-10 rounded-full bg-red-100 dark:bg-red-900 flex items-center justify-center">
+                        <i class="fas fa-ban text-red-600 dark:text-red-400"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-red-600 dark:text-red-400">System Closed</h4>
+                        <p class="text-sm text-muted-foreground">Next opening in ${hoursUntilOpen} hours</p>
+                    </div>
+                </div>
+                <span class="text-sm text-muted-foreground">(08:00 - 22:00)</span>
+            </div>
+        `;
+    }
 }
 
 // Check if system is open
 function isSystemOpen() {
-  const now = new Date();
-  const hour = now.getHours();
-  return hour >= 8 && hour < 22; // 8 AM to 10 PM
+    const now = new Date();
+    const hour = now.getHours();
+    return hour >= 8 && hour < 22; // 8 AM to 10 PM
 }
 
 // Update system status
 function updateSystemStatus() {
-  updateSystemStatusCard();
-  
-  // Update course detail page if open
-  if (currentPage === "course-detail" || window.location.hash.startsWith("#course-")) {
-    const courseIdMatch = window.location.hash.match(/course-(\d+)/);
-    if (courseIdMatch) {
-      const courseId = parseInt(courseIdMatch[1]);
-      const course = courseData.find(c => c.id === courseId);
-      if (course) {
-        updatePurchaseButton(courseId, course);
-      }
+    updateSystemStatusCard();
+    
+    // Update course detail page if open
+    if (currentPage === "course-detail" || window.location.hash.startsWith("#course-")) {
+        const courseIdMatch = window.location.hash.match(/course-(\d+)/);
+        if (courseIdMatch) {
+            const courseId = parseInt(courseIdMatch[1]);
+            const course = courseData.find(c => c.id === courseId);
+            if (course) {
+                updatePurchaseButton(courseId, course);
+            }
+        }
     }
-  }
 }
 
 // Update dashboard
 function updateDashboard() {
-  if (!currentUser) return;
+    if (!currentUser) return;
 
-  // Update user info
-  const dashboardUserName = document.getElementById("dashboard-user-name");
-  const dashboardUserEmail = document.getElementById("dashboard-user-email");
-  const userNameElement = document.getElementById("user-name");
-  const profileName = document.getElementById("profile-name");
-  const profileEmail = document.getElementById("profile-email");
+    // Update user info
+    const dashboardUserName = document.getElementById("dashboard-user-name");
+    const dashboardUserEmail = document.getElementById("dashboard-user-email");
+    const userNameElement = document.getElementById("user-name");
+    const profileName = document.getElementById("profile-name");
+    const profileEmail = document.getElementById("profile-email");
 
-  if (dashboardUserName) dashboardUserName.textContent = currentUser.name;
-  if (dashboardUserEmail) dashboardUserEmail.textContent = currentUser.email;
-  if (userNameElement) userNameElement.textContent = currentUser.name;
-  if (profileName) profileName.textContent = currentUser.name;
-  if (profileEmail) profileEmail.textContent = currentUser.email;
+    if (dashboardUserName) dashboardUserName.textContent = currentUser.name;
+    if (dashboardUserEmail) dashboardUserEmail.textContent = currentUser.email;
+    if (userNameElement) userNameElement.textContent = currentUser.name;
+    if (profileName) profileName.textContent = currentUser.name;
+    if (profileEmail) profileEmail.textContent = currentUser.email;
 
-  // Format join date
-  const joinDate = new Date(currentUser.createdAt);
-  const formattedDate = joinDate.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric"
-  });
+    // Format join date
+    const joinDate = new Date(currentUser.createdAt);
+    const formattedDate = joinDate.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric"
+    });
 
-  const profileJoined = document.getElementById("profile-joined");
-  const profileCreated = document.getElementById("profile-created");
+    const profileJoined = document.getElementById("profile-joined");
+    const profileCreated = document.getElementById("profile-created");
 
-  if (profileJoined) profileJoined.textContent = `Member since ${formattedDate}`;
-  if (profileCreated) profileCreated.textContent = formattedDate;
+    if (profileJoined) profileJoined.textContent = `Member since ${formattedDate}`;
+    if (profileCreated) profileCreated.textContent = formattedDate;
 
-  // Update stats
-  const dashboardCoursesOwned = document.getElementById("dashboard-courses-owned");
-  const dashboardModulesAvailable = document.getElementById("dashboard-modules-available");
-  const dashboardTransactions = document.getElementById("dashboard-transactions");
-  const dashboardTotalInvested = document.getElementById("dashboard-total-invested");
+    // Update stats
+    const dashboardCoursesOwned = document.getElementById("dashboard-courses-owned");
+    const dashboardModulesAvailable = document.getElementById("dashboard-modules-available");
+    const dashboardTransactions = document.getElementById("dashboard-transactions");
+    const dashboardTotalInvested = document.getElementById("dashboard-total-invested");
 
-  if (dashboardCoursesOwned) dashboardCoursesOwned.textContent = purchasedCourses.length;
-  if (dashboardModulesAvailable) dashboardModulesAvailable.textContent = purchasedCourses.length;
-  if (dashboardTransactions) dashboardTransactions.textContent = transactions.length;
+    if (dashboardCoursesOwned) dashboardCoursesOwned.textContent = purchasedCourses.length;
+    if (dashboardModulesAvailable) dashboardModulesAvailable.textContent = purchasedCourses.length;
+    if (dashboardTransactions) dashboardTransactions.textContent = transactions.length;
 
-  const totalInvested = transactions.reduce((sum, t) => sum + t.amount, 0);
-  if (dashboardTotalInvested) dashboardTotalInvested.textContent = `$${totalInvested.toFixed(2)}`;
+    const totalInvested = transactions.reduce((sum, t) => sum + t.amount, 0);
+    if (dashboardTotalInvested) dashboardTotalInvested.textContent = `$${totalInvested.toFixed(2)}`;
 
-  // Update my courses list
-  const myCoursesList = document.getElementById("my-courses-list");
-  if (myCoursesList) {
-    if (purchasedCourses.length === 0) {
-      myCoursesList.innerHTML = `
-        <div class="text-center py-12">
-          <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-secondary">
-            <i class="fas fa-book-open text-muted-foreground text-2xl"></i>
-          </div>
-          <h4 class="mb-2 font-medium">No courses yet</h4>
-          <p class="text-sm text-muted-foreground mb-4">Start your learning journey by purchasing your first course</p>
-          <button class="btn btn-primary" onclick="window.location.hash='courses'">
-            Browse Courses <i class="fas fa-arrow-right ml-2"></i>
-          </button>
-        </div>
-      `;
-    } else {
-      myCoursesList.innerHTML = purchasedCourses.map((courseId) => {
-        const course = courseData.find((c) => c.id === courseId);
-        if (!course) return "";
-
-        return `
-          <div class="flex items-center justify-between border-b border-border py-4 last:border-b-0">
-            <div class="flex items-center gap-4">
-              <div class="h-12 w-12 rounded-lg overflow-hidden flex-shrink-0">
-                <img src="${course.image}" alt="${course.title}" class="w-full h-full object-cover">
-              </div>
-              <div>
-                <h4 class="font-medium">${course.title}</h4>
-                <p class="text-sm text-muted-foreground">${course.category} • ${course.duration}</p>
-              </div>
-            </div>
-            <button class="btn btn-outline view-details-btn" data-course-id="${course.id}">
-              Continue Learning
-            </button>
-          </div>
-        `;
-      }).join("");
-    }
-  }
-
-  // Update receipts list with alerts
-  const receiptsList = document.getElementById("receipts-list");
-  if (receiptsList) {
-    if (transactions.length === 0) {
-      receiptsList.innerHTML = `
-        <div class="text-center py-12">
-          <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-secondary">
-            <i class="fas fa-receipt text-muted-foreground text-2xl"></i>
-          </div>
-          <h4 class="mb-2 font-medium">No transactions yet</h4>
-          <p class="text-sm text-muted-foreground">Your purchase history will appear here</p>
-        </div>
-      `;
-    } else {
-      // Sort transactions by date (newest first)
-      const sortedTransactions = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
-
-      receiptsList.innerHTML = sortedTransactions.map((transaction) => {
-        const course = courseData.find((c) => c.id === transaction.courseId);
-        const date = new Date(transaction.date);
-        const formattedDate = date.toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "short",
-          day: "numeric"
-        });
-        const formattedTime = date.toLocaleTimeString("en-US", {
-          hour: "2-digit",
-          minute: "2-digit"
-        });
-
-        return `
-          <div class="alert alert-info mb-4">
-            <i class="fas fa-receipt"></i>
-            <div class="flex-1">
-              <div class="flex justify-between items-start">
-                <div>
-                  <h4 class="font-medium">${transaction.courseTitle}</h4>
-                  <p class="text-sm">Transaction #${transaction.transactionNumber}</p>
-                  <p class="text-xs text-muted-foreground mt-1">${formattedDate} at ${formattedTime}</p>
+    // Update my courses list
+    const myCoursesList = document.getElementById("my-courses-list");
+    if (myCoursesList) {
+        if (purchasedCourses.length === 0) {
+            myCoursesList.innerHTML = `
+                <div class="text-center py-12">
+                    <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-secondary">
+                        <i class="fas fa-book-open text-muted-foreground text-2xl"></i>
+                    </div>
+                    <h4 class="mb-2 font-medium">No courses yet</h4>
+                    <p class="text-sm text-muted-foreground mb-4">Start your learning journey by purchasing your first course</p>
+                    <button class="btn btn-primary" onclick="window.location.hash='courses'">
+                        Browse Courses <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
                 </div>
-                <span class="font-bold text-lg">$${transaction.amount.toFixed(2)}</span>
-              </div>
-              <div class="mt-2 text-sm">
-                <span class="inline-block bg-secondary text-secondary-foreground px-2 py-1 rounded text-xs">${transaction.courseCategory}</span>
-                <span class="text-muted-foreground ml-2">${transaction.courseInstructor}</span>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join("");
-    }
-  }
+            `;
+        } else {
+            myCoursesList.innerHTML = purchasedCourses.map((courseId) => {
+                const course = courseData.find((c) => c.id === courseId);
+                if (!course) return "";
 
-  // Show first tab by default
-  showDashboardTab("courses");
+                return `
+                    <div class="flex items-center justify-between border-b border-border py-4 last:border-b-0">
+                        <div class="flex items-center gap-4">
+                            <div class="h-12 w-12 rounded-lg overflow-hidden flex-shrink-0">
+                                <img src="${course.image}" alt="${course.title}" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <h4 class="font-medium">${course.title}</h4>
+                                <p class="text-sm text-muted-foreground">${course.category} • ${course.duration}</p>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline view-details-btn" data-course-id="${course.id}">
+                            Continue Learning
+                        </button>
+                    </div>
+                `;
+            }).join("");
+        }
+    }
+
+    // Update receipts list with alerts
+    const receiptsList = document.getElementById("receipts-list");
+    if (receiptsList) {
+        if (transactions.length === 0) {
+            receiptsList.innerHTML = `
+                <div class="text-center py-12">
+                    <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-secondary">
+                        <i class="fas fa-receipt text-muted-foreground text-2xl"></i>
+                    </div>
+                    <h4 class="mb-2 font-medium">No transactions yet</h4>
+                    <p class="text-sm text-muted-foreground">Your purchase history will appear here</p>
+                </div>
+            `;
+        } else {
+            // Sort transactions by date (newest first)
+            const sortedTransactions = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            receiptsList.innerHTML = sortedTransactions.map((transaction) => {
+                const course = courseData.find((c) => c.id === transaction.courseId);
+                const date = new Date(transaction.date);
+                const formattedDate = date.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric"
+                });
+                const formattedTime = date.toLocaleTimeString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                });
+
+                return `
+                    <div class="alert alert-info mb-4">
+                        <i class="fas fa-receipt"></i>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-medium">${transaction.courseTitle}</h4>
+                                    <p class="text-sm">Transaction #${transaction.transactionNumber}</p>
+                                    <p class="text-xs text-muted-foreground mt-1">${formattedDate} at ${formattedTime}</p>
+                                </div>
+                                <span class="font-bold text-lg">$${transaction.amount.toFixed(2)}</span>
+                            </div>
+                            <div class="mt-2 text-sm">
+                                <span class="inline-block bg-secondary text-secondary-foreground px-2 py-1 rounded text-xs">${transaction.courseCategory}</span>
+                                <span class="text-muted-foreground ml-2">${transaction.courseInstructor}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+        }
+    }
+
+    // Show first tab by default
+    showDashboardTab("courses");
 }
 
 // Show dashboard tab
 function showDashboardTab(tabName) {
-  // Update tabs
-  document.querySelectorAll(".tab").forEach((tab) => {
-    tab.classList.remove("active");
-  });
-  const activeTab = document.querySelector(`.tab[data-tab="${tabName}"]`);
-  if (activeTab) {
-    activeTab.classList.add("active");
-  }
+    // Update tabs
+    document.querySelectorAll(".tab").forEach((tab) => {
+        tab.classList.remove("active");
+    });
+    const activeTab = document.querySelector(`.tab[data-tab="${tabName}"]`);
+    if (activeTab) {
+        activeTab.classList.add("active");
+    }
 
-  // Update content
-  document.querySelectorAll(".tab-content").forEach((content) => {
-    content.classList.add("hidden");
-  });
-  const tabContent = document.getElementById(`${tabName}-tab`);
-  if (tabContent) {
-    tabContent.classList.remove("hidden");
-  }
+    // Update content
+    document.querySelectorAll(".tab-content").forEach((content) => {
+        content.classList.add("hidden");
+    });
+    const tabContent = document.getElementById(`${tabName}-tab`);
+    if (tabContent) {
+        tabContent.classList.remove("hidden");
+    }
 }
 
 // Handle contact form submission
 function handleContactSubmit(e) {
-  e.preventDefault();
+    e.preventDefault();
 
-  const name = document.getElementById("contact-name").value;
-  const email = document.getElementById("contact-email").value;
-  const subject = document.getElementById("contact-subject").value;
-  const message = document.getElementById("contact-message").value;
+    const name = document.getElementById("contact-name").value;
+    const email = document.getElementById("contact-email").value;
+    const subject = document.getElementById("contact-subject").value;
+    const message = document.getElementById("contact-message").value;
 
-  // Mock submission
-  const contactSuccess = document.getElementById("contact-success");
-  if (contactSuccess) {
-    contactSuccess.classList.remove("hidden");
-  }
-
-  // Reset form
-  const contactForm = document.getElementById("contact-form");
-  if (contactForm) {
-    contactForm.reset();
-  }
-
-  showToast("Message sent successfully! We'll get back to you soon.", "success");
-
-  // Hide success message after 5 seconds
-  setTimeout(() => {
+    // Mock submission
+    const contactSuccess = document.getElementById("contact-success");
     if (contactSuccess) {
-      contactSuccess.classList.add("hidden");
+        contactSuccess.classList.remove("hidden");
     }
-  }, 5000);
+
+    // Reset form
+    const contactForm = document.getElementById("contact-form");
+    if (contactForm) {
+        contactForm.reset();
+    }
+
+    showToast("Message sent successfully! We'll get back to you soon.", "success");
+
+    // Hide success message after 5 seconds
+    setTimeout(() => {
+        if (contactSuccess) {
+            contactSuccess.classList.add("hidden");
+        }
+    }, 5000);
 }
 
 // Toast notification
 function showToast(message, type = "success") {
-  // Remove existing toasts
-  document.querySelectorAll(".toast").forEach((toast) => toast.remove());
+    // Remove existing toasts
+    document.querySelectorAll(".toast").forEach((toast) => toast.remove());
 
-  const icon = type === "success" ? "fa-check-circle" : type === "error" ? "fa-exclamation-circle" : "fa-info-circle";
+    const icon = type === "success" ? "fa-check-circle" : type === "error" ? "fa-exclamation-circle" : "fa-info-circle";
 
-  const toast = document.createElement("div");
-  toast.className = `toast ${type === "success" ? "toast-success" : "toast-error"}`;
-  toast.innerHTML = `
-    <i class="fas ${icon}"></i>
-    <div class="flex-1">
-      <p class="text-sm font-medium">${message}</p>
-    </div>
-    <button class="text-muted-foreground hover:text-foreground" onclick="this.parentElement.remove()">
-      <i class="fas fa-times"></i>
-    </button>
-  `;
+    const toast = document.createElement("div");
+    toast.className = `toast ${type === "success" ? "toast-success" : type === "error" ? "toast-error" : "toast-info"}`;
+    toast.innerHTML = `
+        <i class="fas ${icon}"></i>
+        <div class="flex-1">
+            <p class="text-sm font-medium">${message}</p>
+        </div>
+        <button class="text-muted-foreground hover:text-foreground" onclick="this.parentElement.remove()">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
 
-  document.body.appendChild(toast);
+    document.body.appendChild(toast);
 
-  // Auto remove after 5 seconds
-  setTimeout(() => {
-    if (toast.parentElement) {
-      toast.remove();
-    }
-  }, 5000);
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (toast.parentElement) {
+            toast.remove();
+        }
+    }, 5000);
 }
 
 // Initialize the application
@@ -2166,3 +2036,4 @@ document.addEventListener("DOMContentLoaded", init);
 
 // Update system status every minute
 setInterval(updateSystemStatus, 60000);
+
