@@ -1333,9 +1333,6 @@ h1, h2, h3, h4, h5, h6 {
 /* Small Mobile */
 @media (max-width: 640px) {
   /* Hide theme toggle on very small screens */
-  #theme-toggle {
-    display: none;
-  }
   
   #auth-buttons {
     gap: 0.25rem;
