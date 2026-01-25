@@ -642,7 +642,85 @@ function setupEventListeners() {
       }
     });
   });
+// Update the toggleAuthUI function
+function toggleAuthUI(isLoggedIn, userData) {
+    const guestButtons = document.getElementById('guest-buttons');
+    const userMenu = document.getElementById('user-menu');
+    const mobileGuestButtons = document.getElementById('mobile-guest-buttons');
+    const mobileUserMenu = document.getElementById('mobile-user-menu');
+    const userInfo = document.querySelector('.user-info');
+    
+    if (isLoggedIn && userData) {
+        // Desktop
+        if (guestButtons) guestButtons.style.display = 'none';
+        if (userMenu) userMenu.style.display = 'flex';
+        
+        // Update desktop user info
+        if (userInfo) {
+            userInfo.innerHTML = `
+                <div class="user-avatar w-8 h-8 rounded-full bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center">
+                    <i class="fas fa-user text-white text-sm"></i>
+                </div>
+                <div class="hidden md:block">
+                    <p class="text-sm font-medium">${userData.name}</p>
+                    <p class="text-xs text-muted-foreground">${userData.email}</p>
+                </div>
+            `;
+        }
+        
+        // Mobile
+        if (mobileGuestButtons) mobileGuestButtons.style.display = 'none';
+        if (mobileUserMenu) {
+            mobileUserMenu.style.display = 'flex';
+            // Update mobile user info
+            const mobileUserName = document.getElementById('mobile-user-name');
+            const mobileUserEmail = document.getElementById('mobile-user-email');
+            if (mobileUserName) mobileUserName.textContent = userData.name;
+            if (mobileUserEmail) mobileUserEmail.textContent = userData.email;
+        }
+    } else {
+        // Desktop
+        if (guestButtons) guestButtons.style.display = 'flex';
+        if (userMenu) userMenu.style.display = 'none';
+        
+        // Mobile
+        if (mobileGuestButtons) mobileGuestButtons.style.display = 'flex';
+        if (mobileUserMenu) mobileUserMenu.style.display = 'none';
+    }
+}
 
+// Update the mobile menu toggle function
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+            this.innerHTML = mobileMenu.classList.contains('hidden') 
+                ? '<i class="fas fa-bars text-sm"></i>' 
+                : '<i class="fas fa-times text-sm"></i>';
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const isClickInsideMenu = mobileMenu.contains(event.target);
+            const isClickOnMenuButton = mobileMenuBtn.contains(event.target);
+            
+            if (!isClickInsideMenu && !isClickOnMenuButton && !mobileMenu.classList.contains('hidden')) {
+                closeMobileMenu();
+            }
+        });
+    }
+    
+    // Handle mobile logout button
+    const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+    if (mobileLogoutBtn) {
+        mobileLogoutBtn.addEventListener('click', function() {
+            logout();
+        });
+    }
+});
   // Logout button
   if (logoutBtn) {
     logoutBtn.addEventListener("click", logout);
@@ -1037,6 +1115,7 @@ function closeRegisterModal() {
 }
 
 // Auth handlers
+
 function handleLogin(e) {
   e.preventDefault();
   const email = document.getElementById("login-email").value;
@@ -1047,7 +1126,7 @@ function handleLogin(e) {
     return;
   }
 
-  // Mock login - In real app, you would validate against a server
+  // Mock login
   const user = {
     id: Date.now(),
     name: email.split("@")[0].charAt(0).toUpperCase() + email.split("@")[0].slice(1),
@@ -1058,19 +1137,41 @@ function handleLogin(e) {
   currentUser = user;
   localStorage.setItem("learnhub_user", JSON.stringify(user));
 
+  // Debug
+  console.log('User logged in:', user);
+  
+  // Update UI
   updateAuthUI();
+  
+  // Debug again
+  debugAuthState();
+  
+  // Close modal
   closeLoginModal();
 
+  // Reset form
   const loginForm = document.getElementById("login-form");
   if (loginForm) {
     loginForm.reset();
   }
 
-  // Refresh documents to show "View Document" instead of "Login to Read"
+  // Refresh documents
   loadAllDocuments();
   loadFeaturedDocuments();
 
   showToast("Login successful! Welcome to LearnHub.", "success");
+
+  // Close mobile menu if open
+  if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+    mobileMenu.classList.add('hidden');
+    if (mobileMenuBtn) {
+      const icon = mobileMenuBtn.querySelector("i");
+      if (icon) {
+        icon.classList.remove("fa-times");
+        icon.classList.add("fa-bars");
+      }
+    }
+  }
 
   // Redirect to dashboard
   window.location.hash = "dashboard";
@@ -1147,20 +1248,106 @@ function logout() {
 
 // Update auth UI - Show dashboard link when logged in
 function updateAuthUI() {
-  if (currentUser) {
-    // Show user menu, hide guest buttons
-    if (guestButtons) guestButtons.style.display = "none";
-    if (userMenu) {
-      userMenu.style.display = "flex";
-      document.getElementById("user-name").textContent = currentUser.name;
+  const isLoggedIn = currentUser !== null;
+  
+  console.log('updateAuthUI called. isLoggedIn:', isLoggedIn, 'User:', currentUser);
+  
+  // Desktop elements
+  const guestButtons = document.getElementById('guest-buttons');
+  const userMenu = document.getElementById('user-menu');
+  const userInfo = document.querySelector('.user-info');
+  
+  // Mobile elements
+  const mobileGuestButtons = document.getElementById('mobile-guest-buttons');
+  const mobileUserMenu = document.getElementById('mobile-user-menu');
+  const mobileUserName = document.getElementById('mobile-user-name');
+  const mobileUserEmail = document.getElementById('mobile-user-email');
+  
+  if (isLoggedIn) {
+    // Desktop
+    if (guestButtons) {
+      guestButtons.style.display = 'none';
+      guestButtons.style.visibility = 'hidden';
     }
+    
+    if (userMenu) {
+      userMenu.style.display = 'flex';
+      userMenu.style.visibility = 'visible';
+      
+      // Update user info in desktop menu
+      if (userInfo) {
+        userInfo.innerHTML = `
+          <div class="flex items-center gap-2">
+            <div class="user-avatar w-8 h-8 rounded-full bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center">
+              <i class="fas fa-user text-sm"></i>
+            </div>
+            <div class="hidden md:block">
+              <p class="text-sm font-medium">${currentUser.name}</p>
+              <p class="text-xs text-muted-foreground">${currentUser.email}</p>
+            </div>
+          </div>
+        `;
+      }
+    }
+    
+    // Mobile - HIDE guest buttons, SHOW user menu
+    if (mobileGuestButtons) {
+      mobileGuestButtons.style.display = 'none';
+      mobileGuestButtons.style.visibility = 'hidden';
+    }
+    
+    if (mobileUserMenu) {
+      mobileUserMenu.style.display = 'flex';
+      mobileUserMenu.style.visibility = 'visible';
+      
+      // Update mobile user info
+      if (mobileUserName) {
+        mobileUserName.textContent = currentUser.name;
+      }
+      if (mobileUserEmail) {
+        mobileUserEmail.textContent = currentUser.email;
+      }
+    }
+    
   } else {
-    // Show guest buttons, hide user menu
-    if (guestButtons) guestButtons.style.display = "flex";
-    if (userMenu) userMenu.style.display = "none";
+    // Not logged in
+    // Desktop - SHOW guest buttons, HIDE user menu
+    if (guestButtons) {
+      guestButtons.style.display = 'flex';
+      guestButtons.style.visibility = 'visible';
+    }
+    
+    if (userMenu) {
+      userMenu.style.display = 'none';
+      userMenu.style.visibility = 'hidden';
+    }
+    
+    // Mobile - SHOW guest buttons, HIDE user menu
+    if (mobileGuestButtons) {
+      mobileGuestButtons.style.display = 'flex';
+      mobileGuestButtons.style.visibility = 'visible';
+    }
+    
+    if (mobileUserMenu) {
+      mobileUserMenu.style.display = 'none';
+      mobileUserMenu.style.visibility = 'hidden';
+    }
   }
 }
-
+function debugAuthState() {
+  console.log('=== DEBUG AUTH STATE ===');
+  console.log('currentUser:', currentUser);
+  console.log('localStorage user:', localStorage.getItem('learnhub_user'));
+  
+  const mobileGuestButtons = document.getElementById('mobile-guest-buttons');
+  const mobileUserMenu = document.getElementById('mobile-user-menu');
+  
+  console.log('mobileGuestButtons element:', mobileGuestButtons);
+  console.log('mobileUserMenu element:', mobileUserMenu);
+  console.log('mobileGuestButtons display:', mobileGuestButtons ? getComputedStyle(mobileGuestButtons).display : 'not found');
+  console.log('mobileUserMenu display:', mobileUserMenu ? getComputedStyle(mobileUserMenu).display : 'not found');
+  console.log('=== END DEBUG ===');
+}
 // Load categories
 function loadCategories() {
   // Extract unique categories from courses

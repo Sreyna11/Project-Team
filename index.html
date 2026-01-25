@@ -70,6 +70,7 @@
             >
           </div>
           <!-- Auth Buttons & Theme Toggle -->
+                    
           <div class="flex items-center gap-2 md:gap-3">
             <button
               id="theme-toggle"
@@ -78,37 +79,29 @@
               <i class="fas fa-sun text-sm md:text-base"></i>
             </button>
 
-            <div id="auth-buttons" class="flex items-center gap-2 md:gap-3">
+            <!-- Desktop Auth Buttons -->
+            <div id="auth-buttons" class="hidden md:flex items-center gap-2 md:gap-3">
               <!-- Guest buttons (shown when NOT logged in) -->
               <div class="flex gap-2 md:gap-3" id="guest-buttons">
                 <button
                   class="btn btn-outline text-xs md:text-sm px-3 py-1.5 md:px-4 md:py-2"
                   onclick="showLoginModal()"
                 >
-                  <span class="hidden sm:inline">Login</span>
+                  <span>Login</span>
                   <i class="fas fa-sign-in-alt sm:hidden"></i>
                 </button>
                 <button
                   class="btn btn-primary text-xs md:text-sm px-3 py-1.5 md:px-4 md:py-2"
                   onclick="showRegisterModal()"
                 >
-                  <span class="hidden sm:inline">Register</span>
+                  <span>Register</span>
                   <i class="fas fa-user-plus sm:hidden"></i>
                 </button>
               </div>
               <!-- User menu (shown when logged in) -->
               <div id="user-menu" class="hidden items-center gap-2 md:gap-3">
                 <div class="flex items-center gap-2 user-info">
-                  <div
-                    class="h-8 w-8 md:h-9 md:w-9 rounded-full bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center"
-                    title="User Profile"
-                  >
-                    <i class="fas fa-user text-xs"></i>
-                  </div>
-                  <span
-                    class="text-sm font-medium hidden lg:inline"
-                    id="user-name"
-                  ></span>
+                  <!-- User info will be populated here -->
                 </div>
                 <button
                   class="btn btn-outline text-xs md:text-sm px-2 md:px-3 py-2"
@@ -116,7 +109,7 @@
                   title="Dashboard"
                 >
                   <i class="fas fa-tachometer-alt"></i>
-                  <span class="hidden md:inline ml-1 md:ml-2">Dashboard</span>
+                  <span class="ml-1 md:ml-2">Dashboard</span>
                 </button>
                 <button
                   id="logout-btn"
@@ -124,7 +117,7 @@
                   title="Logout"
                 >
                   <i class="fas fa-sign-out-alt"></i>
-                  <span class="hidden md:inline ml-1 md:ml-2">Logout</span>
+                  <span class="ml-1 md:ml-2">Logout</span>
                 </button>
               </div>
             </div>
@@ -137,8 +130,8 @@
             </button>
           </div>
         </div>
-
-        <!-- Mobile Menu -->
+        
+                <!-- Mobile Menu -->
         <div
           id="mobile-menu"
           class="hidden border-t border-border py-4 md:hidden"
@@ -146,30 +139,89 @@
           <div class="flex flex-col gap-3">
             <a
               href="#home"
-              class="nav-link font-medium hover:text-primary transition-colors"
-              >Home</a
+              class="nav-link font-medium hover:text-primary transition-colors py-2 px-4 rounded-lg hover:bg-card"
+              onclick="closeMobileMenu()"
             >
+              Home
+            </a>
             <a
               href="#about"
-              class="nav-link font-medium hover:text-primary transition-colors"
-              >About</a
+              class="nav-link font-medium hover:text-primary transition-colors py-2 px-4 rounded-lg hover:bg-card"
+              onclick="closeMobileMenu()"
             >
+              About
+            </a>
             <a
               href="#courses"
-              class="nav-link font-medium hover:text-primary transition-colors"
-              >Courses</a
+              class="nav-link font-medium hover:text-primary transition-colors py-2 px-4 rounded-lg hover:bg-card"
+              onclick="closeMobileMenu()"
             >
+              Courses
+            </a>
             <a
               href="#documents"
-              class="nav-link font-medium hover:text-primary transition-colors"
-              >Documents</a
+              class="nav-link font-medium hover:text-primary transition-colors py-2 px-4 rounded-lg hover:bg-card"
+              onclick="closeMobileMenu()"
             >
-
+              Documents
+            </a>
             <a
               href="#contact"
-              class="nav-link font-medium hover:text-primary transition-colors"
-              >Contact</a
+              class="nav-link font-medium hover:text-primary transition-colors py-2 px-4 rounded-lg hover:bg-card"
+              onclick="closeMobileMenu()"
             >
+              Contact
+            </a>
+            
+            <!-- Mobile Auth Section - ONLY THIS SECTION -->
+            <div class="border-t border-border pt-4 mt-2">
+              <!-- Guest buttons (shown when NOT logged in) -->
+              <div id="mobile-guest-buttons" class="flex flex-col gap-2">
+                <button
+                  class="btn btn-outline w-full justify-start py-3 px-4"
+                  onclick="showLoginModal(); closeMobileMenu();"
+                >
+                  <i class="fas fa-sign-in-alt mr-3 w-5 text-center"></i> 
+                  <span>Login</span>
+                </button>
+                <button
+                  class="btn btn-primary w-full justify-start py-3 px-4"
+                  onclick="showRegisterModal(); closeMobileMenu();"
+                >
+                  <i class="fas fa-user-plus mr-3 w-5 text-center"></i> 
+                  <span>Register</span>
+                </button>
+              </div>
+              
+              <!-- User menu (shown when logged in) -->
+              <div id="mobile-user-menu" class="hidden flex-col gap-2">
+                <div class="px-4 py-3 rounded-lg bg-card mb-2">
+                  <div class="flex items-center gap-3">
+                    <div class="user-avatar w-10 h-10 rounded-full bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center">
+                      <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                      <p class="text-sm font-medium" id="mobile-user-name">User Name</p>
+                      <p class="text-xs text-muted-foreground" id="mobile-user-email">user@email.com</p>
+                    </div>
+                  </div>
+                </div>
+                <button
+                  class="btn btn-outline w-full justify-start py-3 px-4"
+                  onclick="window.location.hash = 'dashboard'; closeMobileMenu();"
+                >
+                  <i class="fas fa-tachometer-alt mr-3 w-5 text-center"></i> 
+                  <span>Dashboard</span>
+                </button>
+                <button
+                  class="btn btn-outline w-full justify-start py-3 px-4"
+                  onclick="logout(); closeMobileMenu();"
+                >
+                  <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i> 
+                  <span>Logout</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
