@@ -1489,3 +1489,69 @@ nav .flex.items-center.gap-2.md\:gap-3 {
 #user-menu, #guest-buttons {
   transition: all 0.3s ease;
 }
+/* Mobile menu styling */
+#mobile-menu {
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+}
+
+#mobile-menu .nav-link {
+    padding: 10px 16px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+#mobile-menu .nav-link:hover {
+    background-color: var(--card);
+}
+
+#mobile-menu .btn {
+    justify-content: flex-start;
+    padding: 10px 16px;
+    border-radius: 8px;
+    margin-bottom: 4px;
+}
+
+#mobile-menu .btn-primary {
+    background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%);
+}
+
+#mobile-menu .btn-outline {
+    border: 1px solid var(--border);
+}
+
+/* Mobile user info styling */
+#mobile-user-menu .user-avatar {
+    flex-shrink: 0;
+}
+
+#mobile-user-menu .bg-card {
+    background-color: var(--card);
+    border: 1px solid var(--border);
+}
+
+/* Ensure desktop auth buttons are hidden on mobile */
+#auth-buttons {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    #auth-buttons {
+        display: flex;
+    }
+}
+/* Force hide/show for auth elements */
+#mobile-guest-buttons[style*="display: none"] {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+#mobile-user-menu[style*="display: none"] {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+#mobile-user-menu[style*="display: flex"] {
+  display: flex !important;
+  visibility: visible !important;
+}
