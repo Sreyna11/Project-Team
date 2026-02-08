@@ -19,7 +19,7 @@
   <body class="min-h-screen">
     <!-- Navigation -->
     <nav
-      class="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md"
+      class="sticky top-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur-md"
     >
       <div class="container mx-auto px-4">
         <div class="flex h-16 items-center justify-between">
@@ -29,13 +29,11 @@
             onclick="window.location.hash = 'home'"
           >
             <div
-              class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-purple-500 logo-icon"
+              class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-purple-600 to-purple-500 logo-icon"
             >
-              <i class="fas fa-graduation-cap text-lg animated-logo"></i>
+              <i class="fas fa-graduation-cap text-lg text-white"></i>
             </div>
-            <span
-              class="text-xl font-bold bg-gradient-to-r from-primary to-purple-500 bg-clip-text logo-text"
-            >
+            <span class="text-xl font-bold text-purple-600 logo-text">
               LearnHub
             </span>
           </div>
@@ -44,28 +42,28 @@
           <div class="hidden items-center gap-6 md:flex">
             <a
               href="#home"
-              class="nav-link text-sm font-medium hover:text-primary transition-colors"
+              class="text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors nav-link"
               >Home</a
             >
             <a
               href="#about"
-              class="nav-link text-sm font-medium hover:text-primary transition-colors"
+              class="text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors nav-link"
               >About</a
             >
             <a
               href="#courses"
-              class="nav-link text-sm font-medium hover:text-primary transition-colors"
+              class="text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors nav-link"
               >Courses</a
             >
             <a
               href="#documents"
-              class="nav-link text-sm font-medium hover:text-primary transition-colors"
+              class="text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors nav-link"
               >Documents</a
             >
 
             <a
               href="#contact"
-              class="nav-link text-sm font-medium hover:text-primary transition-colors"
+              class="text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors nav-link"
               >Contact</a
             >
           </div>
@@ -74,9 +72,9 @@
           <div class="flex items-center gap-2 md:gap-3">
             <button
               id="theme-toggle"
-              class="btn-theme p-2 h-9 w-9 md:h-10 md:w-10 flex items-center justify-center"
+              class="p-2 h-9 w-9 md:h-10 md:w-10 flex items-center justify-center rounded-lg border border-gray-200 hover:bg-gray-50"
             >
-              <i class="fas fa-sun text-sm md:text-base"></i>
+              <i class="fas fa-sun text-gray-600 text-sm md:text-base"></i>
             </button>
 
             <!-- Desktop Auth Buttons -->
@@ -104,7 +102,11 @@
               <!-- User menu (shown when logged in) -->
               <div id="user-menu" class="hidden items-center gap-2 md:gap-3">
                 <div class="flex items-center gap-2 user-info">
-                  <!-- User info will be populated here -->
+                  <div
+                    class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-600 to-purple-500 flex items-center justify-center"
+                  >
+                    <i class="fas fa-user text-sm text-white"></i>
+                  </div>
                 </div>
                 <button
                   class="btn btn-outline text-xs md:text-sm px-2 md:px-3 py-2"
@@ -127,9 +129,9 @@
 
             <button
               id="mobile-menu-btn"
-              class="btn-theme p-2 h-9 w-9 md:h-10 md:w-10 flex items-center justify-center md:hidden"
+              class="p-2 h-9 w-9 md:h-10 md:w-10 flex items-center justify-center rounded-lg border border-gray-200 hover:bg-gray-50 md:hidden"
             >
-              <i class="fas fa-bars text-sm"></i>
+              <i class="fas fa-bars text-gray-600 text-sm"></i>
             </button>
           </div>
         </div>
@@ -137,47 +139,47 @@
         <!-- Mobile Menu -->
         <div
           id="mobile-menu"
-          class="hidden border-t border-border py-4 md:hidden"
+          class="hidden border-t border-gray-200 py-4 md:hidden"
         >
           <div class="flex flex-col gap-3">
             <a
               href="#home"
-              class="nav-link font-medium hover:text-primary transition-colors py-2 px-4 rounded-lg hover:bg-card"
+              class="font-medium text-gray-700 hover:text-purple-600 transition-colors py-2 px-4 rounded-lg hover:bg-gray-50"
               onclick="closeMobileMenu()"
             >
               Home
             </a>
             <a
               href="#about"
-              class="nav-link font-medium hover:text-primary transition-colors py-2 px-4 rounded-lg hover:bg-card"
+              class="font-medium text-gray-700 hover:text-purple-600 transition-colors py-2 px-4 rounded-lg hover:bg-gray-50"
               onclick="closeMobileMenu()"
             >
               About
             </a>
             <a
               href="#courses"
-              class="nav-link font-medium hover:text-primary transition-colors py-2 px-4 rounded-lg hover:bg-card"
+              class="font-medium text-gray-700 hover:text-purple-600 transition-colors py-2 px-4 rounded-lg hover:bg-gray-50"
               onclick="closeMobileMenu()"
             >
               Courses
             </a>
             <a
               href="#documents"
-              class="nav-link font-medium hover:text-primary transition-colors py-2 px-4 rounded-lg hover:bg-card"
+              class="font-medium text-gray-700 hover:text-purple-600 transition-colors py-2 px-4 rounded-lg hover:bg-gray-50"
               onclick="closeMobileMenu()"
             >
               Documents
             </a>
             <a
               href="#contact"
-              class="nav-link font-medium hover:text-primary transition-colors py-2 px-4 rounded-lg hover:bg-card"
+              class="font-medium text-gray-700 hover:text-purple-600 transition-colors py-2 px-4 rounded-lg hover:bg-gray-50"
               onclick="closeMobileMenu()"
             >
               Contact
             </a>
 
-            <!-- Mobile Auth Section - ONLY THIS SECTION -->
-            <div class="border-t border-border pt-4 mt-2">
+            <!-- Mobile Auth Section -->
+            <div class="border-t border-gray-200 pt-4 mt-2">
               <!-- Guest buttons (shown when NOT logged in) -->
               <div id="mobile-guest-buttons" class="flex flex-col gap-2">
                 <button
@@ -204,21 +206,18 @@
 
               <!-- User menu (shown when logged in) -->
               <div id="mobile-user-menu" class="hidden flex-col gap-2">
-                <div class="px-4 py-3 rounded-lg bg-card mb-2">
+                <div class="px-4 py-3 rounded-lg bg-gray-50 mb-2">
                   <div class="flex items-center gap-3">
                     <div
-                      class="user-avatar w-10 h-10 rounded-full bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center"
+                      class="user-avatar w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-purple-500 flex items-center justify-center"
                     >
-                      <i class="fas fa-user"></i>
+                      <i class="fas fa-user text-white"></i>
                     </div>
                     <div>
                       <p class="text-sm font-medium" id="mobile-user-name">
                         User Name
                       </p>
-                      <p
-                        class="text-xs text-muted-foreground"
-                        id="mobile-user-email"
-                      >
+                      <p class="text-xs text-gray-500" id="mobile-user-email">
                         user@email.com
                       </p>
                     </div>
@@ -255,140 +254,112 @@
     <main id="main-content">
       <!-- Home Page -->
       <div id="home-page" class="page">
-        <!-- Hero Section -->
-        <section
-          class="hero-background w-full min-h-[80vh] md:min-h-[90vh] flex items-center"
-        >
-          <div class="container mx-auto px-4 w-full">
-            <div class="mx-auto w-full max-w-6xl text-center text-content">
-              <span
-                class="badge badge-primary mb-4 md:mb-6 px-4 py-2 md:px-6 md:py-3 text-xs md:text-sm"
-              >
-                <i class="fas fa-rocket mr-2"></i>START LEARNING TODAY
-              </span>
+        <!-- Hero Section with Image on Right -->
+        <section class="hero-section w-full">
+          <div class="container mx-auto px-4">
+            <div class="hero-grid">
+              <!-- Left side - Text content -->
+              <div class="hero-text">
+                <span class="badge badge-primary">
+                  <i class="fas fa-rocket mr-2"></i>START LEARNING TODAY
+                </span>
 
-              <h1
-                class="mb-4 md:mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-gradient rainbow-text px-2"
-              >
-                Master Tech Skills with Expert-Led Courses
-              </h1>
+                <h1 class="hero-title">
+                  Master Computer Science & Design Skills
+                </h1>
 
-              <div class="flex justify-center mb-6 md:mb-8">
-                <div
-                  class="w-16 h-1 bg-gradient-to-r from-primary to-pink rounded-full"
-                ></div>
+                <div class="divider"></div>
+
+                <p class="hero-subtitle">
+                  <i class="fas fa-arrow-right text-purple-600 mr-3"></i>
+                  Comprehensive video courses and free documentation to help you
+                  become a professional developer. Start your learning journey
+                  today.
+                </p>
+
+                <div class="hero-buttons">
+                  <button
+                    class="btn btn-primary"
+                    onclick="window.location.hash = 'courses'"
+                  >
+                    <span>Browse Courses</span>
+                    <i class="fas fa-arrow-right ml-2"></i>
+                  </button>
+                  <button
+                    class="btn btn-outline"
+                    onclick="window.location.hash = 'documents'"
+                  >
+                    <span>Free Documents</span>
+                    <i class="fas fa-book-open ml-2"></i>
+                  </button>
+                </div>
               </div>
 
-              <p
-                class="mb-6 md:mb-8 text-base sm:text-lg md:text-xl text-foreground/90 max-w-3xl mx-auto px-4 md:px-0 hero-subtitle"
-              >
-                <i class="fas fa-arrow-right text-primary mr-3"></i>
-                From web development to data science, our comprehensive courses
-                help you build the skills needed for a successful tech career.
-              </p>
-
-              <div
-                class="flex flex-col sm:flex-row justify-center items-center gap-3 md:gap-6 px-4 sm:px-0"
-              >
-                <button
-                  class="btn btn-primary w-full sm:w-auto text-sm md:text-base px-6 md:px-8 py-3 md:py-4"
-                  onclick="window.location.hash = 'courses'"
-                >
-                  <span>Browse Courses</span>
-                  <i class="fas fa-arrow-right ml-2 md:ml-3"></i>
-                </button>
-                <button
-                  class="btn btn-outline w-full sm:w-auto text-sm md:text-base px-6 md:px-8 py-3 md:py-4"
-                  onclick="window.location.hash = 'documents'"
-                >
-                  <span>Free Documents</span>
-                  <i class="fas fa-book-open ml-2 md:ml-3"></i>
-                </button>
+              <!-- Right side - Image -->
+              <div class="hero-image">
+                <img
+                  src="Images/hero-image.png"
+                  alt="LearnHub - Tech Learning Platform"
+                  class="hero-img"
+                />
+                <div class="floating-elements">
+                  <div class="floating-1"></div>
+                  <div class="floating-2"></div>
+                  <div class="floating-3"></div>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
         <!-- Stats Section -->
-        <section
-          class="w-full border-y border-border bg-gradient-to-r from-blue-50/50 to-pink-50/50 py-8 md:py-12 lg:py-16"
-        >
+        <section class="stats-section w-full">
           <div class="container mx-auto px-4 w-full">
             <div
               class="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-6 lg:gap-8"
             >
-              <div class="stat-card text-center p-4 md:p-6">
-                <div
-                  class="stat-number mb-2 text-2xl sm:text-3xl md:text-4xl font-bold"
-                >
-                  <span class="text-gradient font-bold">15</span>
-                  <span class="text-primary ml-1">+</span>
+              <div class="stat-card">
+                <div class="stat-number">
+                  <span>15</span>
+                  <span>+</span>
                 </div>
-                <div
-                  class="stat-label text-xs sm:text-sm md:text-base text-muted-foreground font-medium"
-                >
-                  Courses Available
-                </div>
+                <div class="stat-label">Courses Available</div>
               </div>
 
-              <div class="stat-card text-center p-4 md:p-6">
-                <div
-                  class="stat-number mb-2 text-2xl sm:text-3xl md:text-4xl font-bold"
-                >
-                  <span class="text-gradient font-bold">7</span>
-                  <span class="text-primary ml-1">+</span>
+              <div class="stat-card">
+                <div class="stat-number">
+                  <span>7</span>
+                  <span>+</span>
                 </div>
-                <div
-                  class="stat-label text-xs sm:text-sm md:text-base text-muted-foreground font-medium"
-                >
-                  Categories
-                </div>
+                <div class="stat-label">Categories</div>
               </div>
 
-              <div class="stat-card text-center p-4 md:p-6">
-                <div
-                  class="stat-number mb-2 text-2xl sm:text-3xl md:text-4xl font-bold"
-                >
-                  <span class="text-gradient font-bold">21</span>
-                  <span class="text-primary ml-1">+</span>
+              <div class="stat-card">
+                <div class="stat-number">
+                  <span>21</span>
+                  <span>+</span>
                 </div>
-                <div
-                  class="stat-label text-xs sm:text-sm md:text-base text-muted-foreground font-medium"
-                >
-                  Free Documents
-                </div>
+                <div class="stat-label">Free Documents</div>
               </div>
 
-              <div class="stat-card text-center p-4 md:p-6">
-                <div
-                  class="stat-number mb-2 text-2xl sm:text-3xl md:text-4xl font-bold"
-                >
-                  <span class="text-gradient font-bold">24/7</span>
-                  <span class="text-primary ml-1">+</span>
+              <div class="stat-card">
+                <div class="stat-number">
+                  <span>24/7</span>
+                  <span>+</span>
                 </div>
-                <div
-                  class="stat-label text-xs sm:text-sm md:text-base text-muted-foreground font-medium"
-                >
-                  Online Access
-                </div>
+                <div class="stat-label">Online Access</div>
               </div>
             </div>
           </div>
         </section>
 
         <!-- Featured Courses -->
-        <section
-          class="bg-gradient-to-b from-blue-50/30 to-transparent py-16 lg:py-24"
-        >
+        <section class="featured-courses py-16 lg:py-24">
           <div class="container mx-auto px-4">
-            <div
-              class="mb-12 flex flex-col items-center justify-between gap-4 sm:flex-row"
-            >
+            <div class="section-header">
               <div>
-                <h2 class="mb-2 text-3xl font-bold">Featured Courses</h2>
-                <p class="text-muted-foreground">
-                  Start your learning journey with our popular courses
-                </p>
+                <h2>Featured Courses</h2>
+                <p>Start your learning journey with our popular courses</p>
               </div>
               <button
                 class="btn btn-outline"
@@ -404,16 +375,12 @@
         </section>
 
         <!-- Featured Documents -->
-        <section class="py-16 lg:py-24">
+        <section class="featured-documents py-16 lg:py-24">
           <div class="container mx-auto px-4">
-            <div
-              class="mb-12 flex flex-col items-center justify-between gap-4 sm:flex-row"
-            >
+            <div class="section-header">
               <div>
-                <h2 class="mb-2 text-3xl font-bold">Free Learning Documents</h2>
-                <p class="text-muted-foreground">
-                  Access comprehensive documentation (login required)
-                </p>
+                <h2>Free Learning Documents</h2>
+                <p>Access comprehensive documentation (login required)</p>
               </div>
               <button
                 class="btn btn-outline"
@@ -429,18 +396,12 @@
         </section>
 
         <!-- CTA Section -->
-        <section class="bg-gradient-to-r from-primary to-purple-500 py-16">
+        <section class="py-16 bg-gradient-to-r from-purple-600 to-purple-800">
           <div class="container mx-auto px-4 text-center">
-            <h2
-              class="mb-4 text-3xl font-bold text-sky-500"
-              style="text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2)"
-            >
+            <h2 class="text-3xl font-bold text-white mb-4">
               Ready to Start Learning?
             </h2>
-            <p
-              class="mb-8 text-sky-400"
-              style="text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1)"
-            >
+            <p class="text-xl text-purple-100 mb-8">
               Join thousands of students already mastering new tech skills
             </p>
             <button class="btn btn-accent" onclick="showRegisterModal()">
@@ -456,8 +417,8 @@
           <div class="container mx-auto px-4">
             <!-- Header -->
             <div class="mb-10">
-              <h1 class="mb-4 text-4xl font-bold">Video Courses</h1>
-              <p class="text-lg text-muted-foreground">
+              <h1 class="text-4xl font-bold">Video Courses</h1>
+              <p>
                 Premium video courses to help you master programming and
                 development skills.
               </p>
@@ -485,7 +446,7 @@
             </div>
 
             <!-- Results Count -->
-            <p class="mb-6 text-muted-foreground">
+            <p class="results-count">
               Showing
               <span id="course-results-count" class="font-semibold">0</span> of
               <span id="course-total-count" class="font-semibold">0</span>
@@ -506,8 +467,8 @@
           <div class="container mx-auto px-4">
             <!-- Header -->
             <div class="mb-10">
-              <h1 class="mb-4 text-4xl font-bold">Learning Documents</h1>
-              <p class="text-lg text-muted-foreground">
+              <h1 class="text-4xl font-bold">Learning Documents</h1>
+              <p>
                 Free comprehensive documentation to supplement your learning
                 journey.
               </p>
@@ -520,16 +481,13 @@
             </div>
 
             <!-- Login Notice -->
-            <div id="login-notice" class="alert alert-warning mb-8">
+            <div id="login-notice" class="alert alert-warning">
               <i class="fas fa-lock"></i>
               <div>
-                <h4 class="font-medium">Login Required to Read Documents</h4>
-                <p class="text-sm">
+                <h4>Login Required to Read Documents</h4>
+                <p>
                   You need to
-                  <button
-                    onclick="showLoginModal()"
-                    class="text-primary hover:underline font-medium"
-                  >
+                  <button onclick="showLoginModal()" class="text-link">
                     login
                   </button>
                   to access document content. Documents are free for all
@@ -539,11 +497,11 @@
             </div>
 
             <!-- Disclaimer -->
-            <div class="alert alert-info mb-8">
+            <div class="alert alert-info">
               <i class="fas fa-info-circle"></i>
               <div>
-                <h4 class="font-medium">External Resources</h4>
-                <p class="text-sm">
+                <h4>External Resources</h4>
+                <p>
                   Content accessed from external educational resources (MDN Web
                   Docs, W3Schools, GeeksforGeeks, etc.) for academic
                   demonstration purposes only.
@@ -573,7 +531,7 @@
             </div>
 
             <!-- Results Count -->
-            <p class="mb-6 text-muted-foreground">
+            <p class="results-count">
               Showing
               <span id="document-results-count" class="font-semibold">0</span>
               of
@@ -591,44 +549,50 @@
 
       <!-- Course Detail Page -->
       <div id="course-detail-page" class="page page-hidden">
+        <!-- Course Detail Page -->
         <div class="py-10">
           <div class="container mx-auto px-4">
             <!-- Back Button -->
             <button
-              class="back-button mb-6"
               onclick="window.location.hash = 'courses'"
+              class="mb-6 flex items-center text-purple-600 hover:text-purple-700 bg-purple-100 rounded-2xl p-2"
             >
               <i class="fas fa-arrow-left mr-2"></i> Back to Courses
             </button>
 
-            <!-- Purchase Message -->
-            <div id="purchase-message" class="alert alert-success mb-6 hidden">
-              <i class="fas fa-check-circle"></i>
-              <div>
-                <h4 class="font-medium">Success!</h4>
-                <p id="purchase-message-text" class="text-sm">
-                  Course purchased successfully! You now have access to all
-                  modules.
-                </p>
-              </div>
-            </div>
-
             <div class="grid gap-8 lg:grid-cols-3">
-              <!-- Course Info -->
+              <!-- Left Column: Video -->
               <div class="lg:col-span-2 space-y-6">
-                <!-- Video Player -->
-                <div class="video-container" id="course-video-player">
-                  <div class="video-placeholder">
-                    <i
-                      class="fas fa-play-circle text-5xl text-primary mb-4"
-                    ></i>
-                    <h3 class="text-xl font-bold mb-2">Course Preview</h3>
-                    <p class="text-gray-300 mb-4">
-                      Click below to watch this video
-                    </p>
-                    <button class="btn btn-primary" id="watch-video-btn">
-                      <i class="fas fa-play mr-2"></i> Watch Video Now
-                    </button>
+                <!-- Video Preview Card -->
+                <div
+                  class="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden"
+                >
+                  <!-- Video Placeholder -->
+                  <div
+                    id="course-video-player"
+                    class="aspect-video bg-gray-900 flex items-center justify-center"
+                  >
+                    <!-- Default locked state -->
+                    <div class="text-center p-8">
+                      <div class="mb-6">
+                        <i
+                          class="fas fa-lock text-6xl text-yellow-500 mb-4"
+                        ></i>
+                        <h3 class="text-2xl font-bold text-white mb-2">
+                          Video Locked
+                        </h3>
+                        <p class="text-gray-300">
+                          Purchase this course to watch the video
+                        </p>
+                      </div>
+                      <button
+                        id="purchase-video-btn"
+                        class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+                      >
+                        <i class="fas fa-shopping-cart mr-2"></i> Purchase to
+                        Unlock
+                      </button>
+                    </div>
                   </div>
                 </div>
 
@@ -636,7 +600,7 @@
                 <div>
                   <span
                     id="course-detail-category"
-                    class="badge badge-primary mb-3"
+                    class="badge badge-secondary mb-3 bg-gradient-to-br from-purple-100 to-white border-2 border-purple-300"
                   ></span>
                   <h1
                     id="course-detail-title"
@@ -647,134 +611,188 @@
                     class="text-lg text-muted-foreground"
                   ></p>
                 </div>
+                <!-- Course Stats Grid -->
+                <div
+                  class="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 xs:gap-3 sm:gap-4 px-1 xs:px-2 sm:px-0"
+                >
+                  <div
+                    class="text-center p-2 xs:p-3 sm:p-4 md:p-5 bg-gradient-to-br from-purple-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-lg xs:rounded-xl border border-purple-100 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-600 hover:shadow-sm xs:hover:shadow-md sm:hover:shadow-lg hover:scale-[1.02] xs:hover:scale-[1.02] transition-all duration-200 outline-none focus:outline-none focus:ring-1 xs:focus:ring-2 focus:ring-purple-500"
+                  >
+                    <i
+                      class="fas fa-video text-purple-600 dark:text-purple-400 text-base xs:text-lg sm:text-xl mx-auto mb-1.5 xs:mb-2 sm:mb-3"
+                    ></i>
+                    <div
+                      class="text-sm xs:text-base sm:text-lg md:text-xl font-bold text-black mb-0.5 xs:mb-0.5 sm:mb-1"
+                    >
+                      1 Video
+                    </div>
+                    <div
+                      class="text-xs xs:text-xs sm:text-sm text-gray-500 dark:text-gray-400"
+                    >
+                      Comprehensive
+                    </div>
+                  </div>
 
-                <!-- Course Details -->
-                <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
-                  <div class="stats-card">
+                  <div
+                    class="text-center p-2 xs:p-3 sm:p-4 md:p-5 bg-gradient-to-br from-blue-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-lg xs:rounded-xl border border-blue-100 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-sm xs:hover:shadow-md sm:hover:shadow-lg hover:scale-[1.02] xs:hover:scale-[1.02] transition-all duration-200 outline-none focus:outline-none focus:ring-1 xs:focus:ring-2 focus:ring-blue-500"
+                  >
                     <i
-                      class="fas fa-video text-primary text-xl mx-auto mb-2"
+                      class="fas fa-clock text-blue-600 dark:text-blue-400 text-base xs:text-lg sm:text-xl mx-auto mb-1.5 xs:mb-2 sm:mb-3"
                     ></i>
-                    <p class="font-semibold" id="course-videos">1 Video</p>
-                    <p class="text-sm text-muted-foreground">Comprehensive</p>
+                    <div
+                      id="course-duration-value"
+                      class="text-sm xs:text-base sm:text-lg md:text-xl font-bold text-black mb-0.5 xs:mb-0.5 sm:mb-1"
+                    >
+                      3h 45m
+                    </div>
+                    <div
+                      class="text-xs xs:text-xs sm:text-sm text-gray-500 dark:text-gray-400"
+                    >
+                      Duration
+                    </div>
                   </div>
-                  <div class="stats-card">
+
+                  <div
+                    class="text-center p-2 xs:p-3 sm:p-4 md:p-5 bg-gradient-to-br from-green-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-lg xs:rounded-xl border border-green-100 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-600 hover:shadow-sm xs:hover:shadow-md sm:hover:shadow-lg hover:scale-[1.02] xs:hover:scale-[1.02] transition-all duration-200 outline-none focus:outline-none focus:ring-1 xs:focus:ring-2 focus:ring-green-500"
+                  >
                     <i
-                      class="fas fa-clock text-primary text-xl mx-auto mb-2"
+                      class="fas fa-award text-green-600 dark:text-green-400 text-base xs:text-lg sm:text-xl mx-auto mb-1.5 xs:mb-2 sm:mb-3"
                     ></i>
-                    <p class="font-semibold" id="course-duration">0h</p>
-                    <p class="text-sm text-muted-foreground">Duration</p>
+                    <div
+                      class="text-sm xs:text-base sm:text-lg md:text-xl font-bold text-black mb-0.5 xs:mb-0.5 sm:mb-1"
+                    >
+                      Certificate
+                    </div>
+                    <div
+                      class="text-xs xs:text-xs sm:text-sm text-gray-500 dark:text-gray-400"
+                    >
+                      Included
+                    </div>
                   </div>
-                  <div class="stats-card">
+
+                  <div
+                    class="text-center p-2 xs:p-3 sm:p-4 md:p-5 bg-gradient-to-br from-orange-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-lg xs:rounded-xl border border-orange-100 dark:border-gray-700 hover:border-orange-300 dark:hover:border-orange-600 hover:shadow-sm xs:hover:shadow-md sm:hover:shadow-lg hover:scale-[1.02] xs:hover:scale-[1.02] transition-all duration-200 outline-none focus:outline-none focus:ring-1 xs:focus:ring-2 focus:ring-orange-500"
+                  >
                     <i
-                      class="fas fa-award text-primary text-xl mx-auto mb-2"
+                      class="fas fa-infinity text-orange-600 dark:text-orange-400 text-base xs:text-lg sm:text-xl mx-auto mb-1.5 xs:mb-2 sm:mb-3"
                     ></i>
-                    <p class="font-semibold">Certificate</p>
-                    <p class="text-sm text-muted-foreground">Included</p>
-                  </div>
-                  <div class="stats-card">
-                    <i
-                      class="fas fa-play text-primary text-xl mx-auto mb-2"
-                    ></i>
-                    <p class="font-semibold">Lifetime</p>
-                    <p class="text-sm text-muted-foreground">Access</p>
+                    <div
+                      class="text-sm xs:text-base sm:text-lg md:text-xl font-bold text-black mb-0.5 xs:mb-0.5 sm:mb-1"
+                    >
+                      Lifetime
+                    </div>
+                    <div
+                      class="text-xs xs:text-xs sm:text-sm text-gray-500 dark:text-gray-400"
+                    >
+                      Access
+                    </div>
                   </div>
                 </div>
 
                 <!-- What You'll Learn -->
-                <div class="card">
-                  <div class="p-6">
-                    <h2 class="text-xl font-bold mb-4">What You'll Learn</h2>
-                    <ul id="course-learning-points" class="space-y-3">
-                      <!-- Learning points will be loaded here -->
-                    </ul>
-                  </div>
+                <div
+                  class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6"
+                >
+                  <h2 class="text-2xl font-bold mb-4">What You'll Learn</h2>
+                  <ul id="course-learning-points" class="space-y-3">
+                    <!-- Will be filled by JavaScript -->
+                  </ul>
                 </div>
               </div>
 
-              <!-- Purchase Card -->
+              <!-- Right Column: Purchase Card -->
               <div class="lg:col-span-1">
-                <div class="card sticky top-24">
-                  <div class="p-6 border-b border-border">
-                    <div
-                      id="course-detail-price"
-                      class="text-4xl font-bold text-primary"
-                    >
-                      $49.99
-                    </div>
-                    <p class="text-muted-foreground">
-                      One-time purchase for single video
-                    </p>
-                  </div>
-
-                  <!-- System Status -->
+                <div class="sticky top-24">
+                  <!-- Price Card -->
                   <div
-                    id="system-status-card"
-                    class="p-6 border-b border-border"
+                    class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
                   >
-                    <!-- Status will be updated by JavaScript -->
-                  </div>
-
-                  <!-- Purchase Button -->
-                  <div class="p-6 border-b border-border">
-                    <button
-                      id="purchase-button"
-                      class="btn btn-primary w-full"
-                      disabled
+                    <!-- Price Section -->
+                    <div
+                      class="p-6 border-b border-gray-200 dark:border-gray-700"
                     >
-                      Purchase Unavailable
-                    </button>
-                    <p
-                      id="purchase-status-text"
-                      class="text-center text-sm text-muted-foreground mt-2"
-                    ></p>
-                  </div>
+                      <div
+                        id="course-detail-price"
+                        class="text-4xl font-bold text-gray-900 dark:text-white"
+                      >
+                        $0.00
+                      </div>
+                      <p class="text-gray-600 dark:text-gray-300 mt-1">
+                        One-time purchase for single video
+                      </p>
+                    </div>
 
-                  <!-- Course Features -->
-                  <div class="p-6">
-                    <h3 class="font-bold mb-4 text-lg">
-                      This Course Includes:
-                    </h3>
-                    <div class="space-y-3">
+                    <!-- System Status -->
+                    <div
+                      id="system-status-card"
+                      class="p-6 border-b border-gray-200 dark:border-gray-700"
+                    >
                       <div class="flex items-center">
-                        <div
-                          class="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center mr-3"
-                        >
-                          <i
-                            class="fas fa-check text-green-600 dark:text-green-400 text-xs"
-                          ></i>
+                        <i
+                          class="fas fa-check-circle text-green-500 mr-3 text-xl"
+                        ></i>
+                        <div>
+                          <h3 class="font-bold text-green-600">System Open</h3>
+                          <p class="text-sm text-gray-600 dark:text-gray-300">
+                            Purchases are now available
+                          </p>
                         </div>
-                        <span>1 comprehensive video lesson</span>
                       </div>
-                      <div class="flex items-center">
-                        <div
-                          class="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center mr-3"
-                        >
-                          <i
-                            class="fas fa-check text-green-600 dark:text-green-400 text-xs"
-                          ></i>
+                    </div>
+
+                    <!-- Purchase Button -->
+                    <div
+                      class="p-6 border-b border-gray-200 dark:border-gray-700"
+                    >
+                      <button
+                        id="purchase-button"
+                        class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      >
+                        <i class="fas fa-shopping-cart mr-2"></i> Purchase Video
+                        (<span id="purchase-price">$0.00</span>)
+                      </button>
+                      <p
+                        id="purchase-status-text"
+                        class="text-center text-sm text-gray-500 dark:text-gray-400 mt-2"
+                      >
+                        One-time payment • Lifetime access
+                      </p>
+                    </div>
+
+                    <!-- Course Includes -->
+                    <div class="p-6">
+                      <h3 class="font-bold text-lg mb-4">
+                        This Course Includes:
+                      </h3>
+                      <div class="space-y-3">
+                        <div class="flex items-center">
+                          <i class="fas fa-check text-green-500 mr-3"></i>
+                          <span>1 comprehensive video lesson</span>
                         </div>
-                        <span>Downloadable resources</span>
-                      </div>
-                      <div class="flex items-center">
-                        <div
-                          class="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center mr-3"
-                        >
-                          <i
-                            class="fas fa-check text-green-600 dark:text-green-400 text-xs"
-                          ></i>
+                        <div class="flex items-center">
+                          <i class="fas fa-check text-green-500 mr-3"></i>
+                          <span>Downloadable resources</span>
                         </div>
-                        <span>Certificate of completion</span>
-                      </div>
-                      <div class="flex items-center">
-                        <div
-                          class="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center mr-3"
-                        >
-                          <i
-                            class="fas fa-check text-green-600 dark:text-green-400 text-xs"
-                          ></i>
+                        <div class="flex items-center">
+                          <i class="fas fa-check text-green-500 mr-3"></i>
+                          <span>Certificate of completion</span>
                         </div>
-                        <span>Lifetime access</span>
+                        <div class="flex items-center">
+                          <i class="fas fa-check text-green-500 mr-3"></i>
+                          <span>Lifetime access</span>
+                        </div>
                       </div>
+                    </div>
+                    <!-- Footer note -->
+                    <div
+                      class="p-2 xs:p-3 sm:p-4 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700 text-center"
+                    >
+                      <p
+                        class="text-xs text-gray-500 dark:text-gray-400 truncate"
+                      >
+                        <i class="fas fa-headset mr-1 text-xs xs:text-sm"></i>
+                        24/7 support available
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -783,377 +801,522 @@
           </div>
         </div>
       </div>
-
       <!-- About Page -->
       <div id="about-page" class="page page-hidden">
-        <div class="min-h-screen">
+        <div class="container mx-auto px-4 py-8">
           <!-- Hero Section -->
-          <section class="hero-gradient py-16 lg:py-24">
-            <div class="container mx-auto px-4 text-center">
-              <h1 class="mb-4 text-4xl font-bold lg:text-5xl">
-                About LearnHub
-              </h1>
-              <p class="mx-auto max-w-2xl text-lg text-muted-foreground">
-                We're on a mission to make quality tech education accessible to
-                everyone. Our expert-led courses help you build the skills
-                needed for a successful career in technology.
-              </p>
-            </div>
-          </section>
+          <div class="text-center mb-12">
+            <h1
+              class="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text"
+            >
+              LearnHub: Where Tech Education Meets Excellence
+            </h1>
+            <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Empowering learners worldwide with accessible, high-quality
+              technology education since 2023.
+            </p>
+          </div>
 
-          <!-- Mission Section -->
-          <section class="py-16">
-            <div class="container mx-auto px-4">
-              <div class="grid gap-12 lg:grid-cols-2 lg:items-center">
-                <div>
-                  <h2 class="mb-4 text-3xl font-bold">Our Mission</h2>
-                  <p class="mb-6 text-muted-foreground">
-                    LearnHub was founded with a simple belief: everyone deserves
-                    access to high-quality tech education. We partner with
-                    industry experts to create comprehensive, practical courses
-                    that prepare you for real-world challenges.
-                  </p>
-                  <p class="text-muted-foreground">
-                    Whether you're starting your coding journey or advancing
-                    your career, our structured curriculum and hands-on approach
-                    will help you achieve your goals. From web development to
-                    data science, we cover the skills that matter most in
-                    today's tech landscape.
-                  </p>
-                </div>
-                <div class="grid gap-4 sm:grid-cols-2">
-                  <div class="card card-hover">
-                    <div class="flex flex-col items-center p-6 text-center">
-                      <div
-                        class="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary to-purple-500"
-                      >
-                        <i class="fas fa-bullseye"></i>
-                      </div>
-                      <h3 class="mb-2 font-semibold">Focused Learning</h3>
-                      <p class="text-sm text-muted-foreground">
-                        Structured paths for efficient skill building
-                      </p>
-                    </div>
+          <!-- Our Mission Section -->
+          <div
+            class="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-2xl p-8 mb-12"
+          >
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              <div>
+                <h2 class="text-3xl font-bold mb-6 text-purple-700">
+                  Our Mission
+                </h2>
+                <p class="text-lg mb-6 text-gray-700">
+                  At LearnHub, we're on a mission to democratize technology
+                  education. We believe that anyone, anywhere should have access
+                  to world-class learning resources to build a successful career
+                  in tech.
+                </p>
+                <div class="flex items-center gap-4">
+                  <div class="bg-purple-500 p-3 rounded-full">
+                    <i class="fas fa-graduation-cap text-2xl text-white"></i>
                   </div>
-                  <div class="card card-hover">
-                    <div class="flex flex-col items-center p-6 text-center">
-                      <div
-                        class="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary to-purple-500"
-                      >
-                        <i class="fas fa-code"></i>
-                      </div>
-                      <h3 class="mb-2 font-semibold">Practical Skills</h3>
-                      <p class="text-sm text-muted-foreground">
-                        Real-world projects and applications
-                      </p>
-                    </div>
-                  </div>
-                  <div class="card card-hover">
-                    <div class="flex flex-col items-center p-6 text-center">
-                      <div
-                        class="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary to-purple-500"
-                      >
-                        <i class="fas fa-users"></i>
-                      </div>
-                      <h3 class="mb-2 font-semibold">Expert Instructors</h3>
-                      <p class="text-sm text-muted-foreground">
-                        Learn from industry professionals
-                      </p>
-                    </div>
-                  </div>
-                  <div class="card card-hover">
-                    <div class="flex flex-col items-center p-6 text-center">
-                      <div
-                        class="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary to-purple-500"
-                      >
-                        <i class="fas fa-lightbulb"></i>
-                      </div>
-                      <h3 class="mb-2 font-semibold">Modern Content</h3>
-                      <p class="text-sm text-muted-foreground">
-                        Up-to-date with latest technologies
-                      </p>
-                    </div>
+                  <div>
+                    <h4 class="font-bold text-gray-700">
+                      15,000+ Students Empowered
+                    </h4>
+                    <p class="text-sm text-gray-400">And counting worldwide</p>
                   </div>
                 </div>
               </div>
-            </div>
-          </section>
-
-          <!-- Values Section -->
-          <section class="bg-gradient-to-r from-blue-50/30 to-pink-50/30 py-16">
-            <div class="container mx-auto px-4">
-              <h2 class="mb-12 text-center text-3xl font-bold">Our Values</h2>
-              <div class="grid gap-8 md:grid-cols-3">
-                <div class="text-center">
-                  <div class="stats-icon mx-auto mb-4">
-                    <i class="fas fa-book-open"></i>
-                  </div>
-                  <h3 class="mb-2 text-xl font-semibold">Quality Education</h3>
-                  <p class="text-muted-foreground">
-                    We believe in providing the highest quality educational
-                    content that truly prepares students for success.
-                  </p>
-                </div>
-                <div class="text-center">
-                  <div class="stats-icon mx-auto mb-4">
-                    <i class="fas fa-users"></i>
-                  </div>
-                  <h3 class="mb-2 text-xl font-semibold">Accessibility</h3>
-                  <p class="text-muted-foreground">
-                    Tech education should be available to everyone, regardless
-                    of background or location.
-                  </p>
-                </div>
-                <div class="text-center">
-                  <div class="stats-icon mx-auto mb-4">
-                    <i class="fas fa-award"></i>
-                  </div>
-                  <h3 class="mb-2 text-xl font-semibold">Excellence</h3>
-                  <p class="text-muted-foreground">
-                    We strive for excellence in everything we do, from course
-                    content to student support.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- Stats Section -->
-          <section class="py-16">
-            <div class="container mx-auto px-4">
-              <div class="card card-hover p-8">
+              <div class="grid grid-cols-2 gap-4">
                 <div
-                  class="grid gap-8 text-center sm:grid-cols-2 lg:grid-cols-4"
+                  class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg text-center"
                 >
-                  <div>
-                    <div
-                      class="mb-2 text-4xl font-bold bg-gradient-to-r from-primary to-purple-500 bg-clip-text"
-                    >
-                      9
-                    </div>
-                    <div class="text-muted-foreground">Course Categories</div>
+                  <div class="text-3xl font-bold text-purple-600 mb-2">9</div>
+                  <p class="font-medium text-gray-600">Course Categories</p>
+                </div>
+                <div
+                  class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg text-center"
+                >
+                  <div class="text-3xl font-bold text-purple-600 mb-2">15</div>
+                  <p class="font-medium text-gray-600">Video Courses</p>
+                </div>
+                <div
+                  class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg text-center"
+                >
+                  <div class="text-3xl font-bold text-purple-600 mb-2">24</div>
+                  <p class="font-medium text-gray-600">Free Documents</p>
+                </div>
+                <div
+                  class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg text-center"
+                >
+                  <div class="text-3xl font-bold text-purple-600 mb-2">
+                    24/7
                   </div>
-                  <div>
-                    <div
-                      class="mb-2 text-4xl font-bold bg-gradient-to-r from-primary to-purple-500 bg-clip-text"
-                    >
-                      15
-                    </div>
-                    <div class="text-muted-foreground">Video Courses</div>
-                  </div>
-                  <div>
-                    <div
-                      class="mb-2 text-4xl font-bold bg-gradient-to-r from-primary to-purple-500 bg-clip-text"
-                    >
-                      24
-                    </div>
-                    <div class="text-muted-foreground">Free Documents</div>
-                  </div>
-                  <div>
-                    <div
-                      class="mb-2 text-4xl font-bold bg-gradient-to-r from-primary to-purple-500 bg-clip-text"
-                    >
-                      24/7
-                    </div>
-                    <div class="text-muted-foreground">Access to Courses</div>
-                  </div>
+                  <p class="font-medium text-gray-600">Access to Courses</p>
                 </div>
               </div>
             </div>
-          </section>
+          </div>
+
+          <!-- Our Values Section -->
+          <div class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-12">Our Values</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <!-- Quality Education -->
+              <div class="card card-hover text-center p-8">
+                <div
+                  class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6"
+                >
+                  <i class="fas fa-award text-3xl text-purple-600"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-4">Quality Education</h3>
+                <p class="text-muted-foreground mb-6">
+                  We believe in providing the highest quality educational
+                  content that truly prepares students for success.
+                </p>
+                <ul class="text-left space-y-2">
+                  <li class="flex items-center">
+                    <i class="fas fa-check text-green-500 mr-2"></i>
+                    Expert-curated content
+                  </li>
+                  <li class="flex items-center">
+                    <i class="fas fa-check text-green-500 mr-2"></i>
+                    Real-world projects
+                  </li>
+                  <li class="flex items-center">
+                    <i class="fas fa-check text-green-500 mr-2"></i>
+                    Industry-relevant skills
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Accessibility -->
+              <div class="card card-hover text-center p-8">
+                <div
+                  class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6"
+                >
+                  <i class="fas fa-globe text-3xl text-purple-600"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-4">Accessibility</h3>
+                <p class="text-muted-foreground mb-6">
+                  Tech education should be available to everyone, regardless of
+                  background or location.
+                </p>
+                <ul class="text-left space-y-2">
+                  <li class="flex items-center">
+                    <i class="fas fa-check text-green-500 mr-2"></i>
+                    Affordable pricing
+                  </li>
+                  <li class="flex items-center">
+                    <i class="fas fa-check text-green-500 mr-2"></i>
+                    Free resources available
+                  </li>
+                  <li class="flex items-center">
+                    <i class="fas fa-check text-green-500 mr-2"></i>
+                    Multi-language support
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Excellence -->
+              <div class="card card-hover text-center p-8">
+                <div
+                  class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6"
+                >
+                  <i class="fas fa-star text-3xl text-purple-600"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-4">Excellence</h3>
+                <p class="text-muted-foreground mb-6">
+                  We strive for excellence in everything we do, from course
+                  content to student support.
+                </p>
+                <ul class="text-left space-y-2">
+                  <li class="flex items-center">
+                    <i class="fas fa-check text-green-500 mr-2"></i>
+                    24/7 student support
+                  </li>
+                  <li class="flex items-center">
+                    <i class="fas fa-check text-green-500 mr-2"></i>
+                    Regular content updates
+                  </li>
+                  <li class="flex items-center">
+                    <i class="fas fa-check text-green-500 mr-2"></i>
+                    Community-driven improvements
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Why Choose LearnHub -->
+          <div class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-12">
+              Why Choose LearnHub?
+            </h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div class="space-y-6">
+                <div class="flex items-start gap-4">
+                  <div class="bg-purple-100 p-3 rounded-lg">
+                    <i class="fas fa-play-circle text-2xl text-purple-600"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-lg mb-2">
+                      Comprehensive Video Courses
+                    </h4>
+                    <p class="text-muted-foreground">
+                      Learn from industry experts with our extensive library of
+                      video courses covering the latest technologies and
+                      frameworks.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-4">
+                  <div class="bg-purple-100 p-3 rounded-lg">
+                    <i class="fas fa-file-pdf text-2xl text-purple-600"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-lg mb-2">Free Documentation</h4>
+                    <p class="text-muted-foreground">
+                      Access high-quality documentation and resources completely
+                      free to supplement your learning journey.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-4">
+                  <div class="bg-purple-100 p-3 rounded-lg">
+                    <i class="fas fa-laptop-code text-2xl text-purple-600"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-lg mb-2">Hands-on Projects</h4>
+                    <p class="text-muted-foreground">
+                      Build real-world projects that you can add to your
+                      portfolio and showcase to potential employers.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-8"
+              >
+                <h3 class="text-2xl font-bold mb-6 text-purple-700">
+                  Our Learning Philosophy
+                </h3>
+                <div class="space-y-4">
+                  <div class="flex items-center justify-between">
+                    <span class="font-medium text-gray-800"
+                      >Self-Paced Learning</span
+                    >
+                    <div
+                      class="w-48 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden"
+                    >
+                      <div
+                        class="h-full bg-purple-600"
+                        style="width: 95%"
+                      ></div>
+                    </div>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="font-medium text-gray-800"
+                      >Practical Experience</span
+                    >
+                    <div
+                      class="w-48 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden"
+                    >
+                      <div
+                        class="h-full bg-purple-600"
+                        style="width: 90%"
+                      ></div>
+                    </div>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="font-medium text-gray-800"
+                      >Community Support</span
+                    >
+                    <div
+                      class="w-48 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden"
+                    >
+                      <div
+                        class="h-full bg-purple-600"
+                        style="width: 88%"
+                      ></div>
+                    </div>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="font-medium text-gray-800"
+                      >Career Guidance</span
+                    >
+                    <div
+                      class="w-48 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden"
+                    >
+                      <div
+                        class="h-full bg-purple-600"
+                        style="width: 85%"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-8 p-4 bg-white dark:bg-gray-800 rounded-lg">
+                  <p class="italic text-gray-600">
+                    "The beautiful thing about learning is that no one can take
+                    it away from you."
+                    <span
+                      class="block text-right font-medium mt-2 text-blue-600"
+                      >- B.B. King</span
+                    >
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Team/Community Section -->
+          <div class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-12">
+              Join Our Growing Community
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div class="text-center p-6">
+                <div class="text-4xl font-bold text-purple-600 mb-4">
+                  5,000+
+                </div>
+                <p class="font-medium">Active Learners</p>
+                <p class="text-sm text-muted-foreground">
+                  Building skills daily
+                </p>
+              </div>
+              <div class="text-center p-6">
+                <div class="text-4xl font-bold text-purple-600 mb-4">
+                  1,200+
+                </div>
+                <p class="font-medium">Projects Completed</p>
+                <p class="text-sm text-muted-foreground">
+                  Real-world applications
+                </p>
+              </div>
+              <div class="text-center p-6">
+                <div class="text-4xl font-bold text-purple-600 mb-4">98%</div>
+                <p class="font-medium">Satisfaction Rate</p>
+                <p class="text-sm text-muted-foreground">
+                  Based on student reviews
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- CTA Section -->
+          <div
+            class="bg-gradient-to-r from-purple-600 to-purple-800 rounded-2xl p-8 text-center"
+          >
+            <h3 class="text-2xl font-bold mb-4 text-white">
+              Start Your Learning Journey Today
+            </h3>
+            <p class="mb-6 text-purple-100">
+              Join thousands of successful learners who have transformed their
+              careers with LearnHub.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+              <button
+                onclick="window.location.hash = 'courses'"
+                class="btn bg-white text-purple-600 hover:bg-purple-50"
+              >
+                <i class="fas fa-book-open mr-2"></i> Browse Courses
+              </button>
+              <button
+                onclick="showRegisterModal()"
+                class="btn bg-transparent border-2 border-white text-white hover:bg-white/10"
+              >
+                <i class="fas fa-user-plus mr-2"></i> Join Free
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- Contact Page -->
       <div id="contact-page" class="page page-hidden">
-        <div class="min-h-screen">
-          <!-- Header -->
-          <section class="hero-gradient py-16">
-            <div class="container mx-auto px-4 text-center">
-              <h1 class="mb-4 text-4xl font-bold">Contact Us</h1>
-              <p class="mx-auto max-w-2xl text-lg text-muted-foreground">
-                Have questions about our courses? We're here to help. Reach out
-                to us and we'll respond as soon as possible.
-              </p>
-            </div>
-          </section>
+        <div class="container mx-auto px-4 py-8">
+          <div class="mb-8">
+            <h2 class="text-3xl font-bold mb-4">Contact Us</h2>
+            <p class="text-muted-foreground">
+              Have questions? We'd love to hear from you.
+            </p>
+          </div>
 
-          <div class="container mx-auto px-4 py-12">
-            <div class="grid gap-8 lg:grid-cols-3">
-              <!-- Contact Information -->
-              <div class="space-y-6">
-                <div class="card card-hover">
-                  <div class="p-6">
-                    <h3 class="mb-4 text-lg font-bold">Get in Touch</h3>
-                    <div class="space-y-6">
-                      <div class="flex items-start gap-4">
-                        <div
-                          class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary to-purple-500"
-                        >
-                          <i class="fas fa-envelope"></i>
-                        </div>
-                        <div>
-                          <p class="font-medium">Email</p>
-                          <a
-                            href="mailto:support@learnhub.com"
-                            class="text-muted-foreground hover:text-primary"
-                            >support@learnhub.com</a
-                          >
-                        </div>
-                      </div>
-
-                      <div class="flex items-start gap-4">
-                        <div
-                          class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary to-purple-500"
-                        >
-                          <i class="fas fa-phone"></i>
-                        </div>
-                        <div>
-                          <p class="font-medium">Phone</p>
-                          <a
-                            href="tel:+15551234567"
-                            class="text-muted-foreground hover:text-primary"
-                            >+1 (555) 123-4567</a
-                          >
-                        </div>
-                      </div>
-
-                      <div class="flex items-start gap-4">
-                        <div
-                          class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary to-purple-500"
-                        >
-                          <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div>
-                          <p class="font-medium">Address</p>
-                          <p class="text-muted-foreground">
-                            123 Learning Street<br />
-                            Tech City, TC 12345
-                          </p>
-                        </div>
-                      </div>
-
-                      <div class="flex items-start gap-4">
-                        <div
-                          class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary to-purple-500"
-                        >
-                          <i class="fas fa-clock"></i>
-                        </div>
-                        <div>
-                          <p class="font-medium">Operating Hours</p>
-                          <p class="text-muted-foreground">
-                            8:00 AM - 10:00 PM (EST)
-                          </p>
-                          <p class="mt-1 text-sm text-muted-foreground">
-                            Purchases available during these hours only
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Contact Form -->
+            <div
+              class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700"
+            >
+              <h3 class="text-xl font-bold mb-6">Send us a message</h3>
+              <form id="contact-form" class="space-y-6">
+                <div>
+                  <label class="block mb-2 font-medium text-purple-600"
+                    >Full Name</label
+                  >
+                  <input
+                    type="text"
+                    id="contact-name"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-purple-400"
+                    placeholder="Your name"
+                    required
+                  />
                 </div>
 
-                <!-- Social Links -->
-                <div class="card card-hover">
-                  <div class="p-6">
-                    <h3 class="mb-4 font-bold">Follow Us</h3>
-                    <div class="flex gap-4">
-                      <a href="#" class="social-icon">
-                        <i class="fab fa-facebook"></i>
-                      </a>
-                      <a href="#" class="social-icon">
-                        <i class="fab fa-twitter"></i>
-                      </a>
-                      <a href="#" class="social-icon">
-                        <i class="fab fa-linkedin"></i>
-                      </a>
-                      <a href="#" class="social-icon">
-                        <i class="fab fa-github"></i>
-                      </a>
+                <div>
+                  <label class="block mb-2 font-medium text-purple-600"
+                    >Email Address</label
+                  >
+                  <input
+                    type="email"
+                    id="contact-email"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-purple-400"
+                    placeholder="you@example.com"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label class="block mb-2 font-medium text-purple-600"
+                    >Subject</label
+                  >
+                  <input
+                    type="text"
+                    id="contact-subject"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-purple-400"
+                    placeholder="How can we help?"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label class="block mb-2 font-medium text-purple-600"
+                    >Message</label
+                  >
+                  <textarea
+                    id="contact-message"
+                    rows="5"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-purple-400"
+                    placeholder="Your message here..."
+                    required
+                  ></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-full">
+                  <i class="fas fa-paper-plane mr-2"></i> Send Message
+                </button>
+              </form>
+
+              <!-- Success Message -->
+              <div
+                id="contact-success"
+                class="hidden mt-4 p-4 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-lg"
+              >
+                <i class="fas fa-check-circle mr-2"></i>
+                Message sent successfully! We'll get back to you soon.
+              </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="space-y-6">
+              <div
+                class="bg-gradient-to-r from-purple-600 to-purple-800 rounded-xl p-6 text-white"
+              >
+                <h3 class="text-xl font-bold mb-4">Get in Touch</h3>
+                <div class="space-y-4">
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center"
+                    >
+                      <i class="fas fa-envelope"></i>
+                    </div>
+                    <div>
+                      <p class="font-medium">Email</p>
+                      <p>support@learnhub.com</p>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center"
+                    >
+                      <i class="fas fa-phone"></i>
+                    </div>
+                    <div>
+                      <p class="font-medium">Phone</p>
+                      <p>+1 (555) 123-4567</p>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center"
+                    >
+                      <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div>
+                      <p class="font-medium">Address</p>
+                      <p>123 Tech Street, Silicon Valley, CA 94000</p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <!-- Contact Form -->
-              <div class="lg:col-span-2">
-                <div class="card card-hover">
-                  <div class="p-6">
-                    <h3 class="mb-2 text-xl font-bold">Send us a Message</h3>
-                    <p class="mb-6 text-muted-foreground">
-                      Fill out the form below and we'll get back to you shortly
+              <div
+                class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700"
+              >
+                <h4 class="font-bold mb-4 text-blue-700">
+                  Frequently Asked Questions
+                </h4>
+                <div class="space-y-3">
+                  <div
+                    class="border-b border-gray-200 dark:border-gray-700 pb-3"
+                  >
+                    <p class="font-medium mb-1 text-white-700">
+                      How do I access purchased courses?
                     </p>
-
-                    <div
-                      id="contact-success"
-                      class="alert alert-success mb-6 hidden"
-                    >
-                      <i class="fas fa-check-circle"></i>
-                      <div>
-                        <h4 class="font-medium">Thank you!</h4>
-                        <p class="text-sm">
-                          Your message has been sent successfully.
-                        </p>
-                      </div>
-                    </div>
-
-                    <form id="contact-form" class="space-y-6">
-                      <div class="grid gap-6 sm:grid-cols-2">
-                        <div>
-                          <label class="mb-2 block text-sm font-medium"
-                            >Full Name</label
-                          >
-                          <input
-                            type="text"
-                            id="contact-name"
-                            class="input"
-                            placeholder="John Doe"
-                            required
-                          />
-                        </div>
-                        <div>
-                          <label class="mb-2 block text-sm font-medium"
-                            >Email Address</label
-                          >
-                          <input
-                            type="email"
-                            id="contact-email"
-                            class="input"
-                            placeholder="john@example.com"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div>
-                        <label class="mb-2 block text-sm font-medium"
-                          >Subject</label
-                        >
-                        <input
-                          type="text"
-                          id="contact-subject"
-                          class="input"
-                          placeholder="How can we help you?"
-                          required
-                        />
-                      </div>
-
-                      <div>
-                        <label class="mb-2 block text-sm font-medium"
-                          >Message</label
-                        >
-                        <textarea
-                          id="contact-message"
-                          class="input min-h-[150px]"
-                          placeholder="Tell us more about your inquiry..."
-                          required
-                        ></textarea>
-                      </div>
-
-                      <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-paper-plane mr-2"></i> Send Message
-                      </button>
-                    </form>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                      All purchased courses are available in your dashboard
+                      24/7.
+                    </p>
+                  </div>
+                  <div
+                    class="border-b border-gray-200 dark:border-gray-700 pb-3"
+                  >
+                    <p class="font-medium mb-1 text-white-700">
+                      Can I download course materials?
+                    </p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                      Yes, all documents are downloadable from your dashboard.
+                    </p>
+                  </div>
+                  <div>
+                    <p class="font-medium mb-1 text-white-700">
+                      What's your refund policy?
+                    </p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                      We offer a 30-day money-back guarantee on all courses.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -1164,166 +1327,263 @@
 
       <!-- Dashboard Page -->
       <div id="dashboard-page" class="page page-hidden">
-        <div class="min-h-screen">
-          <!-- Header -->
-          <section class="hero-gradient py-8">
-            <div class="container mx-auto px-4">
-              <div
-                class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
-              >
-                <div class="flex items-center gap-4">
-                  <div
-                    class="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-primary to-purple-500"
-                  >
-                    <i class="fas fa-user text-2xl"></i>
-                  </div>
-                  <div>
-                    <h1 class="text-2xl font-bold" id="dashboard-user-name">
+        <div class="py-10">
+          <div class="container mx-auto px-4">
+            <!-- Header -->
+            <div class="mb-10">
+              <h1 class="text-3xl font-bold mb-2">My Dashboard</h1>
+              <p class="text-gray-600 dark:text-gray-400">
+                Manage your courses, documents, and account from your dashboard.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+              <!-- Sidebar - User Profile & Navigation -->
+              <div class="lg:col-span-1">
+                <div
+                  class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 mb-6"
+                >
+                  <!-- User Profile -->
+                  <div class="text-center">
+                    <div
+                      class="w-20 h-20 rounded-full bg-gradient-to-br from-purple-600 to-purple-500 mx-auto mb-4 flex items-center justify-center"
+                    >
+                      <i class="fas fa-user text-3xl text-white"></i>
+                    </div>
+                    <h2 id="dashboard-user-name" class="text-xl font-bold mb-1">
                       Aok Sreyna
-                    </h1>
-                    <p class="text-muted-foreground" id="dashboard-user-email">
-                      aoksreyna@example.com
+                    </h2>
+                    <p
+                      id="dashboard-user-email"
+                      class="text-gray-600 dark:text-gray-400 text-sm mb-3"
+                    >
+                      aoksreyna@gmail.com
+                    </p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">
+                      <i class="fas fa-calendar-alt mr-1"></i>
+                      Member Since:
+                      <span id="dashboard-member-date">Feb 2026</span>
                     </p>
                   </div>
-                </div>
-                <button
-                  class="btn btn-primary"
-                  onclick="window.location.hash = 'courses'"
-                >
-                  Browse Courses <i class="fas fa-arrow-right ml-2"></i>
-                </button>
-              </div>
-            </div>
-          </section>
 
-          <div class="container mx-auto px-4 py-8">
-            <!-- Stats Cards -->
-            <div class="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <div class="stats-card card-hover">
-                <div class="stats-icon">
-                  <i class="fas fa-book-open"></i>
-                </div>
-                <div class="stats-value" id="dashboard-courses-owned">0</div>
-                <div class="stats-label">Courses Owned</div>
-              </div>
-              <div class="stats-card card-hover">
-                <div class="stats-icon">
-                  <i class="fas fa-play-circle"></i>
-                </div>
-                <div class="stats-value" id="dashboard-modules-available">
-                  0
-                </div>
-                <div class="stats-label">Modules Available</div>
-              </div>
-              <div class="stats-card card-hover">
-                <div class="stats-icon">
-                  <i class="fas fa-receipt"></i>
-                </div>
-                <div class="stats-value" id="dashboard-transactions">0</div>
-                <div class="stats-label">Transactions</div>
-              </div>
-              <div class="stats-card card-hover">
-                <div class="stats-icon">
-                  <i class="fas fa-dollar-sign"></i>
-                </div>
-                <div class="stats-value" id="dashboard-total-invested">
-                  $0.00
-                </div>
-                <div class="stats-label">Total Invested</div>
-              </div>
-            </div>
+                  <!-- Navigation Menu -->
+                  <div
+                    class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700"
+                  >
+                    <h3
+                      class="font-bold mb-4 text-purple-600 dark:text-gray-300"
+                    >
+                      Quick Access
+                    </h3>
 
-            <!-- Tabs -->
-            <div class="tabs">
-              <button class="tab active" data-tab="courses">
-                <i class="fas fa-book-open mr-2"></i> My Courses
-              </button>
-              <button class="tab" data-tab="receipts">
-                <i class="fas fa-receipt mr-2"></i> Purchase History
-              </button>
-              <button class="tab" data-tab="profile">
-                <i class="fas fa-user mr-2"></i> Profile
-              </button>
-            </div>
+                    <!-- Navigation Links -->
+                    <nav class="space-y-2">
+                      <!-- My Courses Link -->
+                      <button
+                        onclick="showDashboardView('courses')"
+                        class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-purple-100 dark:hover:bg-gray-700 transition-colors text-left"
+                      >
+                        <div
+                          class="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900 flex items-center justify-center"
+                        >
+                          <i
+                            class="fas fa-video text-purple-600 dark:text-purple-400"
+                          ></i>
+                        </div>
+                        <div>
+                          <p class="font-medium">My Courses</p>
+                          <p class="text-xs text-gray-500 dark:text-gray-400">
+                            <span id="dashboard-course-count">0</span> purchased
+                          </p>
+                        </div>
+                      </button>
 
-            <!-- My Courses Tab -->
-            <div id="courses-tab" class="tab-content">
-              <div class="card card-hover">
-                <div class="p-6">
-                  <h3 class="mb-2 text-xl font-bold">My Courses</h3>
-                  <p class="mb-6 text-muted-foreground">
-                    Access all your purchased courses and continue learning
-                  </p>
-                  <div id="my-courses-list">
-                    <!-- Purchased courses will be loaded here -->
-                  </div>
-                </div>
-              </div>
-            </div>
+                      <!-- Receipts Link -->
+                      <button
+                        onclick="showDashboardView('receipts')"
+                        class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-blue-100 dark:hover:bg-gray-700 transition-colors text-left"
+                      >
+                        <div
+                          class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900 flex items-center justify-center"
+                        >
+                          <i
+                            class="fas fa-receipt text-blue-600 dark:text-blue-400"
+                          ></i>
+                        </div>
+                        <div>
+                          <p class="font-medium">View Receipts</p>
+                          <p class="text-xs text-gray-500 dark:text-gray-400">
+                            <span id="dashboard-receipts-count">0</span>
+                            transactions
+                          </p>
+                        </div>
+                      </button>
 
-            <!-- Receipts Tab -->
-            <div id="receipts-tab" class="tab-content hidden">
-              <div class="card card-hover">
-                <div class="p-6">
-                  <h3 class="mb-2 text-xl font-bold">Purchase History</h3>
-                  <p class="mb-6 text-muted-foreground">
-                    View all your transaction receipts
-                  </p>
-                  <div id="receipts-list">
-                    <!-- Receipts will be loaded here -->
-                  </div>
-                </div>
-              </div>
-            </div>
+                      <!-- Browse Documents Link -->
+                      <button
+                        onclick="window.location.hash = 'documents'"
+                        class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-green-100 dark:hover:bg-gray-700 transition-colors text-left"
+                      >
+                        <div
+                          class="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900 flex items-center justify-center"
+                        >
+                          <i
+                            class="fas fa-book-open text-green-600 dark:text-green-400"
+                          ></i>
+                        </div>
+                        <div>
+                          <p class="font-medium">Browse Documents</p>
+                          <p class="text-xs text-gray-500 dark:text-gray-400">
+                            21 available
+                          </p>
+                        </div>
+                      </button>
+                    </nav>
 
-            <!-- Profile Tab -->
-            <div id="profile-tab" class="tab-content hidden">
-              <div class="card card-hover">
-                <div class="p-6">
-                  <h3 class="mb-6 text-xl font-bold">Profile Information</h3>
-                  <div class="space-y-6">
-                    <div
-                      class="flex items-center gap-4 rounded-lg border border-border p-4"
+                    <!-- Logout Button -->
+                    <button
+                      onclick="logout()"
+                      class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/20 transition-colors text-left text-red-600 dark:text-red-400 mt-4"
                     >
                       <div
-                        class="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-primary to-purple-500"
+                        class="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900 flex items-center justify-center"
                       >
-                        <i class="fas fa-user text-2xl"></i>
+                        <i class="fas fa-sign-out-alt"></i>
                       </div>
                       <div>
-                        <p class="text-xl font-semibold" id="profile-name">
-                          John Doe
-                        </p>
-                        <p class="text-muted-foreground" id="profile-joined">
-                          Member since Jan 2024
+                        <p class="font-medium">Logout</p>
+                        <p class="text-xs">Sign out of your account</p>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Main Content Area -->
+              <div class="lg:col-span-3">
+                <!-- Content will be loaded here based on navigation -->
+                <div id="dashboard-content">
+                  <!-- Dashboard Main View (Default) -->
+                  <div id="dashboard-main-view" class="dashboard-view">
+                    <!-- Quick Stats -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                      <div
+                        class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6"
+                      >
+                        <h3 class="font-bold text-lg mb-4 text-purple-600">
+                          Purchased Courses
+                        </h3>
+                        <div class="flex items-end gap-2">
+                          <span
+                            class="text-4xl font-bold text-gray-900 dark:text-white"
+                            id="purchased-courses-count"
+                            >0</span
+                          >
+                          <span class="text-gray-500 dark:text-gray-400 mb-2"
+                            >courses</span
+                          >
+                        </div>
+                        <button
+                          onclick="showDashboardView('courses')"
+                          class="mt-4 text-purple-600 hover:text-purple-700 font-medium"
+                        >
+                          View All →
+                        </button>
+                      </div>
+
+                      <div
+                        class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6"
+                      >
+                        <h3 class="font-bold text-lg mb-4 text-green-600">Total Spent</h3>
+                        <div class="flex items-end gap-2">
+                          <span
+                            class="text-4xl font-bold text-gray-900 dark:text-white"
+                            id="total-spent-amount"
+                            >$0.00</span
+                          >
+                        </div>
+                        <button
+                          onclick="showDashboardView('receipts')"
+                          class="mt-4 text-green-400 hover:text-purple-700 font-medium"
+                        >
+                          View Receipts →
+                        </button>
+                      </div>
+
+                      <div
+                        class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6"
+                      >
+                        <h3 class="font-bold text-lg mb-4 text-blue-600">Last Purchase</h3>
+                        <div class="flex items-end gap-2">
+                          <span
+                            class="text-2xl font-bold text-gray-900 dark:text-white"
+                            id="last-purchase-date"
+                            >-</span
+                          >
+                        </div>
+                        <p
+                          class="text-blue-400 dark:text-gray-400 mt-2"
+                          id="last-purchase-course"
+                        >
+                          No purchases yet
                         </p>
                       </div>
                     </div>
 
-                    <div class="grid gap-4 sm:grid-cols-2">
-                      <div class="rounded-lg border border-border p-4">
-                        <div
-                          class="flex items-center gap-2 text-muted-foreground"
-                        >
-                          <i class="fas fa-envelope"></i>
-                          <span class="text-sm">Email Address</span>
-                        </div>
-                        <p class="mt-1 font-medium" id="profile-email">
-                          john@example.com
+                    <!-- Recent Courses (Show 3) -->
+                    <div
+                      class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 mb-6"
+                    >
+                      <div
+                        class="p-6 border-b border-gray-200 dark:border-gray-700"
+                      >
+                        <h2 class="text-xl font-bold">My Recent Courses</h2>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm">
+                          Recently purchased courses
                         </p>
                       </div>
-                      <div class="rounded-lg border border-border p-4">
+                      <div class="p-6">
                         <div
-                          class="flex items-center gap-2 text-muted-foreground"
+                          class="grid grid-cols-1 md:grid-cols-3 gap-6"
+                          id="recent-courses-grid"
                         >
-                          <i class="fas fa-calendar"></i>
-                          <span class="text-sm">Account Created</span>
+                          <!-- Will be populated by JavaScript -->
+                          <div class="text-center py-12 col-span-3">
+                            <i
+                              class="fas fa-video text-gray-300 dark:text-gray-600 text-4xl mb-4"
+                            ></i>
+                            <h3 class="text-lg font-semibold mb-2">
+                              No Courses Purchased
+                            </h3>
+                            <p class="text-gray-600 dark:text-gray-400 mb-4">
+                              You haven't purchased any courses yet.
+                            </p>
+                            <button
+                              onclick="window.location.hash = 'courses'"
+                              class="btn btn-primary py-2 px-4"
+                            >
+                              Browse Courses
+                            </button>
+                          </div>
                         </div>
-                        <p class="mt-1 font-medium" id="profile-created">
-                          Jan 15, 2024
-                        </p>
                       </div>
                     </div>
+                  </div>
+
+                  <!-- My Courses View (Hidden by default) -->
+                  <div
+                    id="dashboard-courses-view"
+                    class="dashboard-view hidden"
+                  >
+                    <!-- Courses content will be loaded here -->
+                  </div>
+
+                  <!-- Receipts View (Hidden by default) -->
+                  <div
+                    id="dashboard-receipts-view"
+                    class="dashboard-view hidden"
+                  >
+                    <!-- Receipts content will be loaded here -->
                   </div>
                 </div>
               </div>
@@ -1334,62 +1594,57 @@
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-border bg-card">
+    <footer class="footer">
       <div class="container mx-auto px-4 py-8">
-        <div class="grid gap-8 md:grid-cols-4">
+        <div class="footer-grid">
           <div>
-            <div class="flex items-center gap-2 mb-4">
-              <div
-                class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-purple-500"
-              >
-                <i class="fas fa-graduation-cap text-white"></i>
+            <div class="footer-logo">
+              <div class="logo-icon">
+                <i class="fas fa-graduation-cap"></i>
               </div>
-              <span
-                class="text-xl font-bold bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent"
-                >LearnHub</span
-              >
+              <span class="logo-text"> LearnHub </span>
             </div>
-            <p class="text-sm text-muted-foreground">
+            <p class="text-muted-foreground">
               Empowering learners with quality tech education through expert-led
               video courses.
             </p>
           </div>
 
           <div>
-            <h4 class="mb-4 font-semibold">Quick Links</h4>
-            <ul class="space-y-2 text-sm">
-              <li>
+            <h4 class="font-bold mb-4">Quick Links</h4>
+            <ul>
+              <li class="mb-2">
                 <a
                   href="#home"
-                  class="text-muted-foreground hover:text-primary transition-colors"
+                  class="text-muted-foreground hover:text-purple-600 transition-colors"
                   >Home</a
                 >
               </li>
-              <li>
+              <li class="mb-2">
                 <a
                   href="#courses"
-                  class="text-muted-foreground hover:text-primary transition-colors"
+                  class="text-muted-foreground hover:text-purple-600 transition-colors"
                   >Courses</a
                 >
               </li>
-              <li>
+              <li class="mb-2">
                 <a
                   href="#documents"
-                  class="text-muted-foreground hover:text-primary transition-colors"
+                  class="text-muted-foreground hover:text-purple-600 transition-colors"
                   >Documents</a
                 >
               </li>
-              <li>
+              <li class="mb-2">
                 <a
                   href="#about"
-                  class="text-muted-foreground hover:text-primary transition-colors"
+                  class="text-muted-foreground hover:text-purple-600 transition-colors"
                   >About</a
                 >
               </li>
-              <li>
+              <li class="mb-2">
                 <a
                   href="#contact"
-                  class="text-muted-foreground hover:text-primary transition-colors"
+                  class="text-muted-foreground hover:text-purple-600 transition-colors"
                   >Contact</a
                 >
               </li>
@@ -1397,33 +1652,33 @@
           </div>
 
           <div>
-            <h4 class="mb-4 font-semibold">Support</h4>
-            <ul class="space-y-2 text-sm">
-              <li>
+            <h4 class="font-bold mb-4">Support</h4>
+            <ul>
+              <li class="mb-2">
                 <a
                   href="#contact"
-                  class="text-muted-foreground hover:text-primary transition-colors"
+                  class="text-muted-foreground hover:text-purple-600 transition-colors"
                   >Help Center</a
                 >
               </li>
-              <li>
+              <li class="mb-2">
                 <a
                   href="#"
-                  class="text-muted-foreground hover:text-primary transition-colors"
+                  class="text-muted-foreground hover:text-purple-600 transition-colors"
                   >Privacy Policy</a
                 >
               </li>
-              <li>
+              <li class="mb-2">
                 <a
                   href="#"
-                  class="text-muted-foreground hover:text-primary transition-colors"
+                  class="text-muted-foreground hover:text-purple-600 transition-colors"
                   >Terms of Service</a
                 >
               </li>
-              <li>
+              <li class="mb-2">
                 <a
                   href="#"
-                  class="text-muted-foreground hover:text-primary transition-colors"
+                  class="text-muted-foreground hover:text-purple-600 transition-colors"
                   >FAQ</a
                 >
               </li>
@@ -1431,28 +1686,28 @@
           </div>
 
           <div>
-            <h4 class="mb-4 font-semibold">Stay Updated</h4>
-            <p class="mb-4 text-sm text-muted-foreground">
+            <h4 class="font-bold mb-4">Stay Updated</h4>
+            <p class="text-muted-foreground mb-4">
               Subscribe to our newsletter for the latest course updates and
               learning resources.
             </p>
-            <div class="flex">
+            <div class="newsletter">
               <input
                 type="email"
                 placeholder="Your email"
-                class="input rounded-r-none"
+                class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-l-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               />
-              <button class="btn btn-primary rounded-l-none">
+              <button class="btn btn-primary rounded-l-none px-4">
                 <i class="fas fa-paper-plane"></i>
               </button>
             </div>
           </div>
         </div>
 
-        <div
-          class="mt-8 border-t border-border pt-8 text-center text-sm text-muted-foreground"
-        >
-          <p>&copy; 2024 LearnHub. All rights reserved.</p>
+        <div class="footer-bottom">
+          <p class="text-muted-foreground">
+            &copy; 2024 LearnHub. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>
