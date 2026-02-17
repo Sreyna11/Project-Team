@@ -101,13 +101,7 @@
               </div>
               <!-- User menu (shown when logged in) -->
               <div id="user-menu" class="hidden items-center gap-2 md:gap-3">
-                <div class="flex items-center gap-2 user-info">
-                  <div
-                    class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-600 to-purple-500 flex items-center justify-center"
-                  >
-                    <i class="fas fa-user text-sm text-white"></i>
-                  </div>
-                </div>
+                <div class="flex items-center gap-2 user-info"></div>
                 <button
                   class="btn btn-outline text-xs md:text-sm px-2 md:px-3 py-2"
                   onclick="window.location.hash = 'dashboard'"
@@ -396,7 +390,9 @@
         </section>
 
         <!-- CTA Section -->
-        <section class="py-16 bg-gradient-to-r from-purple-600 to-purple-800">
+        <section
+          class="bg-gradient-to-r from-purple-600 to-purple-800 rounded-2xl p-8 text-center lg:mx-32"
+        >
           <div class="container mx-auto px-4 text-center">
             <h2 class="text-3xl font-bold text-white mb-4">
               Ready to Start Learning?
@@ -547,253 +543,356 @@
         </div>
       </div>
 
-      <!-- Course Detail Page -->
+      <!-- Course detail page -->
       <div id="course-detail-page" class="page page-hidden">
-        <!-- Course Detail Page -->
-        <div class="py-10">
+        <div class="py-6 lg:py-10">
           <div class="container mx-auto px-4">
             <!-- Back Button -->
             <button
               onclick="window.location.hash = 'courses'"
-              class="mb-6 flex items-center text-purple-600 hover:text-purple-700 bg-purple-100 rounded-2xl p-2"
+              class="mb-4 lg:mb-6 flex items-center text-purple-600 hover:text-purple-700 bg-purple-100 rounded-2xl p-2 text-sm lg:text-base"
             >
-              <i class="fas fa-arrow-left mr-2"></i> Back to Courses
+              <i class="fas fa-arrow-left mr-2 text-xs lg:text-sm"></i> Back to
+              Courses
             </button>
 
-            <div class="grid gap-8 lg:grid-cols-3">
-              <!-- Left Column: Video -->
-              <div class="lg:col-span-2 space-y-6">
-                <!-- Video Preview Card -->
-                <div
-                  class="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden"
-                >
-                  <!-- Video Placeholder -->
-                  <div
-                    id="course-video-player"
-                    class="aspect-video bg-gray-900 flex items-center justify-center"
-                  >
-                    <!-- Default locked state -->
-                    <div class="text-center p-8">
-                      <div class="mb-6">
-                        <i
-                          class="fas fa-lock text-6xl text-yellow-500 mb-4"
-                        ></i>
-                        <h3 class="text-2xl font-bold text-white mb-2">
-                          Video Locked
-                        </h3>
-                        <p class="text-gray-300">
-                          Purchase this course to watch the video
-                        </p>
-                      </div>
-                      <button
-                        id="purchase-video-btn"
-                        class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
-                      >
-                        <i class="fas fa-shopping-cart mr-2"></i> Purchase to
-                        Unlock
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Course Title & Description -->
-                <div>
-                  <span
-                    id="course-detail-category"
-                    class="badge badge-secondary mb-3 bg-gradient-to-br from-purple-100 to-white border-2 border-purple-300"
-                  ></span>
-                  <h1
-                    id="course-detail-title"
-                    class="mb-4 text-3xl font-bold"
-                  ></h1>
-                  <p
-                    id="course-detail-description"
-                    class="text-lg text-muted-foreground"
-                  ></p>
-                </div>
-                <!-- Course Stats Grid -->
-                <div
-                  class="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 xs:gap-3 sm:gap-4 px-1 xs:px-2 sm:px-0"
-                >
-                  <div
-                    class="text-center p-2 xs:p-3 sm:p-4 md:p-5 bg-gradient-to-br from-purple-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-lg xs:rounded-xl border border-purple-100 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-600 hover:shadow-sm xs:hover:shadow-md sm:hover:shadow-lg hover:scale-[1.02] xs:hover:scale-[1.02] transition-all duration-200 outline-none focus:outline-none focus:ring-1 xs:focus:ring-2 focus:ring-purple-500"
-                  >
-                    <i
-                      class="fas fa-video text-purple-600 dark:text-purple-400 text-base xs:text-lg sm:text-xl mx-auto mb-1.5 xs:mb-2 sm:mb-3"
-                    ></i>
-                    <div
-                      class="text-sm xs:text-base sm:text-lg md:text-xl font-bold text-black mb-0.5 xs:mb-0.5 sm:mb-1"
-                    >
-                      1 Video
-                    </div>
-                    <div
-                      class="text-xs xs:text-xs sm:text-sm text-gray-500 dark:text-gray-400"
-                    >
-                      Comprehensive
-                    </div>
-                  </div>
-
-                  <div
-                    class="text-center p-2 xs:p-3 sm:p-4 md:p-5 bg-gradient-to-br from-blue-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-lg xs:rounded-xl border border-blue-100 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-sm xs:hover:shadow-md sm:hover:shadow-lg hover:scale-[1.02] xs:hover:scale-[1.02] transition-all duration-200 outline-none focus:outline-none focus:ring-1 xs:focus:ring-2 focus:ring-blue-500"
-                  >
-                    <i
-                      class="fas fa-clock text-blue-600 dark:text-blue-400 text-base xs:text-lg sm:text-xl mx-auto mb-1.5 xs:mb-2 sm:mb-3"
-                    ></i>
-                    <div
-                      id="course-duration-value"
-                      class="text-sm xs:text-base sm:text-lg md:text-xl font-bold text-black mb-0.5 xs:mb-0.5 sm:mb-1"
-                    >
-                      3h 45m
-                    </div>
-                    <div
-                      class="text-xs xs:text-xs sm:text-sm text-gray-500 dark:text-gray-400"
-                    >
-                      Duration
-                    </div>
-                  </div>
-
-                  <div
-                    class="text-center p-2 xs:p-3 sm:p-4 md:p-5 bg-gradient-to-br from-green-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-lg xs:rounded-xl border border-green-100 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-600 hover:shadow-sm xs:hover:shadow-md sm:hover:shadow-lg hover:scale-[1.02] xs:hover:scale-[1.02] transition-all duration-200 outline-none focus:outline-none focus:ring-1 xs:focus:ring-2 focus:ring-green-500"
-                  >
-                    <i
-                      class="fas fa-award text-green-600 dark:text-green-400 text-base xs:text-lg sm:text-xl mx-auto mb-1.5 xs:mb-2 sm:mb-3"
-                    ></i>
-                    <div
-                      class="text-sm xs:text-base sm:text-lg md:text-xl font-bold text-black mb-0.5 xs:mb-0.5 sm:mb-1"
-                    >
-                      Certificate
-                    </div>
-                    <div
-                      class="text-xs xs:text-xs sm:text-sm text-gray-500 dark:text-gray-400"
-                    >
-                      Included
-                    </div>
-                  </div>
-
-                  <div
-                    class="text-center p-2 xs:p-3 sm:p-4 md:p-5 bg-gradient-to-br from-orange-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-lg xs:rounded-xl border border-orange-100 dark:border-gray-700 hover:border-orange-300 dark:hover:border-orange-600 hover:shadow-sm xs:hover:shadow-md sm:hover:shadow-lg hover:scale-[1.02] xs:hover:scale-[1.02] transition-all duration-200 outline-none focus:outline-none focus:ring-1 xs:focus:ring-2 focus:ring-orange-500"
-                  >
-                    <i
-                      class="fas fa-infinity text-orange-600 dark:text-orange-400 text-base xs:text-lg sm:text-xl mx-auto mb-1.5 xs:mb-2 sm:mb-3"
-                    ></i>
-                    <div
-                      class="text-sm xs:text-base sm:text-lg md:text-xl font-bold text-black mb-0.5 xs:mb-0.5 sm:mb-1"
-                    >
-                      Lifetime
-                    </div>
-                    <div
-                      class="text-xs xs:text-xs sm:text-sm text-gray-500 dark:text-gray-400"
-                    >
-                      Access
-                    </div>
-                  </div>
-                </div>
-
-                <!-- What You'll Learn -->
-                <div
-                  class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6"
-                >
-                  <h2 class="text-2xl font-bold mb-4">What You'll Learn</h2>
-                  <ul id="course-learning-points" class="space-y-3">
-                    <!-- Will be filled by JavaScript -->
-                  </ul>
-                </div>
-              </div>
-
-              <!-- Right Column: Purchase Card -->
+            <div class="grid gap-6 lg:gap-8 lg:grid-cols-4">
+              <!-- Left Sidebar - Module Navigation (Desktop Only) -->
               <div class="lg:col-span-1">
-                <div class="sticky top-24">
-                  <!-- Price Card -->
+                <!-- Desktop Sidebar Container (Hidden on Mobile) -->
+                <div id="desktop-sidebar" class="hidden lg:block space-y-4">
+                  <!-- Modules List Card -->
                   <div
-                    class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+                    class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden"
+                  >
+                    <div
+                      class="p-4 border-b border-gray-200 dark:border-gray-700"
+                    >
+                      <h3
+                        class="font-bold text-lg mb-1"
+                        id="sidebar-course-title"
+                      >
+                        Course Title
+                      </h3>
+                      <div class="flex items-center justify-between">
+                        <span
+                          class="text-sm text-gray-600 dark:text-gray-400"
+                          id="sidebar-course-modules"
+                          >0 modules</span
+                        >
+                        <span
+                          class="text-sm font-semibold text-purple-600"
+                          id="sidebar-course-price"
+                          >$0.00</span
+                        >
+                      </div>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div
+                      class="p-4 border-b border-gray-200 dark:border-gray-700"
+                    >
+                      <div class="flex justify-between text-sm mb-1">
+                        <span class="text-gray-600 dark:text-gray-400"
+                          >Progress</span
+                        >
+                        <span
+                          class="font-medium"
+                          id="sidebar-progress-percentage"
+                          >0%</span
+                        >
+                      </div>
+                      <div
+                        class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden"
+                      >
+                        <div
+                          id="sidebar-progress-bar"
+                          class="h-full bg-purple-600 rounded-full"
+                          style="width: 0%"
+                        ></div>
+                      </div>
+                      <p
+                        class="text-xs text-gray-500 dark:text-gray-400 mt-2"
+                        id="sidebar-progress-text"
+                      >
+                        Start learning to track progress
+                      </p>
+                    </div>
+
+                    <!-- Module List -->
+                    <div class="overflow-y-auto max-h-[40vh]">
+                      <div class="p-2" id="desktop-module-list">
+                        <!-- Desktop modules will be loaded here -->
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Desktop Purchase Card - Only visible on desktop -->
+                  <div
+                    class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden lg:block hidden"
                   >
                     <!-- Price Section -->
                     <div
-                      class="p-6 border-b border-gray-200 dark:border-gray-700"
+                      class="p-4 border-b border-gray-200 dark:border-gray-700"
                     >
-                      <div
-                        id="course-detail-price"
-                        class="text-4xl font-bold text-gray-900 dark:text-white"
-                      >
-                        $0.00
+                      <div class="flex items-end gap-2">
+                        <div
+                          id="desktop-price"
+                          class="text-2xl font-bold text-gray-900 dark:text-white"
+                        >
+                          $0.00
+                        </div>
+                        <span
+                          class="text-sm text-gray-500 dark:text-gray-400 mb-1"
+                          >one-time</span
+                        >
                       </div>
-                      <p class="text-gray-600 dark:text-gray-300 mt-1">
-                        One-time purchase for single video
+                      <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                        Lifetime access to all modules
                       </p>
                     </div>
 
                     <!-- System Status -->
                     <div
-                      id="system-status-card"
-                      class="p-6 border-b border-gray-200 dark:border-gray-700"
+                      class="p-4 border-b border-gray-200 dark:border-gray-700"
                     >
-                      <div class="flex items-center">
-                        <i
-                          class="fas fa-check-circle text-green-500 mr-3 text-xl"
-                        ></i>
-                        <div>
-                          <h3 class="font-bold text-green-600">System Open</h3>
-                          <p class="text-sm text-gray-600 dark:text-gray-300">
-                            Purchases are now available
-                          </p>
-                        </div>
+                      <div id="desktop-system-status">
+                        <!-- System status will be loaded here -->
                       </div>
                     </div>
 
                     <!-- Purchase Button -->
-                    <div
-                      class="p-6 border-b border-gray-200 dark:border-gray-700"
-                    >
+                    <div class="p-4 bg-gray-50 dark:bg-gray-900">
                       <button
-                        id="purchase-button"
-                        class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                        id="desktop-purchase-button"
+                        class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed mb-2 text-sm"
                       >
-                        <i class="fas fa-shopping-cart mr-2"></i> Purchase Video
-                        (<span id="purchase-price">$0.00</span>)
+                        <i class="fas fa-shopping-cart mr-2"></i>
+                        <span id="desktop-purchase-button-text"
+                          >Purchase Course</span
+                        >
                       </button>
                       <p
-                        id="purchase-status-text"
-                        class="text-center text-sm text-gray-500 dark:text-gray-400 mt-2"
+                        class="text-center text-xs text-gray-500 dark:text-gray-400"
                       >
-                        One-time payment • Lifetime access
+                        <span> One time payment-Lifetime access</span>
                       </p>
                     </div>
+                  </div>
+                </div>
 
-                    <!-- Course Includes -->
-                    <div class="p-6">
-                      <h3 class="font-bold text-lg mb-4">
-                        This Course Includes:
+                <!-- Mobile Modules Toggle Button -->
+                <div class="lg:hidden mb-4">
+                  <button
+                    id="mobile-modules-toggle"
+                    class="w-full flex items-center justify-between p-3 rounded-xl bg-purple-600 text-white hover:bg-purple-700 transition-colors text-sm"
+                  >
+                    <span class="font-medium">View Course Modules</span>
+                    <i class="fas fa-chevron-right text-xs"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Main Content Area - Video Player & Info -->
+              <div class="lg:col-span-3">
+                <!-- Video Player Container -->
+                <div class="mb-4 lg:mb-6">
+                  <div
+                    id="course-video-player"
+                    class="aspect-video bg-gray-700 rounded-xl overflow-hidden"
+                  >
+                    <!-- Default message - will be replaced with module video -->
+                    <div
+                      class="w-full h-full flex flex-col items-center justify-center p-4 lg:p-8 text-center"
+                    >
+                      <i
+                        class="fas fa-play-circle text-4xl lg:text-6xl text-purple-600 mb-2 lg:mb-4"
+                      ></i>
+                      <h3
+                        class="text-lg lg:text-2xl font-bold text-white mb-1 lg:mb-2"
+                      >
+                        Select a Module
                       </h3>
-                      <div class="space-y-3">
-                        <div class="flex items-center">
-                          <i class="fas fa-check text-green-500 mr-3"></i>
-                          <span>1 comprehensive video lesson</span>
+                      <p class="text-xs lg:text-sm text-gray-300 max-w-md px-2">
+                        Click the "View Course Modules" button to start
+                        learning. The introduction module is free!
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Course Information -->
+                <div class="space-y-4 lg:space-y-6">
+                  <!-- Course Title & Description -->
+                  <div>
+                    <span
+                      id="course-detail-category"
+                      class="inline-block px-2 lg:px-3 py-1 rounded-full bg-purple-100 text-purple-700 text-xs lg:text-sm font-semibold mb-2 lg:mb-3"
+                    ></span>
+                    <h1
+                      id="course-detail-title"
+                      class="text-xl lg:text-3xl font-bold mb-2 lg:mb-3"
+                    ></h1>
+                    <p
+                      id="course-detail-description"
+                      class="text-sm lg:text-base text-gray-600 dark:text-gray-300"
+                    ></p>
+                  </div>
+
+                  <!-- Mobile Purchase Card - Only visible on mobile, below description -->
+                  <div class="lg:hidden block">
+                    <div
+                      class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden"
+                    >
+                      <!-- Price Section -->
+                      <div
+                        class="p-3 lg:p-4 border-b border-gray-200 dark:border-gray-700"
+                      >
+                        <div class="flex items-end gap-2">
+                          <div
+                            id="mobile-price"
+                            class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white"
+                          >
+                            $0.00
+                          </div>
+                          <span
+                            class="text-xs lg:text-sm text-gray-500 dark:text-gray-400 mb-1"
+                            >one-time</span
+                          >
                         </div>
-                        <div class="flex items-center">
-                          <i class="fas fa-check text-green-500 mr-3"></i>
-                          <span>Downloadable resources</span>
-                        </div>
-                        <div class="flex items-center">
-                          <i class="fas fa-check text-green-500 mr-3"></i>
-                          <span>Certificate of completion</span>
-                        </div>
-                        <div class="flex items-center">
-                          <i class="fas fa-check text-green-500 mr-3"></i>
-                          <span>Lifetime access</span>
+                        <p
+                          class="text-xs lg:text-sm text-gray-600 dark:text-gray-300 mt-1"
+                        >
+                          Lifetime access to all modules
+                        </p>
+                      </div>
+
+                      <!-- System Status -->
+                      <div
+                        class="p-3 lg:p-4 border-b border-gray-200 dark:border-gray-700"
+                      >
+                        <div id="mobile-system-status">
+                          <!-- System status will be loaded here -->
                         </div>
                       </div>
+
+                      <!-- Purchase Button -->
+                      <div class="p-3 lg:p-4 bg-gray-50 dark:bg-gray-900">
+                        <button
+                          id="mobile-purchase-button"
+                          class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 lg:py-3 px-4 rounded-lg transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed text-sm"
+                        >
+                          <i class="fas fa-shopping-cart mr-2 text-xs"></i>
+                          Purchase Course
+                        </button>
+                        <p
+                          class="text-center text-xs text-gray-500 dark:text-gray-400 mt-2"
+                        >
+                          <span>One time Payment - Lifetime access</span>
+                        </p>
+                      </div>
                     </div>
-                    <!-- Footer note -->
-                    <div
-                      class="p-2 xs:p-3 sm:p-4 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700 text-center"
+                  </div>
+
+                  <!-- What You'll Learn -->
+                  <div>
+                    <h2 class="text-lg lg:text-xl font-bold mb-3 lg:mb-4">
+                      What You'll Learn
+                    </h2>
+                    <ul
+                      id="course-learning-points"
+                      class="space-y-2 text-sm lg:text-base"
                     >
-                      <p
-                        class="text-xs text-gray-500 dark:text-gray-400 truncate"
-                      >
-                        <i class="fas fa-headset mr-1 text-xs xs:text-sm"></i>
-                        24/7 support available
-                      </p>
-                    </div>
+                      <!-- Will be filled by JavaScript -->
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mobile Modules Overlay -->
+            <div
+              id="mobile-modules-overlay"
+              class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden lg:hidden"
+            >
+              <div
+                class="absolute right-0 top-0 h-full w-4/5 max-w-sm bg-white dark:bg-gray-800 shadow-xl overflow-hidden"
+              >
+                <!-- Mobile Menu Header -->
+                <div
+                  class="p-3 lg:p-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-purple-600 to-purple-700 text-white flex justify-between items-center"
+                >
+                  <h3 class="font-bold text-base lg:text-lg">Course Modules</h3>
+                  <button
+                    id="close-mobile-modules"
+                    class="p-1.5 lg:p-2 hover:bg-white/10 rounded-lg"
+                  >
+                    <i class="fas fa-times text-base lg:text-lg"></i>
+                  </button>
+                </div>
+
+                <!-- Mobile Progress -->
+                <div
+                  class="p-3 lg:p-4 border-b border-gray-200 dark:border-gray-700"
+                >
+                  <div class="flex justify-between text-xs lg:text-sm mb-2">
+                    <span class="text-gray-600 dark:text-gray-400"
+                      >Progress</span
+                    >
+                    <span
+                      class="font-bold text-purple-600 dark:text-purple-400"
+                      id="mobile-progress-percentage"
+                      >0%</span
+                    >
+                  </div>
+                  <div
+                    class="h-1.5 lg:h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden"
+                  >
+                    <div
+                      id="mobile-progress-bar"
+                      class="h-full bg-gradient-to-r from-purple-500 to-purple-600 rounded-full"
+                      style="width: 0%"
+                    ></div>
+                  </div>
+                  <p
+                    class="text-xs text-gray-500 dark:text-gray-400 mt-2"
+                    id="mobile-progress-text"
+                  >
+                    Start learning to track progress
+                  </p>
+                </div>
+
+                <!-- Course Info -->
+                <div
+                  class="p-3 lg:p-4 border-b border-gray-200 dark:border-gray-700 bg-purple-50 dark:bg-purple-900/20"
+                >
+                  <h4
+                    class="font-semibold text-sm lg:text-base text-gray-900 dark:text-white"
+                    id="mobile-sidebar-title"
+                  >
+                    Course Title
+                  </h4>
+                  <div class="flex justify-between items-center mt-1">
+                    <span
+                      class="text-xs lg:text-sm text-gray-600 dark:text-gray-400"
+                      id="mobile-sidebar-modules"
+                      >0 modules</span
+                    >
+                    <span
+                      class="text-xs lg:text-sm font-bold text-purple-600 dark:text-purple-400"
+                      id="mobile-sidebar-price"
+                      >$0.00</span
+                    >
+                  </div>
+                </div>
+
+                <!-- Mobile Module List -->
+                <div
+                  class="overflow-y-auto"
+                  style="height: calc(100vh - 260px)"
+                >
+                  <div class="p-2 lg:p-3" id="mobile-module-list">
+                    <!-- Mobile modules will be loaded here -->
                   </div>
                 </div>
               </div>
@@ -1276,7 +1375,7 @@
                     </div>
                     <div>
                       <p class="font-medium">Address</p>
-                      <p>123 Tech Street, Silicon Valley, CA 94000</p>
+                      <p>St 271, Steung Mean Chey , Mean Chey , Phnom Penh, Cambodia</p>
                     </div>
                   </div>
                 </div>
@@ -1494,7 +1593,9 @@
                       <div
                         class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6"
                       >
-                        <h3 class="font-bold text-lg mb-4 text-green-600">Total Spent</h3>
+                        <h3 class="font-bold text-lg mb-4 text-green-600">
+                          Total Spent
+                        </h3>
                         <div class="flex items-end gap-2">
                           <span
                             class="text-4xl font-bold text-gray-900 dark:text-white"
@@ -1513,7 +1614,9 @@
                       <div
                         class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6"
                       >
-                        <h3 class="font-bold text-lg mb-4 text-blue-600">Last Purchase</h3>
+                        <h3 class="font-bold text-lg mb-4 text-blue-600">
+                          Last Purchase
+                        </h3>
                         <div class="flex items-end gap-2">
                           <span
                             class="text-2xl font-bold text-gray-900 dark:text-white"

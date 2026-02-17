@@ -18,19 +18,17 @@ const logoutBtn = document.getElementById("logout-btn");
 const mobileMenuBtn = document.getElementById("mobile-menu-btn");
 const mobileMenu = document.getElementById("mobile-menu");
 
-// Course Data with real YouTube links
+// Course Data
 const courseData = [
   {
     id: 1,
     title: "Frontend Web Development",
     category: "Web Development",
     price: 29.99,
-    description:
-      "Complete frontend web development tutorial covering HTML, CSS, and JavaScript in one comprehensive video.",
+    description: "Complete frontend web development tutorial covering HTML, CSS, and JavaScript.",
     duration: "24h 14m",
     featured: true,
     image: "Images/Frontend-Development.png",
-    videoUrl: "https://www.youtube.com/watch?v=zJSY8tbf_ys",
     learningPoints: [
       "Master HTML5 semantic elements",
       "Learn CSS3 Flexbox and Grid",
@@ -47,12 +45,10 @@ const courseData = [
     title: "Backend Development with Node.js",
     category: "Web Development",
     price: 34.99,
-    description:
-      "Build powerful backend systems with Node.js, Express, and MongoDB in this comprehensive single-video course.",
+    description: "Build powerful backend systems with Node.js, Express, and MongoDB.",
     duration: "2h 26m",
     featured: true,
     image: "Images/Backend-Web.png",
-    videoUrl: "https://www.youtube.com/watch?v=KOutPbKc9UM",
     learningPoints: [
       "Node.js environment setup",
       "Express.js framework fundamentals",
@@ -69,12 +65,10 @@ const courseData = [
     title: "Full Stack Web Development",
     category: "Web Development",
     price: 49.99,
-    description:
-      "Complete full stack web development course covering both frontend and backend in one comprehensive video.",
+    description: "Complete full stack web development course covering both frontend and backend.",
     duration: "7h 29m",
     featured: true,
     image: "Images/full-stack.png",
-    videoUrl: "https://www.youtube.com/watch?v=nu_pCVPKzTk",
     learningPoints: [
       "Frontend with React.js",
       "Backend with Express.js",
@@ -91,12 +85,10 @@ const courseData = [
     title: "Python Programming Complete Guide",
     category: "Programming Language",
     price: 27.99,
-    description:
-      "Learn Python programming from basics to advanced concepts in one comprehensive video tutorial.",
+    description: "Learn Python programming from basics to advanced concepts.",
     duration: "12h",
     featured: true,
     image: "Images/python.png",
-    videoUrl: "https://www.youtube.com/watch?v=ix9cRaBkVe0",
     learningPoints: [
       "Python syntax and basics",
       "Data structures and algorithms",
@@ -113,12 +105,10 @@ const courseData = [
     title: "JavaScript Deep Dive",
     category: "Programming Language",
     price: 24.99,
-    description:
-      "Master JavaScript from fundamentals to advanced concepts in this single comprehensive video.",
+    description: "Master JavaScript from fundamentals to advanced concepts.",
     duration: "22h 15m",
     featured: false,
     image: "Images/JS.png",
-    videoUrl: "https://www.youtube.com/watch?v=EerdGm-ehJQ",
     learningPoints: [
       "ES6+ modern features",
       "Async programming with promises",
@@ -135,12 +125,10 @@ const courseData = [
     title: "Java Programming Fundamentals",
     category: "Programming Language",
     price: 31.99,
-    description:
-      "Complete Java programming tutorial covering core concepts and object-oriented programming.",
+    description: "Complete Java programming tutorial covering core concepts and OOP.",
     duration: "12h",
     featured: false,
     image: "Images/java.png",
-    videoUrl: "https://www.youtube.com/watch?v=xTtL8E4LzTQ",
     learningPoints: [
       "Java basics and syntax",
       "Object-oriented principles",
@@ -157,12 +145,10 @@ const courseData = [
     title: "C++ for Beginners",
     category: "Programming Language",
     price: 26.99,
-    description:
-      "Learn C++ programming fundamentals and memory management in this comprehensive video tutorial.",
+    description: "Learn C++ programming fundamentals and memory management.",
     duration: "6h",
     featured: false,
     image: "Images/c++.png",
-    videoUrl: "https://www.youtube.com/watch?v=-TkoO8Z07hI",
     learningPoints: [
       "C++ basics and setup",
       "Pointers and memory management",
@@ -179,12 +165,10 @@ const courseData = [
     title: "Swift for iOS Development",
     category: "Programming Language",
     price: 32.99,
-    description:
-      "Master Swift programming language for iOS app development in this complete video tutorial.",
+    description: "Master Swift programming language for iOS app development.",
     duration: "7h 05m",
     featured: false,
     image: "Images/swift.png",
-    videoUrl: "https://www.youtube.com/watch?v=8Xg7E9shq0U",
     learningPoints: [
       "Swift syntax basics",
       "UIKit fundamentals",
@@ -201,12 +185,10 @@ const courseData = [
     title: "React Native Mobile App Development",
     category: "Mobile Development",
     price: 35.99,
-    description:
-      "Build cross-platform mobile applications with React Native in this comprehensive single-video course.",
+    description: "Build cross-platform mobile applications with React Native.",
     duration: "2h 06m",
     featured: true,
     image: "Images/react-native.png",
-    videoUrl: "https://www.youtube.com/watch?v=0-S5a0eXPoc",
     learningPoints: [
       "React Native setup and environment",
       "Components and styling",
@@ -223,12 +205,10 @@ const courseData = [
     title: "Flutter App Development",
     category: "Mobile Development",
     price: 33.99,
-    description:
-      "Create beautiful native mobile applications with Flutter in this complete video tutorial.",
+    description: "Create beautiful native mobile applications with Flutter.",
     duration: "36h 39m",
     featured: false,
     image: "Images/flutter.png",
-    videoUrl: "https://www.youtube.com/watch?v=VPvVD8t02U8",
     learningPoints: [
       "Flutter basics and setup",
       "Widgets and layouts",
@@ -245,12 +225,10 @@ const courseData = [
     title: "Android Kotlin Development",
     category: "Mobile Development",
     price: 32.99,
-    description:
-      "Learn modern Android app development with Kotlin in this comprehensive single-video course.",
+    description: "Learn modern Android app development with Kotlin.",
     duration: "60h 50m",
     featured: false,
     image: "Images/kotlin.png",
-    videoUrl: "https://www.youtube.com/watch?v=blKkRoZPxLc",
     learningPoints: [
       "Kotlin basics for Android",
       "Android Studio setup",
@@ -267,12 +245,10 @@ const courseData = [
     title: "Data Structures & Algorithms",
     category: "Data Structures & Algorithms",
     price: 37.99,
-    description:
-      "Master essential data structures and algorithms for coding interviews in this comprehensive video.",
+    description: "Master essential data structures and algorithms for coding interviews.",
     duration: "4h",
     featured: true,
     image: "Images/dsa.png",
-    videoUrl: "https://www.youtube.com/watch?v=CBYHwZcbD-s",
     learningPoints: [
       "Arrays and strings",
       "Linked lists implementation",
@@ -289,12 +265,10 @@ const courseData = [
     title: "Computer Networking Fundamentals",
     category: "Computer Network",
     price: 36.99,
-    description:
-      "Complete guide to computer networking concepts and protocols in one comprehensive video.",
+    description: "Complete guide to computer networking concepts and protocols.",
     duration: "9h 24m",
     featured: false,
     image: "Images/computer-network.png",
-    videoUrl: "https://www.youtube.com/watch?v=qiQR5rTSshw",
     learningPoints: [
       "Networking basics and OSI model",
       "TCP/IP protocol suite",
@@ -311,12 +285,10 @@ const courseData = [
     title: "Database Management Systems",
     category: "Database Management System",
     price: 35.99,
-    description:
-      "Learn database design, SQL, and NoSQL concepts in this comprehensive single-video course.",
+    description: "Learn database design, SQL, and NoSQL concepts.",
     duration: "17h 07m",
     featured: false,
     image: "Images/dbms.png",
-    videoUrl: "https://www.youtube.com/watch?v=4cWkVbC2bNE",
     learningPoints: [
       "Database design principles",
       "SQL fundamentals",
@@ -333,12 +305,10 @@ const courseData = [
     title: "UX/UI Design Principles",
     category: "UX/UI Design",
     price: 32.99,
-    description:
-      "Master user-centered design principles and prototyping in this comprehensive video tutorial.",
+    description: "Master user-centered design principles and prototyping.",
     duration: "1h 26m",
     featured: true,
     image: "Images/ux-ui.png",
-    videoUrl: "https://www.youtube.com/watch?v=c9Wg6Cb_YlU",
     learningPoints: [
       "Design thinking process",
       "User research methods",
@@ -352,14 +322,13 @@ const courseData = [
   },
 ];
 
-// Document Data with real PDF links and images
+// Document Data
 const documentData = [
   {
     id: 1,
     title: "C++ Programming Tutorial PDF",
     category: "Programming Language",
-    description:
-      "Comprehensive C++ tutorial covering basics to advanced concepts with examples.",
+    description: "Comprehensive C++ tutorial covering basics to advanced concepts with examples.",
     source: "IISC Bangalore",
     url: "https://cds.iisc.ac.in/wp-content/uploads/DS286.AUG2016.Lab2_.cpp_tutorial.pdf",
     featured: true,
@@ -370,8 +339,7 @@ const documentData = [
     id: 2,
     title: "HTML & CSS Documentation",
     category: "Web Development",
-    description:
-      "Complete reference for HTML5 and CSS3 with examples and best practices.",
+    description: "Complete reference for HTML5 and CSS3 with examples and best practices.",
     source: "MDN Web Docs",
     url: "https://developer.mozilla.org/en-US/docs/Web/HTML",
     featured: true,
@@ -382,8 +350,7 @@ const documentData = [
     id: 3,
     title: "JavaScript Guide",
     category: "Programming Language",
-    description:
-      "Modern JavaScript tutorial with ES6+ features and practical examples.",
+    description: "Modern JavaScript tutorial with ES6+ features and practical examples.",
     source: "MDN Web Docs",
     url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide",
     featured: true,
@@ -394,8 +361,7 @@ const documentData = [
     id: 4,
     title: "Python Documentation",
     category: "Programming Language",
-    description:
-      "Official Python documentation and tutorial for beginners to advanced users.",
+    description: "Official Python documentation and tutorial for beginners to advanced users.",
     source: "Python.org",
     url: "https://docs.python.org/3/tutorial/",
     featured: true,
@@ -406,8 +372,7 @@ const documentData = [
     id: 5,
     title: "React Documentation",
     category: "Web Development",
-    description:
-      "Complete React.js documentation with hooks, components, and best practices.",
+    description: "Complete React.js documentation with hooks, components, and best practices.",
     source: "React.js",
     url: "https://react.dev/learn",
     featured: false,
@@ -418,8 +383,7 @@ const documentData = [
     id: 6,
     title: "Node.js Documentation",
     category: "Web Development",
-    description:
-      "Complete Node.js API reference and guides for backend development.",
+    description: "Complete Node.js API reference and guides for backend development.",
     source: "Node.js",
     url: "https://nodejs.org/docs/latest/api/",
     featured: false,
@@ -430,8 +394,7 @@ const documentData = [
     id: 7,
     title: "Java Tutorial",
     category: "Programming Language",
-    description:
-      "Official Java tutorial covering core concepts and object-oriented programming.",
+    description: "Official Java tutorial covering core concepts and object-oriented programming.",
     source: "Oracle",
     url: "https://docs.oracle.com/javase/tutorial/",
     featured: false,
@@ -442,8 +405,7 @@ const documentData = [
     id: 8,
     title: "SQL Tutorial",
     category: "Database Management System",
-    description:
-      "Complete SQL tutorial with queries, joins, and database operations.",
+    description: "Complete SQL tutorial with queries, joins, and database operations.",
     source: "W3Schools",
     url: "https://www.w3schools.com/sql/",
     featured: false,
@@ -454,8 +416,7 @@ const documentData = [
     id: 9,
     title: "Git & GitHub Guide",
     category: "Web Development",
-    description:
-      "Complete guide to version control with Git and collaboration on GitHub.",
+    description: "Complete guide to version control with Git and collaboration on GitHub.",
     source: "GitHub",
     url: "https://docs.github.com/en-get-started",
     featured: false,
@@ -466,8 +427,7 @@ const documentData = [
     id: 10,
     title: "Linux Command Line",
     category: "Computer Network",
-    description:
-      "Comprehensive Linux command line tutorial for beginners and advanced users.",
+    description: "Comprehensive Linux command line tutorial for beginners and advanced users.",
     source: "Linux Foundation",
     url: "https://linuxfoundation.org/tools/command-line/",
     featured: false,
@@ -478,8 +438,7 @@ const documentData = [
     id: 11,
     title: "Docker Documentation",
     category: "Web Development",
-    description:
-      "Complete Docker documentation for containerization and deployment.",
+    description: "Complete Docker documentation for containerization and deployment.",
     source: "Docker",
     url: "https://docs.docker.com/get-started/",
     featured: false,
@@ -490,8 +449,7 @@ const documentData = [
     id: 12,
     title: "REST API Design",
     category: "Web Development",
-    description:
-      "Best practices for designing RESTful APIs with examples and patterns.",
+    description: "Best practices for designing RESTful APIs with examples and patterns.",
     source: "Microsoft",
     url: "https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design",
     featured: false,
@@ -502,8 +460,7 @@ const documentData = [
     id: 13,
     title: "Data Structures PDF",
     category: "Data Structures & Algorithms",
-    description:
-      "Comprehensive guide to data structures with implementations in multiple languages.",
+    description: "Comprehensive guide to data structures with implementations in multiple languages.",
     source: "GeeksforGeeks",
     url: "https://www.geeksforgeeks.org/data-structures/",
     featured: false,
@@ -514,8 +471,7 @@ const documentData = [
     id: 14,
     title: "Algorithms Tutorial",
     category: "Data Structures & Algorithms",
-    description:
-      "Algorithm design and analysis with complexity explanations and examples.",
+    description: "Algorithm design and analysis with complexity explanations and examples.",
     source: "Khan Academy",
     url: "https://www.khanacademy.org/computing/computer-science/algorithms",
     featured: false,
@@ -526,8 +482,7 @@ const documentData = [
     id: 15,
     title: "Networking Basics",
     category: "Computer Network",
-    description:
-      "Introduction to computer networking concepts, protocols, and architecture.",
+    description: "Introduction to computer networking concepts, protocols, and architecture.",
     source: "Cisco",
     url: "https://www.cisco.com/c/en/us/solutions/enterprise-networks/what-is-computer-networking.html",
     featured: false,
@@ -538,8 +493,7 @@ const documentData = [
     id: 16,
     title: "Database Design",
     category: "Database Management System",
-    description:
-      "Principles of database design, normalization, and SQL optimization.",
+    description: "Principles of database design, normalization, and SQL optimization.",
     source: "Stanford University",
     url: "https://lagunita.stanford.edu/courses/DB/2014/SelfPaced/about",
     featured: false,
@@ -550,8 +504,7 @@ const documentData = [
     id: 17,
     title: "UI Design Principles",
     category: "UX/UI Design",
-    description:
-      "User interface design principles, patterns, and best practices.",
+    description: "User interface design principles, patterns, and best practices.",
     source: "Nielsen Norman Group",
     url: "https://www.nngroup.com/articles/usability-101-introduction-to-usability/",
     featured: false,
@@ -562,8 +515,7 @@ const documentData = [
     id: 18,
     title: "Mobile App Design",
     category: "Mobile Development",
-    description:
-      "Mobile app design patterns and guidelines for iOS and Android.",
+    description: "Mobile app design patterns and guidelines for iOS and Android.",
     source: "Material Design",
     url: "https://material.io/design",
     featured: false,
@@ -574,8 +526,7 @@ const documentData = [
     id: 19,
     title: "DevOps Practices",
     category: "Web Development",
-    description:
-      "DevOps principles, practices, and tools for continuous integration.",
+    description: "DevOps principles, practices, and tools for continuous integration.",
     source: "AWS",
     url: "https://aws.amazon.com/devops/what-is-devops/",
     featured: false,
@@ -606,7 +557,1070 @@ const documentData = [
   },
 ];
 
-// Initialize application
+// ============================================
+// Modules Data - First module FREE, others LOCKED
+// ============================================
+
+const courseModulesData = {
+  1: [ // Frontend Web Development
+    {
+      id: 1,
+      title: "Introduction to Frontend development - FREE PREVIEW",
+      duration: "8 min",
+      isFree: true,
+      videoUrl: "https://www.youtube.com/watch?v=WG5ikvJ2TKA&t=10s&pp=ygUWaW50cm9kdWN0aW9uIGZyb250IGVuZA%3D%3D",
+      description: "Get an overview of frontend development and what you'll learn in this course"
+    },
+    {
+      id: 2,
+      title: "HTML Fundamentals",
+      duration: "1h 9min",
+      isFree: false,
+      videoUrl: "https://youtu.be/qz0aGYrrlhU",
+      description: "Learn the fundamentals of HTML5 and semantic markup"
+    },
+    {
+      id: 3,
+      title: "CSS3 Fundamentals",
+      duration: "1h",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=wRNinF7YQqQ&pp=ygUQY3NzMyBmdWxsIGNvdXJzZQ%3D%3D",
+      description: "Master CSS selectors, properties, and styling techniques"
+    },
+    {
+      id: 4,
+      title: "Flexbox and Grid Layouts",
+      duration: "18mn",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=3elGSZSWTbM&pp=ygUXZmxleGJveCBhbmQgZ3JpZCBsYXlvdXQ%3D",
+      description: "Create modern responsive layouts with Flexbox and Grid"
+    },
+    {
+      id: 5,
+      title: "Master CSS Animation Property",
+      duration: "8mn",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=Bhj4miRkSOc&pp=ygUNYW5pbWF0aW9uIGNzcw%3D%3D",
+      description: "Learn to create engaging animations and transitions with CSS"
+    },
+    {
+      id: 6,
+      title: "JavaScript Basics",
+      duration: "18h 37mn",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=EerdGm-ehJQ&t=13086s&pp=ygUWamF2YXNjcmlwdCBmdWxsIGNvdXJzZQ%3D%3D",
+      description: "Variables, data types, and basic programming concepts in JavaScript"
+    },
+    {
+      id: 7,
+      title: "DOM Manipulation",
+      duration: "2h 41mn",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=5fb2aPlgoys&pp=ygUeZG9tIG1hbmlwdWxhdGlvbiBpbiBqYXZhc2NyaXB0",
+      description: "Interact with web pages using JavaScript DOM methods"
+    },
+    {
+      id: 8,
+      title: "Bootstrap CSS Framework",
+      duration: "2h 46mn",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=-qfEOE4vtxE&t=54s&pp=ygUgYm9vdHN0cmFwIHR1dG9yaWFsIGZvciBiZWdpbm5lcnM%3D",
+      description: "Build responsive websites quickly with the Bootstrap framework"
+    },
+    {
+      id: 9,
+      title: "Tailwind CSS Framework",
+      duration: "54mn",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=6biMWgD6_JY&pp=ygUVdGFpbHdpbmQgY3NzIHR1dG9yaWFs",
+      description: "Master utility-first CSS with Tailwind framework"
+    },
+    {
+      id: 10,
+      title: "Project for Front end Course",
+      duration: "1h 14mn",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=MYFgtnKMDp4&pp=ygUvcHJvamVjdCBmcm9udCBlbmQgZGV2ZWxvcGVyIGh0bWwgY3NzIGphdmFzY3JpcHQ%3D",
+      description: "Apply everything you've learned in a real frontend project"
+    },
+  ],
+  2: [ // Backend Development with Node.js
+    {
+      id: 1,
+      title: "Introduction to Backend Development - FREE PREVIEW",
+      duration: "4 min",
+      isFree: true,
+      videoUrl: "https://www.youtube.com/watch?v=4r6WdaY3SOA&pp=ygUnaW50cm9kdWN0aW9uIHRvIGJhY2tlbmQgd2ViIGRldmVsb3BtZW50",
+      description: "Understand backend development concepts and server-side programming"
+    },
+    {
+      id: 2,
+      title: "Node.js",
+      duration: "6h 50min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=f2EqECiTBL8&pp=ygUTbm9kZSBqcyBmdWxsIGNvdXJzZQ%3D%3D",
+      description: "Get started with Node.js and npm for server-side JavaScript"
+    },
+    {
+      id: 3,
+      title: "Express.js Framework",
+      duration: "3h 57min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=fBzm9zja2Y8&pp=ygUWZXhwcmVzcyBqcyBmdWxsIGNvdXJzZQ%3D%3D",
+      description: "Build web applications with Express.js framework"
+    },
+    {
+      id: 4,
+      title: "SQL Database",
+      duration: "4h 19min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=qw--VYLpxG4&pp=ygUKcG9zdGdyZXNxbA%3D%3D",
+      description: "Learn SQL databases, queries, and relational database management"
+    },
+    {
+      id: 5,
+      title: "No-SQL Database",
+      duration: "7h 50min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=8eJJe4Slnik&pp=ygUTbW9uZ29kYiBmdWxsIGNvdXJzZQ%3D%3D",
+      description: "Master NoSQL databases with MongoDB and document-based data storage"
+    },
+    {
+      id: 6,
+      title: "Rest API",
+      duration: "51min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=qbLc5a9jdXo&pp=ygULcmVzdGZ1bCBhcGnSBwkJhwoBhyohjO8%3D",
+      description: "Create RESTful APIs with proper routing and middleware"
+    },
+    {
+      id: 7,
+      title: "Backend Project",
+      duration: "7min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=RQcsksmMYTE&pp=ygUeYmFja2VuZCBwcm9qZWN0cyBmb3IgYmVnaW5uZXJz",
+      description: "Build a complete backend project applying all learned concepts"
+    }
+  ],
+  3: [ // Full Stack Web Development
+    {
+      id: 1,
+      title: "Course Overview - FREE PREVIEW",
+      duration: "7 min",
+      isFree: true,
+      videoUrl: "https://www.youtube.com/watch?v=8KaJRw-rfn8&pp=ygUXZnVsbCBzdGFjayBpbnRyb2R1Y3Rpb24%3D",
+      description: "Introduction to full stack development and course roadmap"
+    },
+    {
+      id: 2,
+      title: "Frontend Full Course",
+      duration: "21h 14min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=zJSY8tbf_ys&pp=ygUUZnJvbnRlbmQgZnVsbCBjb3Vyc2XSBwkJhwoBhyohjO8%3D",
+      description: "Complete frontend development with modern frameworks and tools"
+    },
+    {
+      id: 3,
+      title: "Backend with Node.js",
+      duration: "5h 17min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=9BD9eK9VqXA&pp=ygUjYmFja2VuZCB3ZWIgZGV2ZWxvcG1lbnQgZnVsbCBjb3Vyc2U%3D",
+      description: "Build the backend API with Node.js and Express"
+    }
+  ],
+  4: [ // Python Programming
+    {
+      id: 1,
+      title: "Introduction - FREE PREVIEW",
+      duration: "2min",
+      isFree: true,
+      videoUrl: "https://www.youtube.com/watch?v=xkZMUX_oQX4&pp=ygUTcHl0aG9uIGludHJvZHVjdGlvbg%3D%3D",
+      description: "Learn Python syntax and basic concepts"
+    },
+    {
+      id: 2,
+      title: "Python Fundamental",
+      duration: "10min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=fWjsdhR3z3c&pp=ygUTcHl0aG9uIGZ1bmRhbWVudGFsc9IHCQmHCgGHKiGM7w%3D%3D",
+      description: "Master Python fundamentals including data types and operations"
+    },
+    {
+      id: 3,
+      title: "Python Variables",
+      duration: "13mn",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=LKFrQXaoSMQ&pp=ygUZcHl0aG9uIHZhcmlhYmxlcyB0dXRvcmlhbA%3D%3D",
+      description: "Understand variables, data types, and naming conventions in Python"
+    },
+    {
+      id: 4,
+      title: "Python Control Flow",
+      duration: "16mn",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=Zp5MuPOtsSY&pp=ygUTcHl0aG9uIGNvbnRyb2wgZmxvdw%3D%3D",
+      description: "Learn conditional statements and loops in Python"
+    },
+    {
+      id: 5,
+      title: "Python Data Structure & Functions",
+      duration: "30mn",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=u-OmVr_fT4s&pp=ygUPcHl0aG9uIGZ1bmN0aW9u",
+      description: "Explore lists, tuples, dictionaries, sets and function creation"
+    },
+    {
+      id: 6,
+      title: "Python Object-Oriented-Programming",
+      duration: "2h 05min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=IbMDCwVm63M&pp=ygULcHl0aG9uIG9vcCA%3D",
+      description: "Master classes, objects, inheritance, and OOP principles in Python"
+    },
+    {
+      id: 7,
+      title: "Python Projects",
+      duration: "53min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=yVl_G-F7m8c&pp=ygUOcHl0aG9uIHByb2plY3Q%3D",
+      description: "Build practical Python projects to apply your skills"
+    }
+  ],
+  5: [ // JavaScript Programming
+    {
+      id: 1,
+      title: "Introduction - FREE PREVIEW",
+      duration: "2min",
+      isFree: true,
+      videoUrl: "https://youtu.be/zofMnllkVfI",
+      description: "Get started with JavaScript and its role in web development"
+    },
+    {
+      id: 2,
+      title: "JavaScript Fundamental",
+      duration: "12min",
+      isFree: false,
+      videoUrl: "https://youtu.be/Ihy0QziLDf0?list=PLZPZq0r_RZOO1zkgO4bIdfuLpizCeHYKv",
+      description: "Learn JavaScript basics including variables, data types, and operators"
+    },
+    {
+      id: 3,
+      title: "JavaScript Control Flow & Loop",
+      duration: "16min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=Wc1rH4uNKIE&pp=ygUXamF2YXNjcmlwdCBjb250cm9sIGZsb3c%3D",
+      description: "Master conditional statements and loops in JavaScript"
+    },
+    {
+      id: 4,
+      title: "JavaScript Function & Scope",
+      duration: "12min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=HFaxylC7bUc&pp=ygUUamF2YXNjcmlwdCBmdW5jdGlvbnM%3D",
+      description: "Understand functions, scope, and closures in JavaScript"
+    },
+    {
+      id: 5,
+      title: "JavaScript Array & Object",
+      duration: "51min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=RVxuGCWZ_8E&pp=ygUXamF2YXNjcmlwdCBhcnJheSBvYmplY3Q%3D",
+      description: "Work with arrays and objects for data manipulation"
+    },
+    {
+      id: 6,
+      title: "Advanced JavaScript",
+      duration: "1h 04min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=R9I85RhI7Cg&pp=ygUfYWR2YW5jZWQgamF2YXNjcmlwdCBmdWxsIGNvdXJzZQ%3D%3D",
+      description: "Explore advanced concepts like promises, async/await, and ES6+ features"
+    },
+  ],
+  6: [ // Java Programming
+    {
+      id: 1,
+      title: "Introduction - FREE PREVIEW",
+      duration: "6min",
+      isFree: true,
+      videoUrl: "https://www.youtube.com/watch?v=mG4NLNZ37y4&pp=ygURamF2YSBpbnRyb2R1Y3Rpb24%3D",
+      description: "Introduction to Java programming language and its ecosystem"
+    },
+    {
+      id: 2,
+      title: "Java Basic",
+      duration: "12min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=so1iUWaLmKA&pp=ygUNamF2YSB2YXJpYWJsZQ%3D%3D",
+      description: "Learn Java basics including variables, data types, and syntax"
+    },
+    {
+      id: 3,
+      title: "Java Control Flow",
+      duration: "16min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=LQsyrHJzNwA&pp=ygUcamF2YSBjb250cm9sIGZsb3cgc3RhdGVtZW50cw%3D%3D",
+      description: "Master control flow statements in Java"
+    },
+    {
+      id: 4,
+      title: "Java Method & Array",
+      duration: "9min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=r0SewFmbCUI&pp=ygUXamF2YSBtZXRob2RzIGFuZCBhcnJheXM%3D",
+      description: "Work with methods and arrays in Java"
+    },
+    {
+      id: 5,
+      title: "Java OOP",
+      duration: "1h 7min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=Af3s3KsxStY&pp=ygUIamF2YSBvb3A%3D",
+      description: "Master Object-Oriented Programming concepts in Java"
+    },
+    {
+      id: 6,
+      title: "Java Exception Handling",
+      duration: "1h 7min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=1XAfapkBQjk&pp=ygUXamF2YSBleGNlcHRpb24gaGFuZGxpbmc%3D",
+      description: "Learn to handle exceptions and errors in Java"
+    },
+    {
+      id: 7,
+      title: "Java Collections",
+      duration: "32min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=rH0winlka8A&pp=ygUlamF2YSBjb2xsZWN0aW9uIGZyYW1ld29yayBmdWxsIGNvdXJzZQ%3D%3D",
+      description: "Master Java Collections Framework for data management"
+    },
+    {
+      id: 8,
+      title: "Java File I/O",
+      duration: "8min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=ScUJx4aWRi0&pp=ygUMamF2YSBmaWxlIGlv",
+      description: "Learn file input/output operations in Java"
+    },
+    {
+      id: 9,
+      title: "Java GUI & DB Connectivity (JDBC)",
+      duration: "20min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=7v2OnUti2eM&t=932s&pp=ygUSamF2YSBndWkgd2l0aCBqZGJj",
+      description: "Create GUI applications and connect to databases using JDBC"
+    },
+  ],
+  7: [ // C++ Programming
+    {
+      id: 1,
+      title: "Introduction - FREE PREVIEW",
+      duration: "5min",
+      isFree: true,
+      videoUrl: "https://www.youtube.com/watch?v=jcYaWFhV8oY&pp=ygUQYysrIGludHJvZHVjdGlvbg%3D%3D",
+      description: "Introduction to C++ programming language and its applications"
+    },
+    {
+      id: 2,
+      title: "C++ Variables & Data Types",
+      duration: "19min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=zgutFVxOlTY&pp=ygUcYysrIHZhcmlhYmxlcyBhbmQgZGF0YSB0eXBlcw%3D%3D",
+      description: "Learn variables, data types, and type modifiers in C++"
+    },
+    {
+      id: 3,
+      title: "C++ Control Flow",
+      duration: "16min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=jNl5gJ_xSNQ&pp=ygUbYysrIGNvbnRyb2wgZmxvdyBzdGF0ZW1lbnRz",
+      description: "Master control flow statements in C++"
+    },
+    {
+      id: 4,
+      title: "C++ Functions & Array",
+      duration: "26min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=C83tPpvxIJA&pp=ygUMYysrIGZ1bmN0aW9u",
+      description: "Work with functions and arrays in C++"
+    },
+    {
+      id: 5,
+      title: "Pointers & Memory Management",
+      duration: "15min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=rtgwvkaYt1A&pp=ygUMYysrIHBvaW50ZXJz",
+      description: "Understand pointers and memory management in C++"
+    },
+    {
+      id: 6,
+      title: "C++ OOP",
+      duration: "1h 30min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=wN0x9eZLix4&t=32s&pp=ygUHYysrIG9vcA%3D%3D",
+      description: "Master Object-Oriented Programming concepts in C++"
+    },
+  ],
+  8:[ // Swift Programming
+    {
+      id: 1,
+      title: "Introduction-FREE PREVIEW",
+      duration: "2min",
+      isFree: true,
+      videoUrl: "https://www.youtube.com/watch?v=nAchMctX4YA&pp=ygUSc3dpZnQgaW50cm9kdWN0aW9u",
+      description: "Introduction to Swift programming language for iOS development"
+    },
+    {
+      id: 2,
+      title: "Swift Basic",
+      duration: "18min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=xfvdxQJj7Vw&list=PLwvDm4VfkdpiLvzZFJI6rVIBtdolrJBVB&index=2&pp=iAQB",
+      description: "Learn Swift basics including syntax and fundamental concepts"
+    },
+    {
+      id: 3,
+      title: "How to use basic types in swift",
+      duration: "16min",
+      isFree: false,
+      videoUrl: "https://youtu.be/JeoaCW9fO0w?list=PLwvDm4VfkdpiLvzZFJI6rVIBtdolrJBVB",
+      description: "Master basic data types and type safety in Swift"
+    },
+    {
+      id: 4,
+      title: "How to use Variables and Constants",
+      duration: "12min",
+      isFree: false,
+      videoUrl: "https://youtu.be/jRNa6hYTJLo?list=PLwvDm4VfkdpiLvzZFJI6rVIBtdolrJBVB",
+      description: "Learn to work with variables and constants in Swift"
+    },
+    {
+      id: 5,
+      title: "How to write if-statements and use operators",
+      duration: "24min",
+      isFree: false,
+      videoUrl: "https://youtu.be/Q0DBDJqT3Ps?list=PLwvDm4VfkdpiLvzZFJI6rVIBtdolrJBVB",
+      description: "Master conditional statements and operators in Swift"
+    },
+    {
+      id: 6,
+      title: "How to use Functions in Swift",
+      duration: "36min",
+      isFree: false,
+      videoUrl: "https://youtu.be/kr3SSplrJlw?list=PLwvDm4VfkdpiLvzZFJI6rVIBtdolrJBVB",
+      description: "Learn to create and use functions in Swift"
+    },
+    {
+      id: 7,
+      title: "What is Object Oriented Programming for Swift",
+      duration: "39min",
+      isFree: false,
+      videoUrl: "https://youtu.be/XdZUVmqIkJE?list=PLwvDm4VfkdpiLvzZFJI6rVIBtdolrJBVB",
+      description: "Understand OOP concepts and their implementation in Swift"
+    },
+    {
+      id: 8,
+      title: "What is a Protocol in Swift and SwiftUI View protocol",
+      duration: "9min",
+      isFree: false,
+      videoUrl: "https://youtu.be/nJmrkRlRu88?list=PLwvDm4VfkdpiLvzZFJI6rVIBtdolrJBVB",
+      description: "Master protocols and SwiftUI View protocol"
+    },
+    {
+      id: 9,
+      title: "Learn Swift online for FREE Series Conclusion",
+      duration: "3min",
+      isFree: false,
+      videoUrl: "https://youtu.be/3284ruY8jbg?list=PLwvDm4VfkdpiLvzZFJI6rVIBtdolrJBVB",
+      description: "Review key concepts and next steps in Swift development"
+    }
+  ],
+  9: [ // React Native
+    {
+      id: 1,
+      title: "Introduction & Setup- FREE PREVIEW",
+      duration: "20min",
+      isFree: true,
+      videoUrl: "https://www.youtube.com/watch?v=J2j1yk-34OY&pp=ygUScmVhY3QgbmF0aXZlIGJhc2lj",
+      description: "Get started with React Native and setup development environment"
+    },
+    {
+      id: 2,
+      title: "UI Components & Layout",
+      duration: "14min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=UCbRTaX6i7g&list=PL4cUxeGkcC9hNTz3sxqGTfxAwU-DIHJd2&index=2&pp=iAQB",
+      description: "Learn React Native core components and layout system"
+    },
+    {
+      id: 3,
+      title: "Navigation",
+      duration: "16min",
+      isFree: false,
+      videoUrl: "https://youtu.be/3hLQURJM7ws",
+      description: "Implement navigation between screens in React Native"
+    },
+    {
+      id: 4,
+      title: "Backend Setup with Appwrite",
+      duration: "5min",
+      isFree: false,
+      videoUrl: "https://youtu.be/eMbtOh17RuQ?list=PL4cUxeGkcC9hNTz3sxqGTfxAwU-DIHJd2",
+      description: "Configure backend services with Appwrite"
+    },
+    {
+      id: 5,
+      title: "Initial Auth State",
+      duration: "8min",
+      isFree: false,
+      videoUrl: "https://youtu.be/TaQdARE8dO4?list=PL4cUxeGkcC9hNTz3sxqGTfxAwU-DIHJd2",
+      description: "Implement authentication state management"
+    },
+    {
+      id: 6,
+      title: "Creating New Records",
+      duration: "13min",
+      isFree: false,
+      videoUrl: "https://youtu.be/xh7-JVZmM6w?list=PL4cUxeGkcC9hNTz3sxqGTfxAwU-DIHJd2",
+      description: "Learn to create and manage database records"
+    },
+    {
+      id: 7,
+      title: "Dynamic Routes",
+      duration: "8min",
+      isFree: false,
+      videoUrl: "https://youtu.be/H0hk9pr9Sdg?list=PL4cUxeGkcC9hNTz3sxqGTfxAwU-DIHJd2",
+      description: "Implement dynamic routing in React Native"
+    },
+    {
+      id: 8,
+      title: "Fetching Single Records",
+      duration: "7min",
+      isFree: false,
+      videoUrl: "https://youtu.be/T5fZBjWF8U4?list=PL4cUxeGkcC9hNTz3sxqGTfxAwU-DIHJd2",
+      description: "Retrieve and display individual records from database"
+    },
+    {
+      id: 9,
+      title: "React Native Async Storage",
+      duration: "23min",
+      isFree: false,
+      videoUrl: "https://youtu.be/UQrkf0kKLTM",
+      description: "Implement local data persistence with AsyncStorage"
+    }
+  ],
+  10: [ // Flutter
+    {
+      id: 1,
+      title: "What is Flutter? & How it's Better than its Counterparts? - FREE PREVIEW",
+      duration: "2min",
+      isFree: true,
+      videoUrl: "https://youtu.be/jqxz7QvdWk8?list=PLjVLYmrlmjGfGLShoW0vVX_tcyT8u1Y3E",
+      description: "Introduction to Flutter and its advantages over other frameworks"
+    },
+    {
+      id: 2,
+      title: "Dart Programming Fundamentals",
+      duration: "1h 41min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=Ej_Pcr4uC2Q&pp=ygUdZGFydCBwcm9ncmFtbWluZyBmdW5kYW1lbnRhbHM%3D",
+      description: "Master Dart programming language fundamentals"
+    },
+    {
+      id: 3,
+      title: "Flutter Basic",
+      duration: "12min",
+      isFree: false,
+      videoUrl: "https://youtu.be/1xipg02Wu8s",
+      description: "Learn Flutter basics and widget fundamentals"
+    },
+    {
+      id: 4,
+      title: "Layout & UI Design",
+      duration: "2h 23min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=HQ_ytw58tC4&pp=ygUaZmx1dHRlciBkZXNpZ24gdWkgdHV0b3JpYWw%3D",
+      description: "Create beautiful layouts and UI designs in Flutter"
+    },
+    {
+      id: 5,
+      title: "Navigation & Routing",
+      duration: "14min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=h92VcrPLtBM&pp=ygUbZmx1dHRlciBuYXZpZ2F0aW9uICYgcm91dGluZw%3D%3D",
+      description: "Implement navigation and routing in Flutter apps"
+    },
+    {
+      id: 6,
+      title: "State Management",
+      duration: "14min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=3tm-R7ymwhc&pp=ygUYZmx1dHRlciBzdGF0ZSBtYW5hZ2VtZW50",
+      description: "Master state management techniques in Flutter"
+    },
+    {
+      id: 7,
+      title: "Forms & User Input",
+      duration: "6min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=2DX0TtM9Hug&pp=ygUZZmx1dHRlciBmb3JtICYgdXNlciBpbnB1dA%3D%3D",
+      description: "Handle forms and user input in Flutter applications"
+    },
+    {
+      id: 8,
+      title: "Working with APIs",
+      duration: "11min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=ExPFnu8Dm40&pp=ygUZZmx1dHRlciBXb3JraW5nIHdpdGggQVBJcw%3D%3D",
+      description: "Integrate REST APIs in Flutter applications"
+    },
+    {
+      id: 9,
+      title: "Local Storage",
+      duration: "10min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=FB9GpmL0Qe0&pp=ygUVZmx1dHRlciBsb2NhbCBzdG9yYWdl",
+      description: "Implement local data storage in Flutter"
+    },
+    {
+      id: 10,
+      title: "Deployment",
+      duration: "10min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=ZxjgV1YaOcQ&pp=ygUSZmx1dHRlciBkZXBsb3ltZW50",
+      description: "Prepare and deploy Flutter apps to app stores"
+    },
+  ],
+  11: [ // Kotlin
+    {
+      id: 1,
+      title: "What is Kotlin?- FREE PREVIEW",
+      duration: "10min",
+      isFree: true,
+      videoUrl: "https://www.youtube.com/watch?v=PFVKjUUZMf8&pp=ygUTa290bGluIGludHJvZHVjdGlvbg%3D%3D",
+      description: "Introduction to Kotlin programming language for Android development"
+    },
+    {
+      id: 2,
+      title: "Kotlin Fundamentals",
+      duration: "25min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=ffPq1usEZSI&pp=ygUTa290bGluIGZ1bmRhbWVudGFscw%3D%3D",
+      description: "Learn Kotlin fundamentals and basic syntax"
+    },
+    {
+      id: 3,
+      title: "Object-Oriented Programming in Kotlin",
+      duration: "54min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=H6Edy4o14xE&pp=ygUNb29wIGluIGtvdGxpbg%3D%3D",
+      description: "Master OOP concepts in Kotlin"
+    },
+    {
+      id: 4,
+      title: "Functional Programming in Kotlin",
+      duration: "15min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=obN78NEd47g&pp=ygUSZnVuY3Rpb24gaW4ga290bGlu",
+      description: "Explore functional programming features in Kotlin"
+    },
+    {
+      id: 5,
+      title: "Coroutines & Asynchronous Programming",
+      duration: "2h 7min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=lmRzRKIsn1g&pp=ygUvY29yb3V0aW5lcyAmIGFzeW5jaHJvbm91cyBwcm9ncmFtbWluZyBpbiBrb3RsaW4%3D",
+      description: "Master coroutines for asynchronous programming"
+    },
+    {
+      id: 6,
+      title: "Architecture Components",
+      duration: "41min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=-OGxVkxV32k&pp=ygUhYXJjaGl0ZWN0dXJlIGNvbXBvbmVudHMgaW4ga290bGlu",
+      description: "Learn Android architecture components in Kotlin"
+    },
+    {
+      id: 7,
+      title: "Networking",
+      duration: "29min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=D-KcDtvS0jE&pp=ygUUbmV0d29ya2luZyBpbiBrb3RsaW4%3D",
+      description: "Implement networking in Kotlin applications"
+    },
+    {
+      id: 8,
+      title: "Firebase Integration",
+      duration: "16min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=idbxxkF1l6k&pp=ygUeRmlyZWJhc2UgSW50ZWdyYXRpb24gaW4ga290bGlu",
+      description: "Integrate Firebase services in Kotlin apps"
+    },
+    {
+      id: 9,
+      title: "Testing & Deployment",
+      duration: "12min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=IIUw9pEMcKY&pp=ygUVIERlcGxveW1lbnQgaW4ga290bGlu",
+      description: "Learn testing practices and deploy Kotlin applications"
+    },
+    {
+      id: 10,
+      title: "Kotlin Project",
+      duration: "2h 26min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=_03sTtlxHqI&pp=ygUOa290bGluIHByb2plY3Q%3D",
+      description: "Build a complete Android application with Kotlin"
+    },
+  ],
+  12: [ // Data Structures & Algorithms
+    {
+      id: 1,
+      title: "What are data structures?- FREE PREVIEW",
+      duration: "16min",
+      isFree: true,
+      videoUrl: "https://www.youtube.com/watch?v=bum_19loj9A&t=10s&pp=ygUuaW50cm9kdWN0aW9uIHRvIGRhdGEgc3RydWN0dXJlcyBhbmQgYWxnb3JpdGhtcw%3D%3D",
+      description: "Introduction to data structures and their importance"
+    },
+    {
+      id: 2,
+      title: "Programming Foundations for DSA",
+      duration: "13min",
+      isFree: false,
+      videoUrl: "https://youtu.be/bL-o2xBENY0?list=PLxgZQoSe9cg0df_GxVjz3DD_Gck5tMXAd",
+      description: "Build programming foundations needed for DSA"
+    },
+    {
+      id: 3,
+      title: "Arrays & Strings",
+      duration: "7min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=0OK-kbu9Cwo&pp=ygUiYXJyYXkgYW5kIHN0cmluZyBpbiBkYXRhIHN0cnVjdHVyZQ%3D%3D",
+      description: "Master arrays and string manipulation techniques"
+    },
+    {
+      id: 4,
+      title: "Linked Lists",
+      duration: "13min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=N6dOwBde7-M&pp=ygUeTGlua2VkIExpc3RzIGluIGRhdGEgc3RydWN0dXJl",
+      description: "Understand and implement linked lists"
+    },
+    {
+      id: 5,
+      title: "Stack & Queue",
+      duration: "16min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=A3ZUpyrnCbM&pp=ygUhc3RhY2sgYW5kIHF1ZXVlIGluIGRhdGEgc3RydWN0dXJl",
+      description: "Learn stack and queue data structures"
+    },
+    {
+      id: 6,
+      title: "Recursion & Backtracking",
+      duration: "12min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=L0NxT2i-LOY&pp=ygUqUmVjdXJzaW9uICYgQmFja3RyYWNraW5nIGluIGRhdGEgc3RydWN0dXJl",
+      description: "Master recursion and backtracking algorithms"
+    },
+    {
+      id: 7,
+      title: "Searching & Sorting",
+      duration: "9min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=Lg20Q0-N5CI&list=PLC0rhPW3svhi9aTkMQxG2_0EyQkIDTBmg",
+      description: "Implement various searching and sorting algorithms"
+    },
+    {
+      id: 8,
+      title: "Trees",
+      duration: "10min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=1-l_UOFi1Xw&pp=ygUWdHJlZSBpbiBkYXRhIHN0cnVjdHVyZQ%3D%3D",
+      description: "Understand tree data structures and traversal methods"
+    },
+    {
+      id: 9,
+      title: "Heaps & Priority Queue",
+      duration: "51min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=HqPJF2L5h9U&pp=ygUrcHJpb3JpdHkgcXVldWUgaGVhcCBpbiBkYXRhIHN0cnVjdHVyZSB0YW1pbA%3D%3D",
+      description: "Master heap data structure and priority queues"
+    },
+    {
+      id: 10,
+      title: "Graphs",
+      duration: "16min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=gXgEDyodOJU&pp=ygUmZ3JhcGhzIGluIGRhdGEgc3RydWN0dXJlIGFuZCBhbGdvcml0aG0%3D",
+      description: "Learn graph data structures and algorithms"
+    },
+    {
+      id: 11,
+      title: "Greedy Algorithms",
+      duration: "1h 53min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=bC7o8P_Ste4&pp=ygUuR3JlZWR5IEFsZ29yaXRobXMgZGF0YSBzdHJ1Y3R1cmUgYW5kIGFsZ29yaXRobQ%3D%3D",
+      description: "Understand and implement greedy algorithms"
+    },
+    {
+      id: 12,
+      title: "Dynamic Programming",
+      duration: "14min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=vYquumk4nWw&pp=ygUTRHluYW1pYyBQcm9ncmFtbWluZ9IHCQmHCgGHKiGM7w%3D%3D",
+      description: "Master dynamic programming concepts and techniques"
+    },
+  ],
+  13: [ // Computer Networks
+    {
+      id: 1,
+      title: "Introduction to Computer Networks- FREE PREVIEW",
+      duration: "8min",
+      isFree: true,
+      videoUrl: "https://www.youtube.com/watch?v=WO6P92v61y4&pp=ygUhSW50cm9kdWN0aW9uIHRvIENvbXB1dGVyIE5ldHdvcmtz",
+      description: "Introduction to computer networks and their importance"
+    },
+    {
+      id: 2,
+      title: "OSI & TCP/IP Models",
+      duration: "29min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=a0UIbw1MsUM&pp=ygUTT1NJICYgVENQL0lQIE1vZGVscw%3D%3D",
+      description: "Understand OSI and TCP/IP networking models"
+    },
+    {
+      id: 3,
+      title: "Physical & Data Link Layer",
+      duration: "35min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=eSE6drHgtyA&t=20s&pp=ygUaUGh5c2ljYWwgJiBEYXRhIExpbmsgTGF5ZXI%3D",
+      description: "Learn about physical and data link layers"
+    },
+    {
+      id: 4,
+      title: "Network Layer",
+      duration: "12min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=rW1jPlYgp_0&pp=ygUNTmV0d29yayBMYXllcg%3D%3D",
+      description: "Master network layer concepts and protocols"
+    },
+    {
+      id: 5,
+      title: "Transport Layer",
+      duration: "25min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=0VtGnhUze6Y&pp=ygUPVHJhbnNwb3J0IExheWVy",
+      description: "Understand transport layer protocols and services"
+    },
+    {
+      id: 6,
+      title: "Application Layer Protocols",
+      duration: "7min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=rxdBKMDCdN0&pp=ygUbQXBwbGljYXRpb24gTGF5ZXIgUHJvdG9jb2xz",
+      description: "Learn common application layer protocols"
+    },
+    {
+      id: 7,
+      title: "Network Security Basics",
+      duration: "20min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=VJelZrYc49c&pp=ygUXTmV0d29yayBTZWN1cml0eSBCYXNpY3PSBwkJhwoBhyohjO8%3D",
+      description: "Introduction to network security fundamentals"
+    },
+    {
+      id: 8,
+      title: "Wireless & Modern Networking",
+      duration: "9min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=DITTo5D0hSY&pp=ygUcV2lyZWxlc3MgJiBNb2Rlcm4gTmV0d29ya2luZw%3D%3D",
+      description: "Explore wireless and modern networking technologies"
+    },
+    {
+      id: 9,
+      title: "Routing & Switching (Advanced)",
+      duration: "1h 26min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=2dic_pDh_UI&pp=ygUeUm91dGluZyAmIFN3aXRjaGluZyAoQWR2YW5jZWQp",
+      description: "Master advanced routing and switching concepts"
+    },
+    {
+      id: 10,
+      title: "Network Troubleshooting",
+      duration: "15min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=vgisbCjtHz4&pp=ygUXTmV0d29yayBUcm91Ymxlc2hvb3Rpbmc%3D",
+      description: "Learn techniques for network troubleshooting"
+    },
+  ],
+  14: [ // Database Management
+    {
+      id: 1,
+      title: "Introduction to Databases- FREE PREVIEW",
+      duration: "3min",
+      isFree: true,
+      videoUrl: "https://www.youtube.com/watch?v=X7v0O8yiUuY&pp=ygUqaW50cm9kdWN0aW9uIHRvIGRhdGFiYXNlIG1hbmFnZW1lbnQgc3lzdGVt",
+      description: "Introduction to database management systems"
+    },
+    {
+      id: 2,
+      title: "Database Models",
+      duration: "12min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=NPT__vt-hCg&t=225s&pp=ygUPRGF0YWJhc2UgTW9kZWxz",
+      description: "Understand different database models and their uses"
+    },
+    {
+      id: 3,
+      title: "Relational Database Concepts",
+      duration: "10min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=WI9dE8-TFAc&t=77s&pp=ygUcUmVsYXRpb25hbCBEYXRhYmFzZSBDb25jZXB0c9IHCQmHCgGHKiGM7w%3D%3D",
+      description: "Master relational database concepts and principles"
+    },
+    {
+      id: 4,
+      title: "SQL Basics",
+      duration: "44min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=h0nxCDiD-zg&pp=ygUKU1FMIEJhc2ljcw%3D%3D",
+      description: "Learn basic SQL queries and operations"
+    },
+    {
+      id: 5,
+      title: "Advanced SQL Queries",
+      duration: "1h 10min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=Hl4NZB1XR9c&pp=ygUUQWR2YW5jZWQgU1FMIFF1ZXJpZXM%3D",
+      description: "Master advanced SQL queries and optimization"
+    },
+    {
+      id: 6,
+      title: "Indexing & Views",
+      duration: "13min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=lmxdf6pyZpg&pp=ygUQSW5kZXhpbmcgJiBWaWV3cw%3D%3D",
+      description: "Understand indexing strategies and database views"
+    },
+    {
+      id: 7,
+      title: "Stored Procedures & Functions",
+      duration: "12min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=7vnxpcqmqNQ&pp=ygUdU3RvcmVkIFByb2NlZHVyZXMgJiBGdW5jdGlvbnM%3D",
+      description: "Create and use stored procedures and functions"
+    },
+    {
+      id: 8,
+      title: "Transactions & Concurrency",
+      duration: "45min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=onYjxRcToto&pp=ygUaVHJhbnNhY3Rpb25zICYgQ29uY3VycmVuY3k%3D",
+      description: "Learn about transactions and concurrency control"
+    },
+    {
+      id: 9,
+      title: "Database Design & Normalization",
+      duration: "28min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=GFQaEYEc8_8&pp=ygUfRGF0YWJhc2UgRGVzaWduICYgTm9ybWFsaXphdGlvbg%3D%3D",
+      description: "Master database design and normalization techniques"
+    },
+    {
+      id: 10,
+      title: "Database Security & Backup",
+      duration: "14min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=c3YaDqvSDrQ&pp=ygUaRGF0YWJhc2UgU2VjdXJpdHkgJiBCYWNrdXA%3D",
+      description: "Learn database security practices and backup strategies"
+    },
+  ],
+  15: [ // UX/UI Design
+    {
+      id: 1,
+      title: "Introduction to UX/UI Design- FREE PREVIEW",
+      duration: "8min",
+      isFree: true,
+      videoUrl: "https://www.youtube.com/watch?v=ODpB9-MCa5s&pp=ygUcaW50cm9kdWN0aW9uIHRvIHV4L3VpIGRlc2lnbg%3D%3D",
+      description: "Introduction to UX/UI design principles and practices"
+    },
+    {
+      id: 2,
+      title: "User Research",
+      duration: "13min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=TRaNiRZqXwY&pp=ygUdVXNlciBSZXNlYXJjaCBpbiB1eC91aSBkZXNpZ24%3D",
+      description: "Learn user research methods and techniques"
+    },
+    {
+      id: 3,
+      title: "Information Architecture",
+      duration: "17min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=OJLfjgVlwDo&pp=ygUoSW5mb3JtYXRpb24gQXJjaGl0ZWN0dXJlIGluIHV4L3VpIGRlc2lnbg%3D%3D",
+      description: "Master information architecture principles"
+    },
+    {
+      id: 4,
+      title: "Wireframing & Prototyping",
+      duration: "4min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=Dh14MmPBvZA&pp=ygUpV2lyZWZyYW1pbmcgJiBQcm90b3R5cGluZyBpbiB1eC91aSBkZXNpZ24%3D",
+      description: "Create wireframes and interactive prototypes"
+    },
+    {
+      id: 5,
+      title: "Visual Design Principles",
+      duration: "27min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=yNDgFK2Jj1E&pp=ygUhVmlzdWFsIERlc2lnbiBQcmluY2lwbGVzIGluIHV4L3Vp",
+      description: "Learn visual design principles for digital products"
+    },
+    {
+      id: 6,
+      title: "UX Principles",
+      duration: "10min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=08MrVhy2qk8&pp=ygUWVVggUHJpbmNpcGxlcyBpbiB1eC91aQ%3D%3D",
+      description: "Master core UX principles and heuristics"
+    },
+    {
+      id: 7,
+      title: "UI Design in Practice",
+      duration: "10min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=f6p1ePt1Va8&pp=ygUVVUkgRGVzaWduIGluIFByYWN0aWNl0gcJCYcKAYcqIYzv",
+      description: "Apply UI design principles in practical projects"
+    },
+    {
+      id: 8,
+      title: "Design Systems",
+      duration: "15min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=w-r6quQx0zA&pp=ygUXZGVzaWduIHN5c3RlbXMgaW4gZmlnbWE%3D",
+      description: "Understand and create design systems"
+    },
+    {
+      id: 9,
+      title: "Usability Testing",
+      duration: "11min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=7pAOkWLW1Oo&pp=ygURVXNhYmlsaXR5IFRlc3Rpbmc%3D",
+      description: "Learn usability testing methods and practices"
+    },
+    {
+      id: 10,
+      title: "Portfolio & Projects",
+      duration: "17min",
+      isFree: false,
+      videoUrl: "https://www.youtube.com/watch?v=mmgxspm9JWs&pp=ygUaUG9ydGZvbGlvICYgUHJvamVjdHMgdXggdWk%3D",
+      description: "Build a UX/UI design portfolio with real projects"
+    },
+  ]
+};
+// ============================================
+// Initialize Application
+// ============================================
+
 function init() {
   console.log("Initializing application...");
 
@@ -622,6 +1636,7 @@ function init() {
     try {
       currentUser = JSON.parse(savedUser);
       loadUserData(currentUser.id);
+      console.log("Loaded purchased courses on init:", purchasedCourses); // Debug log
     } catch (e) {
       console.error("Error loading user:", e);
       clearUserData();
@@ -656,23 +1671,737 @@ function init() {
   console.log("Application initialized successfully");
 }
 
-// Load user data
+// ============================================
+// Modules Management
+// ============================================
+
+function generateCourseModules(courseId) {
+  const course = courseData.find(c => c.id === courseId);
+  if (!course) return;
+
+  console.log("Generating modules for course:", courseId);
+  console.log("Purchased courses:", purchasedCourses);
+  console.log("Is purchased?", purchasedCourses.includes(courseId));
+
+  // Get modules for this course
+  let modules = courseModulesData[courseId];
+  
+  // If no modules defined, create default ones
+  if (!modules) {
+    modules = [];
+    for (let i = 1; i <= (course.modules || 8); i++) {
+      modules.push({
+        id: i,
+        title: i === 1 ? `Module ${i}: Introduction - FREE PREVIEW` : `Module ${i}: ${getDefaultModuleTitle(course.category, i)}`,
+        duration: `${Math.floor(Math.random() * 45) + 30} min`,
+        isFree: i === 1, // First module is always free
+        videoUrl: getDefaultVideoUrl(course.category, i),
+        description: i === 1 
+          ? `Free introduction to ${course.category}` 
+          : `Learn advanced ${course.category} concepts in this module`
+      });
+    }
+  }
+
+  // Check if course is purchased - ensure we're comparing numbers
+  const isPurchased = purchasedCourses.some(id => Number(id) === Number(courseId));
+
+  // Generate desktop modules
+  generateDesktopModules(courseId, modules, isPurchased);
+
+  // Generate mobile modules
+  generateMobileModules(courseId, modules, isPurchased);
+
+  // Update module counts and progress
+  updateModuleCounts(modules.length, course, isPurchased);
+  
+  // Update purchase buttons
+  updatePurchaseButtons(courseId, course, isPurchased);
+}
+
+function getDefaultModuleTitle(category, moduleNum) {
+  const titles = {
+    "Web Development": ["Introduction", "HTML", "CSS", "JavaScript", "Advanced JS", "Frameworks", "Projects", "Deployment"],
+    "Programming Language": ["Introduction", "Basics", "Control Flow", "Functions", "OOP", "Advanced", "Projects", "Best Practices"],
+    "Mobile Development": ["Introduction", "Setup", "UI Components", "Navigation", "State", "API", "Testing", "Deployment"]
+  };
+  
+  const categoryTitles = titles[category] || [
+    "Introduction", "Core Concepts", "Intermediate", "Advanced", "Practice", "Project", "Review", "Next Steps"
+  ];
+  
+  return categoryTitles[(moduleNum - 1) % categoryTitles.length];
+}
+
+function getDefaultVideoUrl(category, moduleNum) {
+  // Return a default YouTube embed URL based on category
+  const urls = {
+    "Web Development": "https://www.youtube.com/embed/zJSY8tbf_ys",
+    "Programming Language": "https://www.youtube.com/embed/ix9cRaBkVe0",
+    "Mobile Development": "https://www.youtube.com/embed/0-S5a0eXPoc"
+  };
+  
+  return urls[category] || "https://www.youtube.com/embed/zJSY8tbf_ys";
+}
+
+function generateDesktopModules(courseId, modules, isPurchased) {
+  const desktopModuleList = document.getElementById("desktop-module-list");
+  if (!desktopModuleList) return;
+
+  const modulesHTML = modules.map((module) => {
+    const isLocked = !isPurchased && !module.isFree;
+
+    return `
+      <div class="module-item ${isLocked ? 'locked' : ''} ${module.isFree ? 'free-module' : ''}" 
+           data-module-id="${module.id}" 
+           data-course-id="${courseId}" 
+           data-video-url="${module.videoUrl}" 
+           data-is-locked="${isLocked}"
+           data-is-free="${module.isFree}"
+           data-watched="false">
+        <div class="module-content p-3 mb-2 rounded-lg border ${isLocked ? 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50' : 'border-purple-200 dark:border-purple-800 hover:border-purple-400 dark:hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20 cursor-pointer transition-all'}">
+          <div class="flex items-start gap-3">
+            <div class="module-status mt-1">
+              ${isLocked ? 
+                '<i class="fas fa-lock text-gray-400 dark:text-gray-500 text-sm"></i>' : 
+                '<i class="fas fa-play-circle text-purple-600 dark:text-purple-400 text-sm watched-icon" style="display: none;"></i>' +
+                '<i class="fas fa-check-circle text-green-500 text-sm completed-icon" style="display: none;"></i>' +
+                '<i class="fas fa-play-circle text-purple-600 dark:text-purple-400 text-sm default-icon"></i>'
+              }
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between mb-1">
+                <h4 class="font-medium text-sm truncate pr-2 ${isLocked ? 'text-gray-500 dark:text-gray-400' : 'text-gray-900 dark:text-white'}">
+                  ${module.title}
+                </h4>
+                <span class="text-xs ${isLocked ? 'text-gray-400 dark:text-gray-500' : 'text-purple-600 dark:text-purple-400'} whitespace-nowrap">
+                  ${module.duration}
+                </span>
+              </div>
+              <p class="text-xs ${isLocked ? 'text-gray-400 dark:text-gray-500' : 'text-gray-500 dark:text-gray-400'} line-clamp-2 mb-2">
+                ${module.description}
+              </p>
+              ${module.isFree ? 
+                '<span class="inline-block px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs rounded-full">FREE PREVIEW</span>' : 
+                isPurchased ? 
+                  '<span class="inline-block px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 text-xs rounded-full">Purchased</span>' : 
+                  '<span class="inline-block px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs rounded-full">Locked</span>'
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  desktopModuleList.innerHTML = modulesHTML || `
+    <div class="text-center py-8">
+      <i class="fas fa-video text-gray-300 dark:text-gray-600 text-3xl mb-3"></i>
+      <p class="text-gray-500 dark:text-gray-400 text-sm">No modules available</p>
+    </div>
+  `;
+
+  // Add click event listeners
+  addModuleClickListeners(desktopModuleList, isPurchased, false, courseId);
+}
+
+function generateMobileModules(courseId, modules, isPurchased) {
+  const mobileModuleList = document.getElementById("mobile-module-list");
+  if (!mobileModuleList) return;
+
+  const modulesHTML = modules.map((module) => {
+    const isLocked = !isPurchased && !module.isFree;
+
+    return `
+      <div class="mobile-module-item ${isLocked ? 'locked' : ''} ${module.isFree ? 'free-module' : ''}" 
+           data-module-id="${module.id}" 
+           data-course-id="${courseId}" 
+           data-video-url="${module.videoUrl}" 
+           data-is-locked="${isLocked}"
+           data-is-free="${module.isFree}"
+           data-watched="false">
+        <div class="module-content p-4 mb-3 rounded-xl border ${isLocked ? 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50' : 'border-purple-200 dark:border-purple-800 hover:border-purple-400 dark:hover:border-purple-600 bg-white dark:bg-gray-800 shadow-sm'}">
+          <div class="flex items-start gap-4">
+            <div class="module-status w-6 flex-shrink-0 mt-1">
+              ${isLocked ? 
+                '<i class="fas fa-lock text-gray-400 dark:text-gray-500 text-base"></i>' : 
+                '<i class="fas fa-play-circle text-purple-600 dark:text-purple-400 text-lg watched-icon" style="display: none;"></i>' +
+                '<i class="fas fa-check-circle text-green-500 text-lg completed-icon" style="display: none;"></i>' +
+                '<i class="fas fa-play-circle text-purple-600 dark:text-purple-400 text-lg default-icon"></i>'
+              }
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between mb-2">
+                <h4 class="font-semibold text-base ${isLocked ? 'text-gray-500 dark:text-gray-400' : 'text-gray-900 dark:text-white'} line-clamp-1">
+                  ${module.title}
+                </h4>
+                <span class="text-sm ${isLocked ? 'text-gray-400 dark:text-gray-500' : 'text-purple-600 dark:text-purple-400'} font-medium ml-2 whitespace-nowrap">
+                  ${module.duration}
+                </span>
+              </div>
+              <p class="text-sm ${isLocked ? 'text-gray-400 dark:text-gray-500' : 'text-gray-600 dark:text-gray-400'} line-clamp-2 mb-3">
+                ${module.description}
+              </p>
+              <div class="flex items-center gap-2 flex-wrap">
+                ${module.isFree ? 
+                  '<span class="inline-block px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs rounded-full font-medium">FREE PREVIEW</span>' : 
+                  isPurchased ? 
+                    '<span class="inline-block px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 text-xs rounded-full font-medium">Purchased</span>' : 
+                    '<span class="inline-block px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs rounded-full">Locked - Purchase to Unlock</span>'
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  mobileModuleList.innerHTML = modulesHTML || `
+    <div class="text-center py-12">
+      <i class="fas fa-video text-gray-300 dark:text-gray-600 text-4xl mb-3"></i>
+      <p class="text-gray-500 dark:text-gray-400">No modules available</p>
+    </div>
+  `;
+
+  // Add click event listeners
+  addModuleClickListeners(mobileModuleList, isPurchased, true, courseId);
+}
+
+function addModuleClickListeners(container, isPurchased, isMobile = false, courseId) {
+  const moduleItems = container.querySelectorAll('[data-module-id]');
+  
+  moduleItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      // Don't trigger if clicking on a button inside the module
+      if (e.target.closest('button')) return;
+
+      const moduleId = item.dataset.moduleId;
+      const videoUrl = item.dataset.videoUrl;
+      const isLocked = item.dataset.isLocked === 'true';
+
+      if (isLocked) {
+        showToast('This module requires course purchase', 'error');
+        
+        // Highlight purchase button
+        const purchaseBtn = document.getElementById(isMobile ? 'mobile-purchase-button' : 'desktop-purchase-button');
+        if (purchaseBtn) {
+          purchaseBtn.classList.add('animate-pulse', 'bg-yellow-500');
+          setTimeout(() => {
+            purchaseBtn.classList.remove('animate-pulse', 'bg-yellow-500');
+          }, 2000);
+        }
+        return;
+      }
+
+      // Play the module video
+      playModuleVideo(courseId, moduleId, videoUrl);
+    });
+  });
+}
+
+function playModuleVideo(courseId, moduleId, videoUrl) {
+  const videoPlayer = document.getElementById("course-video-player");
+  if (!videoPlayer) return;
+
+  // Get module info
+  const modules = courseModulesData[courseId] || [];
+  const module = modules.find(m => m.id == moduleId);
+
+  // Convert YouTube URL to embed format
+  let embedUrl = videoUrl;
+  
+  // Handle different YouTube URL formats
+  if (videoUrl.includes('youtube.com/watch?v=')) {
+    // Format: https://www.youtube.com/watch?v=VIDEO_ID
+    const videoId = videoUrl.split('v=')[1]?.split('&')[0];
+    embedUrl = `https://www.youtube.com/embed/${videoId}`;
+  } else if (videoUrl.includes('youtu.be/')) {
+    // Format: https://youtu.be/VIDEO_ID
+    const videoId = videoUrl.split('youtu.be/')[1]?.split('?')[0];
+    embedUrl = `https://www.youtube.com/embed/${videoId}`;
+  } else if (videoUrl.includes('youtube.com/embed/')) {
+    // Already in embed format
+    embedUrl = videoUrl;
+  }
+
+  // Add autoplay parameter
+  embedUrl += embedUrl.includes('?') ? '&autoplay=1' : '?autoplay=1';
+
+  console.log("Playing video:", embedUrl); // Debug log
+
+  videoPlayer.innerHTML = `
+    <div class="relative w-full h-full bg-black rounded-xl overflow-hidden">
+      <iframe 
+        src="${embedUrl}" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen
+        class="absolute top-0 left-0 w-full h-full"
+        title="${module?.title || 'Course video'}"
+      ></iframe>
+    </div>
+  `;
+
+  // Mark module as watched/in progress
+  markModuleAsWatched(courseId, moduleId);
+
+  // Close mobile menu if open
+  closeMobileModulesMenu();
+
+  // Update active module styling
+  updateActiveModule(courseId, moduleId);
+
+  // Show success message for free preview
+  if (module && module.isFree) {
+    showToast('Enjoying the free preview! Purchase to unlock all modules.', 'success');
+  }
+}
+
+function markModuleAsWatched(courseId, moduleId) {
+  // Initialize progress for this course if not exists
+  if (!currentVideoProgress[courseId]) {
+    currentVideoProgress[courseId] = {
+      started: new Date().toISOString(),
+      watchedModules: [],
+      lastModule: moduleId,
+      progress: 0
+    };
+  }
+
+  // Add module to watched modules if not already there
+  const courseProgress = currentVideoProgress[courseId];
+  if (!courseProgress.watchedModules.includes(parseInt(moduleId))) {
+    courseProgress.watchedModules.push(parseInt(moduleId));
+    courseProgress.lastModule = parseInt(moduleId);
+    
+    // Get total modules for this course
+    const modules = courseModulesData[courseId] || [];
+    const totalModules = modules.length;
+    
+    // Calculate progress percentage
+    const watchedCount = courseProgress.watchedModules.length;
+    const unlockedModules = modules.filter(m => m.isFree || purchasedCourses.includes(courseId)).length;
+    const progress = Math.round((watchedCount / unlockedModules) * 100);
+    courseProgress.progress = progress;
+    
+    // Save to localStorage
+    if (currentUser) {
+      const userProgressKey = `learnhub_video_progress_${currentUser.id}`;
+      localStorage.setItem(userProgressKey, JSON.stringify(currentVideoProgress));
+    }
+    
+    // Update UI
+    updateModuleWatchedStatus(courseId, moduleId);
+    updateCourseProgress(courseId, progress);
+  }
+}
+
+function updateModuleWatchedStatus(courseId, moduleId) {
+  // Update desktop module
+  const desktopModule = document.querySelector(`#desktop-module-list [data-module-id="${moduleId}"]`);
+  if (desktopModule) {
+    const defaultIcon = desktopModule.querySelector('.default-icon');
+    const watchedIcon = desktopModule.querySelector('.watched-icon');
+    const completedIcon = desktopModule.querySelector('.completed-icon');
+    
+    if (defaultIcon) defaultIcon.style.display = 'none';
+    if (watchedIcon) watchedIcon.style.display = 'inline-block';
+  }
+
+  // Update mobile module
+  const mobileModule = document.querySelector(`#mobile-module-list [data-module-id="${moduleId}"]`);
+  if (mobileModule) {
+    const defaultIcon = mobileModule.querySelector('.default-icon');
+    const watchedIcon = mobileModule.querySelector('.watched-icon');
+    const completedIcon = mobileModule.querySelector('.completed-icon');
+    
+    if (defaultIcon) defaultIcon.style.display = 'none';
+    if (watchedIcon) watchedIcon.style.display = 'inline-block';
+  }
+}
+
+function updateCourseProgress(courseId, progress) {
+  // Update desktop progress
+  const sidebarProgressBar = document.getElementById("sidebar-progress-bar");
+  const sidebarProgressPercentage = document.getElementById("sidebar-progress-percentage");
+  const sidebarProgressText = document.getElementById("sidebar-progress-text");
+  
+  if (sidebarProgressBar) sidebarProgressBar.style.width = `${progress}%`;
+  if (sidebarProgressPercentage) sidebarProgressPercentage.textContent = `${progress}%`;
+  if (sidebarProgressText) sidebarProgressText.textContent = `${progress}% complete • Keep learning`;
+
+  // Update mobile progress
+  const mobileProgressBar = document.getElementById("mobile-progress-bar");
+  const mobileProgressPercentage = document.getElementById("mobile-progress-percentage");
+  const mobileProgressText = document.getElementById("mobile-progress-text");
+  
+  if (mobileProgressBar) mobileProgressBar.style.width = `${progress}%`;
+  if (mobileProgressPercentage) mobileProgressPercentage.textContent = `${progress}%`;
+  if (mobileProgressText) mobileProgressText.textContent = `${progress}% complete • Keep learning`;
+}
+
+function updateActiveModule(courseId, activeModuleId) {
+  // Desktop modules
+  const desktopModules = document.querySelectorAll('#desktop-module-list [data-module-id]');
+  desktopModules.forEach(module => {
+    const moduleContent = module.querySelector('.module-content');
+    if (module.dataset.moduleId == activeModuleId) {
+      moduleContent.classList.add('bg-purple-100', 'dark:bg-purple-900/40', 'border-purple-500', 'dark:border-purple-500');
+    } else {
+      moduleContent.classList.remove('bg-purple-100', 'dark:bg-purple-900/40', 'border-purple-500', 'dark:border-purple-500');
+    }
+  });
+
+  // Mobile modules
+  const mobileModules = document.querySelectorAll('#mobile-module-list [data-module-id]');
+  mobileModules.forEach(module => {
+    const moduleContent = module.querySelector('.module-content');
+    if (module.dataset.moduleId == activeModuleId) {
+      moduleContent.classList.add('bg-purple-100', 'dark:bg-purple-900/40', 'border-purple-500', 'dark:border-purple-500');
+    } else {
+      moduleContent.classList.remove('bg-purple-100', 'dark:bg-purple-900/40', 'border-purple-500', 'dark:border-purple-500');
+    }
+  });
+}
+
+function updateModuleCounts(totalModules, course, isPurchased) {
+  // Update desktop sidebar
+  const sidebarCourseTitle = document.getElementById("sidebar-course-title");
+  const sidebarCourseModules = document.getElementById("sidebar-course-modules");
+  const sidebarCoursePrice = document.getElementById("sidebar-course-price");
+  const desktopPrice = document.getElementById("desktop-price");
+  const mobilePrice = document.getElementById("mobile-price");
+  const mobileModulesCount = document.getElementById("mobile-modules-count");
+  const desktopPurchaseModulesCount = document.getElementById("desktop-purchase-modules-count");
+  const mobileCoursePrice = document.getElementById("mobile-course-price");
+  
+  // New mobile sidebar elements
+  const mobileSidebarTitle = document.getElementById("mobile-sidebar-title");
+  const mobileSidebarModules = document.getElementById("mobile-sidebar-modules");
+  const mobileSidebarPrice = document.getElementById("mobile-sidebar-price");
+  const mobilePurchaseModulesCount = document.getElementById("mobile-purchase-modules-count");
+  
+  if (sidebarCourseTitle) sidebarCourseTitle.textContent = course.title;
+  if (sidebarCourseModules) sidebarCourseModules.textContent = `${totalModules} modules (1 free)`;
+  if (sidebarCoursePrice) sidebarCoursePrice.textContent = `$${course.price.toFixed(2)}`;
+  if (desktopPrice) desktopPrice.textContent = `$${course.price.toFixed(2)}`;
+  if (mobilePrice) mobilePrice.textContent = `$${course.price.toFixed(2)}`;
+  if (mobileCoursePrice) mobileCoursePrice.textContent = `$${course.price.toFixed(2)}`;
+  if (mobileModulesCount) mobileModulesCount.textContent = `${totalModules} modules`;
+  if (desktopPurchaseModulesCount) desktopPurchaseModulesCount.textContent = totalModules;
+  
+  // Update mobile sidebar
+  if (mobileSidebarTitle) mobileSidebarTitle.textContent = course.title;
+  if (mobileSidebarModules) mobileSidebarModules.textContent = `${totalModules} modules (1 free)`;
+  if (mobileSidebarPrice) mobileSidebarPrice.textContent = `$${course.price.toFixed(2)}`;
+  if (mobilePurchaseModulesCount) mobilePurchaseModulesCount.textContent = totalModules;
+
+  // Get saved progress for this course
+  let progress = 0;
+  if (currentVideoProgress[course.id]) {
+    progress = currentVideoProgress[course.id].progress || 0;
+  }
+
+  // Update progress bars
+  updateProgressBars(progress, totalModules, isPurchased);
+}
+
+function updateProgressBars(progress, totalModules, isPurchased) {
+  const sidebarProgressBar = document.getElementById("sidebar-progress-bar");
+  const sidebarProgressPercentage = document.getElementById("sidebar-progress-percentage");
+  const sidebarProgressText = document.getElementById("sidebar-progress-text");
+  const mobileProgressBar = document.getElementById("mobile-progress-bar");
+  const mobileProgressPercentage = document.getElementById("mobile-progress-percentage");
+  const mobileProgressText = document.getElementById("mobile-progress-text");
+
+  const progressWidth = progress ? `${progress}%` : '0%';
+  const progressPercentage = progress ? `${progress}%` : '0%';
+  const progressMessage = isPurchased 
+    ? (progress ? `${progress}% complete • Keep learning` : 'Start learning to track progress')
+    : 'Purchase to unlock all modules';
+
+  // Desktop
+  if (sidebarProgressBar) sidebarProgressBar.style.width = progressWidth;
+  if (sidebarProgressPercentage) sidebarProgressPercentage.textContent = progressPercentage;
+  if (sidebarProgressText) sidebarProgressText.textContent = progressMessage;
+
+  // Mobile
+  if (mobileProgressBar) mobileProgressBar.style.width = progressWidth;
+  if (mobileProgressPercentage) mobileProgressPercentage.textContent = progressPercentage;
+  if (mobileProgressText) mobileProgressText.textContent = progressMessage;
+}
+
+// ============================================
+// Purchase Functions
+// ============================================
+
+function updatePurchaseButtons(courseId, course, isPurchased) {
+  // Desktop purchase button
+  const desktopPurchaseBtn = document.getElementById("desktop-purchase-button");
+  
+  if (desktopPurchaseBtn) {
+    if (isPurchased) {
+      desktopPurchaseBtn.innerHTML = '<i class="fas fa-check mr-2"></i> Course Purchased';
+      desktopPurchaseBtn.disabled = true;
+      desktopPurchaseBtn.classList.add('bg-green-600', 'hover:bg-green-700');
+      desktopPurchaseBtn.classList.remove('bg-purple-600', 'hover:bg-purple-700');
+    } else {
+      desktopPurchaseBtn.innerHTML = '<i class="fas fa-shopping-cart mr-2"></i> Purchase Course';
+      desktopPurchaseBtn.disabled = false;
+      desktopPurchaseBtn.classList.add('bg-purple-600', 'hover:bg-purple-700');
+      desktopPurchaseBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
+      desktopPurchaseBtn.onclick = () => purchaseCourse(courseId);
+    }
+  }
+
+  // Mobile purchase button
+  const mobilePurchaseBtn = document.getElementById("mobile-purchase-button");
+  if (mobilePurchaseBtn) {
+    if (isPurchased) {
+      mobilePurchaseBtn.innerHTML = '<i class="fas fa-check mr-2"></i> Course Purchased';
+      mobilePurchaseBtn.disabled = true;
+      mobilePurchaseBtn.classList.add('bg-green-600', 'hover:bg-green-700');
+      mobilePurchaseBtn.classList.remove('bg-purple-600', 'hover:bg-purple-700');
+    } else {
+      mobilePurchaseBtn.innerHTML = '<i class="fas fa-shopping-cart mr-2"></i> Purchase Course';
+      mobilePurchaseBtn.disabled = false;
+      mobilePurchaseBtn.classList.add('bg-purple-600', 'hover:bg-purple-700');
+      mobilePurchaseBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
+      mobilePurchaseBtn.onclick = () => purchaseCourse(courseId);
+    }
+  }
+
+  // Update system status
+  updateSystemStatusCard();
+}
+
+function purchaseCourse(courseId) {
+  console.log("Purchase clicked for course:", courseId);
+  
+  if (!currentUser) {
+    showLoginModal();
+    return;
+  }
+
+  if (!isSystemOpen()) {
+    showToast(
+      "System is closed. Purchases are only available from 8:00 AM to 10:00 PM (EST).",
+      "error",
+    );
+    return;
+  }
+
+  const course = courseData.find((c) => c.id === courseId);
+  if (!course) {
+    showToast("Course not found", "error");
+    return;
+  }
+
+  // Convert to number for comparison
+  const numericCourseId = Number(courseId);
+  
+  if (purchasedCourses.includes(numericCourseId)) {
+    showToast("You already own this course!", "success");
+    return;
+  }
+
+  const timestamp = Date.now();
+  const randomNum = Math.floor(Math.random() * 10000).toString().padStart(4, "0");
+  const transactionNumber = `RCP-${timestamp}-${randomNum}`;
+
+  const transactionDate = new Date();
+  const transaction = {
+    id: timestamp,
+    transactionNumber: transactionNumber,
+    courseId: numericCourseId,
+    courseTitle: course.title,
+    courseCategory: course.category,
+    courseDuration: course.duration,
+    courseInstructor: course.instructor,
+    courseImage: course.image,
+    courseModules: course.modules || 0,
+    amount: course.price,
+    date: transactionDate.toISOString(),
+    userId: currentUser.id,
+    userName: currentUser.name,
+    userEmail: currentUser.email,
+    status: "completed",
+    paymentMethod: "Credit Card",
+    paymentDetails: "•••• 4242",
+  };
+
+  purchasedCourses.push(numericCourseId);
+  transactions.push(transaction);
+
+  console.log("After purchase - purchased courses:", purchasedCourses); // Debug log
+
+  saveUserData(currentUser.id);
+
+  // Update all course cards
+  updateAllCourseCards();
+
+  showToast(
+    `Purchase complete! All ${course.modules} modules are now unlocked.`,
+    "success",
+  );
+
+  updateDashboard();
+
+  if (currentPage === "dashboard") {
+    loadRecentCourses();
+  }
+
+  // If on course detail page, regenerate modules
+  if (currentPage === "course-detail" && localStorage.getItem("current_course_id") == courseId) {
+    // Small delay to ensure data is saved
+    setTimeout(() => {
+      generateCourseModules(courseId);
+    }, 100);
+  }
+}
+
+// ============================================
+// Mobile Modules Menu
+// ============================================
+
+function initMobileModulesMenu() {
+  const mobileToggle = document.getElementById("mobile-modules-toggle");
+  const mobileOverlay = document.getElementById("mobile-modules-overlay");
+  const closeButton = document.getElementById("close-mobile-modules");
+
+  if (mobileToggle) {
+    mobileToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (mobileOverlay) {
+        mobileOverlay.classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+      }
+    });
+  }
+
+  if (closeButton) {
+    closeButton.addEventListener("click", closeMobileModulesMenu);
+  }
+
+  if (mobileOverlay) {
+    mobileOverlay.addEventListener("click", (e) => {
+      if (e.target === mobileOverlay) {
+        closeMobileModulesMenu();
+      }
+    });
+  }
+}
+
+function closeMobileModulesMenu() {
+  const mobileOverlay = document.getElementById("mobile-modules-overlay");
+  if (mobileOverlay) {
+    mobileOverlay.classList.add("hidden");
+    document.body.style.overflow = "auto";
+  }
+}
+
+// ============================================
+// Show Course Detail (Modified to include modules)
+// ============================================
+
+function showCourseDetail(courseId) {
+  const course = courseData.find((c) => c.id === courseId);
+  if (!course) {
+    window.location.hash = "courses";
+    return;
+  }
+
+  // Save current course ID
+  localStorage.setItem("current_course_id", courseId);
+
+  // Update course detail page
+  const courseDetailCategory = document.getElementById("course-detail-category");
+  const courseDetailTitle = document.getElementById("course-detail-title");
+  const courseDetailDescription = document.getElementById("course-detail-description");
+  const courseDurationValue = document.getElementById("course-duration-value");
+
+  if (courseDetailCategory) courseDetailCategory.textContent = course.category;
+  if (courseDetailTitle) courseDetailTitle.textContent = course.title;
+  if (courseDetailDescription) courseDetailDescription.textContent = course.description;
+  if (courseDurationValue) courseDurationValue.textContent = course.duration;
+
+  // Update learning points
+  const learningPointsList = document.getElementById("course-learning-points");
+  if (learningPointsList) {
+    learningPointsList.innerHTML = course.learningPoints
+      .map(
+        (point) => `
+          <li class="flex items-start">
+            <i class="fas fa-check text-purple-600 dark:text-purple-400 mt-1 mr-3"></i>
+            <span>${point}</span>
+          </li>
+        `,
+      )
+      .join("");
+  }
+
+  // Show course detail page
+  pages.forEach((p) => p.classList.add("page-hidden"));
+  const courseDetailPage = document.getElementById("course-detail-page");
+  if (courseDetailPage) {
+    courseDetailPage.classList.remove("page-hidden");
+    currentPage = "course-detail";
+  }
+
+  // Generate modules
+  setTimeout(() => {
+    generateCourseModules(courseId);
+    initMobileModulesMenu();
+    
+    // Restore watched module icons if any
+    restoreWatchedModules(courseId);
+  }, 100);
+}
+
+function restoreWatchedModules(courseId) {
+  if (currentVideoProgress[courseId]) {
+    const watchedModules = currentVideoProgress[courseId].watchedModules || [];
+    watchedModules.forEach(moduleId => {
+      updateModuleWatchedStatus(courseId, moduleId);
+    });
+    
+    // Update progress bar
+    const progress = currentVideoProgress[courseId].progress || 0;
+    updateCourseProgress(courseId, progress);
+  }
+}
+
+// ============================================
+// Load User Data Functions
+// ============================================
+
 function loadUserData(userId) {
   try {
     const userPurchasedKey = `learnhub_purchased_${userId}`;
     const userTransactionsKey = `learnhub_transactions_${userId}`;
     const userProgressKey = `learnhub_video_progress_${userId}`;
 
-    purchasedCourses = JSON.parse(localStorage.getItem(userPurchasedKey) || "[]");
-    transactions = JSON.parse(localStorage.getItem(userTransactionsKey) || "[]");
-    currentVideoProgress = JSON.parse(localStorage.getItem(userProgressKey) || "{}");
+    const savedPurchased = localStorage.getItem(userPurchasedKey);
+    const savedTransactions = localStorage.getItem(userTransactionsKey);
+    const savedProgress = localStorage.getItem(userProgressKey);
 
-    // Validate data integrity
-    if (!Array.isArray(purchasedCourses)) purchasedCourses = [];
+    purchasedCourses = savedPurchased ? JSON.parse(savedPurchased) : [];
+    transactions = savedTransactions ? JSON.parse(savedTransactions) : [];
+    currentVideoProgress = savedProgress ? JSON.parse(savedProgress) : {};
+
+    // Ensure purchasedCourses is an array of numbers
+    if (Array.isArray(purchasedCourses)) {
+      purchasedCourses = purchasedCourses.map(id => Number(id));
+    } else {
+      purchasedCourses = [];
+    }
+
+    console.log("Loaded purchased courses:", purchasedCourses); // Debug log
+
     if (!Array.isArray(transactions)) transactions = [];
     if (typeof currentVideoProgress !== 'object') currentVideoProgress = {};
 
-    console.log(`Loaded data for user ${userId}: ${purchasedCourses.length} courses, ${transactions.length} transactions`);
     return true;
   } catch (e) {
     console.error("Error loading user data:", e);
@@ -683,7 +2412,6 @@ function loadUserData(userId) {
   }
 }
 
-// Save user data
 function saveUserData(userId) {
   try {
     const userPurchasedKey = `learnhub_purchased_${userId}`;
@@ -694,7 +2422,6 @@ function saveUserData(userId) {
     localStorage.setItem(userTransactionsKey, JSON.stringify(transactions));
     localStorage.setItem(userProgressKey, JSON.stringify(currentVideoProgress));
 
-    console.log(`Saved data for user ${userId}`);
     return true;
   } catch (e) {
     console.error("Error saving user data:", e);
@@ -702,7 +2429,6 @@ function saveUserData(userId) {
   }
 }
 
-// Clear user data
 function clearUserData() {
   localStorage.removeItem("learnhub_user");
   localStorage.removeItem("learnhub_purchased");
@@ -719,43 +2445,35 @@ function clearUserData() {
 // Event Listeners Setup
 // ============================================
 
-// Set up event listeners
 function setupEventListeners() {
-  // Theme toggle
   if (themeToggle) {
     themeToggle.addEventListener("click", toggleTheme);
   }
 
-  // Logout button
   if (logoutBtn) {
     logoutBtn.addEventListener("click", logout);
   }
 
-  // Mobile menu toggle
   if (mobileMenuBtn && mobileMenu) {
     mobileMenuBtn.addEventListener("click", toggleMobileMenu);
     setupClickOutsideHandler();
   }
 
-  // Course search
   const courseSearch = document.getElementById("course-search");
   if (courseSearch) {
     courseSearch.addEventListener("input", filterCourses);
   }
 
-  // Document search
   const documentSearch = document.getElementById("document-search");
   if (documentSearch) {
     documentSearch.addEventListener("input", filterDocuments);
   }
 
-  // Contact form
   const contactForm = document.getElementById("contact-form");
   if (contactForm) {
     contactForm.addEventListener("submit", handleContactSubmit);
   }
 
-  // Logo click
   const logoContainer = document.querySelector(".logo-container");
   if (logoContainer) {
     logoContainer.addEventListener("click", (e) => {
@@ -764,14 +2482,11 @@ function setupEventListeners() {
     });
   }
 
-  // Setup event delegation for dynamic elements
   setupEventDelegation();
 }
 
-// Setup event delegation
 function setupEventDelegation() {
   document.addEventListener("click", (e) => {
-    // View details button
     if (e.target.closest(".view-details-btn")) {
       const btn = e.target.closest(".view-details-btn");
       const courseId = parseInt(btn.dataset.courseId);
@@ -780,34 +2495,14 @@ function setupEventDelegation() {
       }
     }
 
-    // Purchase course button
-    if (e.target.closest(".purchase-course-btn")) {
-      const btn = e.target.closest(".purchase-course-btn");
-      const courseId = parseInt(btn.dataset.courseId);
-      if (courseId) {
-        purchaseCourse(courseId);
-      }
-    }
-
-    // Watch video button
-    if (e.target.closest("#watch-video-btn")) {
-      const courseId = localStorage.getItem("current_course_id");
-      if (courseId) {
-        playCourseVideo(parseInt(courseId));
-      }
-    }
-
-    // Dashboard watch button
     if (e.target.closest(".dashboard-watch-btn")) {
       const btn = e.target.closest(".dashboard-watch-btn");
       const courseId = parseInt(btn.dataset.courseId);
       if (courseId) {
-        playCourseVideo(courseId);
         window.location.hash = `course-${courseId}`;
       }
     }
 
-    // View document button
     if (e.target.closest(".view-document-btn")) {
       const btn = e.target.closest(".view-document-btn");
       const docId = parseInt(btn.dataset.docId);
@@ -816,20 +2511,10 @@ function setupEventDelegation() {
       }
     }
 
-    // Login to read button
     if (e.target.closest(".login-to-read-btn")) {
       showLoginModal();
     }
 
-    // Purchase video button in video area
-    if (e.target.closest("#purchase-video-btn")) {
-      const courseId = localStorage.getItem("current_course_id");
-      if (courseId) {
-        purchaseCourse(parseInt(courseId));
-      }
-    }
-
-    // Course card click (excluding buttons)
     if (e.target.closest(".course-card") && !e.target.closest("button")) {
       const card = e.target.closest(".course-card");
       const courseId = parseInt(card.dataset.courseId);
@@ -840,7 +2525,6 @@ function setupEventDelegation() {
   });
 }
 
-// Setup click outside handler for mobile menu
 function setupClickOutsideHandler() {
   document.addEventListener("click", (e) => {
     if (
@@ -857,10 +2541,8 @@ function setupClickOutsideHandler() {
 // Navigation & Page Management
 // ============================================
 
-// Handle hash changes
 function handleHashChange() {
   const hash = window.location.hash.substring(1);
-  console.log("Hash changed to:", hash);
 
   const validPages = [
     "home",
@@ -893,25 +2575,20 @@ function handleHashChange() {
   }
 }
 
-// Show page
 function showPage(page) {
-  // Don't show dashboard if not logged in
   if (page.includes("dashboard") && !currentUser) {
     showLoginModal();
     window.location.hash = "home";
     return;
   }
 
-  // Hide all pages
   pages.forEach((p) => p.classList.add("page-hidden"));
 
-  // Show selected page
   const targetPage = document.getElementById(`${page}-page`);
   if (targetPage) {
     targetPage.classList.remove("page-hidden");
     currentPage = page;
 
-    // Update content if needed
     if (page === "dashboard") {
       updateDashboard();
       showDashboardView('main');
@@ -928,20 +2605,16 @@ function showPage(page) {
 // Dashboard Functions
 // ============================================
 
-// Dashboard Navigation
 function showDashboardView(view) {
-  // Hide all dashboard views
   document.querySelectorAll('.dashboard-view').forEach(view => {
     view.classList.add('hidden');
   });
   
-  // Show selected view
   const targetView = document.getElementById(`dashboard-${view}-view`);
   if (targetView) {
     targetView.classList.remove('hidden');
   }
   
-  // Load content for the view
   if (view === 'courses') {
     loadDashboardCoursesView();
   } else if (view === 'receipts') {
@@ -951,13 +2624,9 @@ function showDashboardView(view) {
   }
 }
 
-// Update dashboard
 function updateDashboard() {
   if (!currentUser) return;
 
-  console.log("Updating dashboard...");
-
-  // Update user info
   const dashboardUserName = document.getElementById('dashboard-user-name');
   const dashboardUserEmail = document.getElementById('dashboard-user-email');
   const dashboardMemberDate = document.getElementById('dashboard-member-date');
@@ -973,16 +2642,13 @@ function updateDashboard() {
     });
   }
 
-  // Update counts
   document.getElementById('dashboard-course-count').textContent = purchasedCourses.length;
   document.getElementById('dashboard-receipts-count').textContent = transactions.length;
   document.getElementById('purchased-courses-count').textContent = purchasedCourses.length;
   
-  // Update total spent
   const totalSpent = transactions.reduce((total, t) => total + t.amount, 0);
   document.getElementById('total-spent-amount').textContent = `$${totalSpent.toFixed(2)}`;
   
-  // Update last purchase
   const lastPurchaseDate = document.getElementById('last-purchase-date');
   const lastPurchaseCourse = document.getElementById('last-purchase-course');
   
@@ -1000,11 +2666,9 @@ function updateDashboard() {
     lastPurchaseCourse.textContent = 'No purchases yet';
   }
   
-  // Load recent courses
   loadRecentCourses();
 }
 
-// Load recent courses for dashboard
 function loadRecentCourses() {
   const recentCoursesGrid = document.getElementById('recent-courses-grid');
   if (!recentCoursesGrid) return;
@@ -1025,7 +2689,6 @@ function loadRecentCourses() {
     return;
   }
 
-  // Get recent purchased courses (last 3)
   const recentCourseIds = [...purchasedCourses].reverse().slice(0, 3);
   let coursesHTML = '';
 
@@ -1043,7 +2706,7 @@ function loadRecentCourses() {
           <div class="p-4">
             <h3 class="font-bold text-lg mb-2 line-clamp-1">${course.title}</h3>
             <p class="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">${course.description}</p>
-            <button class="btn btn-primary w-full py-1.5 text-sm dashboard-watch-btn" data-course-id="${course.id}">
+            <button onclick="window.location.hash = 'course-${course.id}'" class="btn btn-primary w-full py-1.5 text-sm">
               <i class="fas fa-play mr-1"></i> Watch Now
             </button>
           </div>
@@ -1055,7 +2718,6 @@ function loadRecentCourses() {
   recentCoursesGrid.innerHTML = coursesHTML;
 }
 
-// Load dashboard courses view
 function loadDashboardCoursesView() {
   const coursesView = document.getElementById('dashboard-courses-view');
   if (!coursesView) return;
@@ -1092,6 +2754,9 @@ function loadDashboardCoursesView() {
     purchasedCourses.forEach(courseId => {
       const course = courseData.find(c => c.id === courseId);
       if (course) {
+        // Get progress for this course
+        const progress = currentVideoProgress[courseId]?.progress || 0;
+        
         coursesHTML += `
           <div class="card">
             <div class="relative h-40 overflow-hidden rounded-t-xl">
@@ -1102,15 +2767,23 @@ function loadDashboardCoursesView() {
               <div class="absolute top-3 right-3">
                 <span class="badge badge-secondary text-xs">${course.category}</span>
               </div>
+              ${progress > 0 ? `
+                <div class="absolute bottom-0 left-0 right-0 h-1 bg-gray-200">
+                  <div class="h-full bg-green-500" style="width: ${progress}%"></div>
+                </div>
+              ` : ''}
             </div>
             <div class="p-4">
               <h3 class="font-bold text-lg mb-2 line-clamp-1">${course.title}</h3>
               <p class="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">${course.description}</p>
               <div class="flex justify-between items-center">
                 <span class="text-sm text-gray-500">${course.duration}</span>
-                <button onclick="playCourseVideo(${course.id})" class="btn btn-primary py-1.5 px-3 text-sm">
-                  <i class="fas fa-play mr-1"></i> Watch
-                </button>
+                <div class="flex items-center gap-2">
+                  ${progress > 0 ? `<span class="text-xs text-green-600">${progress}%</span>` : ''}
+                  <button onclick="window.location.hash = 'course-${course.id}'" class="btn btn-primary py-1.5 px-3 text-sm">
+                    <i class="fas fa-play mr-1"></i> Watch
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -1125,12 +2798,10 @@ function loadDashboardCoursesView() {
   coursesView.innerHTML = coursesHTML;
 }
 
-// Load dashboard receipts view
 function loadDashboardReceiptsView() {
   const receiptsView = document.getElementById('dashboard-receipts-view');
   if (!receiptsView) return;
 
-  // Calculate stats
   const totalPurchases = transactions.length;
   const totalSpent = transactions.reduce((total, t) => total + t.amount, 0);
   const lastPurchase = transactions.length > 0 
@@ -1139,7 +2810,6 @@ function loadDashboardReceiptsView() {
 
   let receiptsHTML = `
     <div class="mb-8">
-      <!-- Purchase History Header -->
       <div class="mb-8">
         <h2 class="text-2xl font-bold mb-2">Purchase History</h2>
         <p class="text-gray-600 dark:text-gray-400">
@@ -1147,7 +2817,6 @@ function loadDashboardReceiptsView() {
         </p>
       </div>
 
-      <!-- Stats Cards -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
           <div class="flex items-center mb-4">
@@ -1188,7 +2857,6 @@ function loadDashboardReceiptsView() {
         </div>
       </div>
 
-      <!-- All Receipts Section -->
       <div>
         <div class="flex justify-between items-center mb-4">
           <h3 class="text-xl font-bold">All Receipts</h3>
@@ -1228,7 +2896,6 @@ function loadDashboardReceiptsView() {
             <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
     `;
 
-    // Sort by most recent first
     const sortedTransactions = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
 
     sortedTransactions.forEach(transaction => {
@@ -1242,7 +2909,6 @@ function loadDashboardReceiptsView() {
         year: 'numeric'
       });
 
-      // Shorten receipt ID for display
       const shortReceiptId = `RCP-${transaction.transactionNumber?.split('-')[1]?.substring(0, 8) || 'N/A'}`;
 
       receiptsHTML += `
@@ -1276,7 +2942,6 @@ function loadDashboardReceiptsView() {
   receiptsView.innerHTML = receiptsHTML;
 }
 
-// View receipt detail
 function viewReceiptDetail(receiptId) {
   const transaction = transactions.find(t => t.id === receiptId);
   if (!transaction) {
@@ -1286,7 +2951,6 @@ function viewReceiptDetail(receiptId) {
   
   const course = courseData.find(c => c.id === transaction.courseId);
   
-  // Create a modal for receipt details
   const modalHTML = `
     <div id="receipt-detail-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
       <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-auto">
@@ -1349,11 +3013,9 @@ function viewReceiptDetail(receiptId) {
     </div>
   `;
 
-  // Add modal to body
   document.body.insertAdjacentHTML('beforeend', modalHTML);
 }
 
-// Close receipt detail modal
 function closeReceiptDetailModal() {
   const modal = document.getElementById('receipt-detail-modal');
   if (modal) {
@@ -1365,7 +3027,6 @@ function closeReceiptDetailModal() {
 // Course Management
 // ============================================
 
-// Load categories
 function loadCategories() {
   const uniqueCategories = [...new Set(courseData.map((course) => course.category))];
   allCategories = uniqueCategories.map((category, index) => ({
@@ -1374,7 +3035,6 @@ function loadCategories() {
     description: `Learn ${category} skills`,
   }));
 
-  // Update counts
   const coursesCount = document.getElementById("courses-count");
   const categoriesCount = document.getElementById("categories-count");
   const documentsCount = document.getElementById("documents-count");
@@ -1384,7 +3044,6 @@ function loadCategories() {
   if (documentsCount) documentsCount.textContent = documentData.length;
 }
 
-// Load featured courses
 function loadFeaturedCourses() {
   const featured = courseData.filter((course) => course.featured);
   const featuredCoursesGrid = document.getElementById("featured-courses-grid");
@@ -1395,7 +3054,6 @@ function loadFeaturedCourses() {
   }
 }
 
-// Load all courses
 function loadAllCourses() {
   allCourses = [...courseData];
   const allCoursesGrid = document.getElementById("all-courses-grid");
@@ -1413,9 +3071,8 @@ function loadAllCourses() {
   }
 }
 
-// Create course card
 function createCourseCard(course) {
-  const isPurchased = purchasedCourses.includes(course.id);
+  const isPurchased = purchasedCourses.some(id => Number(id) === Number(course.id));
 
   return `
     <div class="card course-card" data-course-id="${course.id}">
@@ -1427,6 +3084,13 @@ function createCourseCard(course) {
         <div class="absolute top-4 left-4">
           <span class="badge badge-primary text-xs">${course.category}</span>
         </div>
+        ${isPurchased ? `
+          <div class="absolute top-4 right-4">
+            <span class="bg-green-500 text-white text-xs px-2 py-1 rounded-full">
+              <i class="fas fa-check mr-1"></i> Purchased
+            </span>
+          </div>
+        ` : ''}
       </div>
       <div class="p-5">
         <h3 class="mb-2 font-bold text-lg line-clamp-2">${course.title}</h3>
@@ -1434,7 +3098,7 @@ function createCourseCard(course) {
         <div class="flex items-center justify-between">
           <span class="font-bold text-lg text-purple-600 dark:text-purple-400">$${course.price.toFixed(2)}</span>
           <button class="btn ${isPurchased ? "btn-outline" : "btn-primary"} view-details-btn text-sm py-1.5 px-3" data-course-id="${course.id}">
-            ${isPurchased ? "Watch Video" : "View Details"}
+            ${isPurchased ? '<i class="fas fa-play mr-1"></i> Watch Video' : 'View Details'}
           </button>
         </div>
       </div>
@@ -1442,7 +3106,6 @@ function createCourseCard(course) {
   `;
 }
 
-// Update course filters
 function updateCourseFilters() {
   const courseCategoriesFilter = document.getElementById("course-categories-filter");
   if (!courseCategoriesFilter) return;
@@ -1459,13 +3122,11 @@ function updateCourseFilters() {
 
   courseCategoriesFilter.innerHTML = categoriesHtml;
 
-  // Add event listeners to category buttons
   courseCategoriesFilter.querySelectorAll("button").forEach((button) => {
     button.addEventListener("click", (e) => {
       const category = e.target.dataset.category;
       filterCoursesByCategory(category);
 
-      // Update active state
       document.querySelectorAll("#course-categories-filter button").forEach((b) => {
         b.classList.remove("bg-purple-600", "text-white");
         b.classList.add("bg-transparent", "text-gray-700", "border-gray-300");
@@ -1476,7 +3137,6 @@ function updateCourseFilters() {
   });
 }
 
-// Filter courses by category
 function filterCoursesByCategory(category) {
   const allCoursesGrid = document.getElementById("all-courses-grid");
   const courseResultsCount = document.getElementById("course-results-count");
@@ -1503,7 +3163,6 @@ function filterCoursesByCategory(category) {
   }
 }
 
-// Filter courses by search
 function filterCourses() {
   const searchTerm = document.getElementById("course-search").value.toLowerCase();
   const filtered = allCourses.filter(
@@ -1527,253 +3186,6 @@ function filterCourses() {
   }
 }
 
-// Show course detail
-function showCourseDetail(courseId) {
-  const course = courseData.find((c) => c.id === courseId);
-  if (!course) {
-    window.location.hash = "courses";
-    return;
-  }
-
-  // Save current course ID
-  localStorage.setItem("current_course_id", courseId);
-
-  // Update course detail page
-  const courseDetailCategory = document.getElementById("course-detail-category");
-  const courseDetailTitle = document.getElementById("course-detail-title");
-  const courseDetailDescription = document.getElementById("course-detail-description");
-  const courseDetailPrice = document.getElementById("course-detail-price");
-  const purchasePrice = document.getElementById("purchase-price");
-  const courseDurationValue = document.getElementById("course-duration-value");
-
-  if (courseDetailCategory) courseDetailCategory.textContent = course.category;
-  if (courseDetailTitle) courseDetailTitle.textContent = course.title;
-  if (courseDetailDescription) courseDetailDescription.textContent = course.description;
-  if (courseDetailPrice) courseDetailPrice.textContent = `$${course.price.toFixed(2)}`;
-  if (purchasePrice) purchasePrice.textContent = `$${course.price.toFixed(2)}`;
-  if (courseDurationValue) courseDurationValue.textContent = course.duration;
-
-  // Update learning points
-  const learningPointsList = document.getElementById("course-learning-points");
-  if (learningPointsList) {
-    learningPointsList.innerHTML = course.learningPoints
-      .map(
-        (point) => `
-          <li class="flex items-start">
-            <i class="fas fa-check text-purple-600 dark:text-purple-400 mt-1 mr-3"></i>
-            <span>${point}</span>
-          </li>
-        `,
-      )
-      .join("");
-  }
-
-  // Update system status and purchase button
-  updateSystemStatusCard();
-  updatePurchaseButton(courseId, course);
-
-  // Update video player based on purchase status
-  updateVideoPlayer(courseId, course);
-
-  // Show course detail page
-  pages.forEach((p) => p.classList.add("page-hidden"));
-  const courseDetailPage = document.getElementById("course-detail-page");
-  if (courseDetailPage) {
-    courseDetailPage.classList.remove("page-hidden");
-    currentPage = "course-detail";
-  }
-}
-
-// Update purchase button
-function updatePurchaseButton(courseId, course) {
-  const purchaseButton = document.getElementById("purchase-button");
-  const purchaseStatusText = document.getElementById("purchase-status-text");
-  const isPurchased = purchasedCourses.includes(courseId);
-  const isOpen = isSystemOpen();
-
-  if (purchaseButton && purchaseStatusText) {
-    if (isPurchased) {
-      purchaseButton.innerHTML = '<i class="fas fa-play mr-2"></i> Watch Video Now';
-      purchaseButton.disabled = false;
-      purchaseButton.onclick = () => playCourseVideo(courseId);
-      purchaseButton.className = "w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-colors";
-      purchaseStatusText.textContent = "You own this course • Lifetime access";
-    } else {
-      if (isOpen) {
-        purchaseButton.innerHTML = `<i class="fas fa-shopping-cart mr-2"></i> Purchase Video ($${course.price.toFixed(2)})`;
-        purchaseButton.disabled = false;
-        purchaseButton.onclick = () => purchaseCourse(courseId);
-        purchaseButton.className = "w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg transition-colors";
-        purchaseStatusText.textContent = "One-time payment • Lifetime access";
-      } else {
-        purchaseButton.innerHTML = '<i class="fas fa-ban mr-2"></i> Purchase Unavailable';
-        purchaseButton.disabled = true;
-        purchaseButton.className = "w-full bg-gray-400 dark:bg-gray-600 text-gray-600 dark:text-gray-300 font-semibold py-3 rounded-lg cursor-not-allowed";
-        purchaseStatusText.textContent = "Available 8:00 AM - 10:00 PM (EST)";
-      }
-    }
-  }
-}
-
-// Update video player
-function updateVideoPlayer(courseId, course) {
-  const videoPlayer = document.getElementById("course-video-player");
-  if (!videoPlayer) return;
-
-  const isPurchased = purchasedCourses.includes(courseId);
-
-  if (isPurchased) {
-    videoPlayer.innerHTML = `
-      <div class="text-center p-8">
-        <i class="fas fa-play-circle text-6xl text-white mb-4"></i>
-        <h3 class="text-2xl font-bold text-white mb-2">Ready to Watch</h3>
-        <p class="text-gray-300 mb-6">Click below to start learning</p>
-        <button id="watch-video-btn" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
-          <i class="fas fa-play mr-2"></i> Watch Video Now
-        </button>
-      </div>
-    `;
-  } else {
-    videoPlayer.innerHTML = `
-      <div class="text-center p-8">
-        <div class="mb-6">
-          <i class="fas fa-lock text-6xl text-yellow-500 mb-4"></i>
-          <h3 class="text-2xl font-bold text-white mb-2">Video Locked</h3>
-          <p class="text-gray-300">Purchase this course to watch the video</p>
-        </div>
-        <button id="purchase-video-btn" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
-          <i class="fas fa-shopping-cart mr-2"></i> Purchase to Unlock
-        </button>
-      </div>
-    `;
-  }
-}
-
-// Play course video
-function playCourseVideo(courseId) {
-  const course = courseData.find((c) => c.id === courseId);
-  if (!course) return;
-
-  const videoContainer = document.querySelector(".bg-gray-900.aspect-video");
-  if (!videoContainer) return;
-
-  // Check if course is purchased
-  const isPurchased = purchasedCourses.includes(courseId);
-  if (!isPurchased) {
-    showToast("Please purchase this course to watch the video", "error");
-    return;
-  }
-
-  // Replace with YouTube iframe
-  videoContainer.innerHTML = `
-    <div class="relative w-full h-full">
-      <iframe 
-        src="${course.videoUrl.replace("watch?v=", "embed/")}?autoplay=1" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen
-        class="absolute top-0 left-0 w-full h-full rounded-lg"
-        title="${course.title} video"
-      ></iframe>
-    </div>
-  `;
-
-  // Save video progress
-  if (!currentVideoProgress[courseId]) {
-    currentVideoProgress[courseId] = {
-      started: new Date().toISOString(),
-      progress: 0,
-    };
-    
-    // Save progress for current user
-    if (currentUser) {
-      const userProgressKey = `learnhub_video_progress_${currentUser.id}`;
-      localStorage.setItem(userProgressKey, JSON.stringify(currentVideoProgress));
-    }
-  }
-}
-
-// Purchase course
-function purchaseCourse(courseId) {
-  if (!currentUser) {
-    showLoginModal();
-    return;
-  }
-
-  if (!isSystemOpen()) {
-    showToast(
-      "System is closed. Purchases are only available from 8:00 AM to 10:00 PM (EST).",
-      "error",
-    );
-    return;
-  }
-
-  const course = courseData.find((c) => c.id === courseId);
-  if (!course) return;
-
-  // Check if already purchased
-  if (purchasedCourses.includes(courseId)) {
-    showToast("You already own this course!", "success");
-    return;
-  }
-
-  // Create unique transaction number
-  const timestamp = Date.now();
-  const randomNum = Math.floor(Math.random() * 10000).toString().padStart(4, "0");
-  const transactionNumber = `RCP-${timestamp}-${randomNum}`;
-
-  // Create transaction
-  const transactionDate = new Date();
-  const transaction = {
-    id: timestamp,
-    transactionNumber: transactionNumber,
-    courseId: courseId,
-    courseTitle: course.title,
-    courseCategory: course.category,
-    courseDuration: course.duration,
-    courseInstructor: course.instructor,
-    courseImage: course.image,
-    courseModules: course.modules || 0,
-    amount: course.price,
-    date: transactionDate.toISOString(),
-    userId: currentUser.id,
-    userName: currentUser.name,
-    userEmail: currentUser.email,
-    status: "completed",
-    paymentMethod: "Credit Card",
-    paymentDetails: "•••• 4242",
-  };
-
-  // Update purchased courses
-  purchasedCourses.push(courseId);
-  transactions.push(transaction);
-
-  // Save user data
-  saveUserData(currentUser.id);
-
-  // Update UI
-  updatePurchaseButton(courseId, course);
-  updateVideoPlayer(courseId, course);
-
-  // Update all course cards
-  updateAllCourseCards();
-
-  // Show success message
-  showToast(
-    `Purchase complete! Receipt #${transaction.transactionNumber} has been saved.`,
-    "success",
-  );
-
-  // Update dashboard
-  updateDashboard();
-
-  // Update dashboard views if on dashboard
-  if (currentPage === "dashboard") {
-    loadRecentCourses();
-  }
-}
-
-// Update all course cards
 function updateAllCourseCards() {
   const allCoursesGrid = document.getElementById("all-courses-grid");
   const featuredCoursesGrid = document.getElementById("featured-courses-grid");
@@ -1796,7 +3208,6 @@ function updateAllCourseCards() {
 // Document Management
 // ============================================
 
-// Load featured documents
 function loadFeaturedDocuments() {
   const featured = documentData.filter((doc) => doc.featured);
   const featuredDocumentsGrid = document.getElementById("featured-documents-grid");
@@ -1807,7 +3218,6 @@ function loadFeaturedDocuments() {
   }
 }
 
-// Load all documents
 function loadAllDocuments() {
   allDocuments = [...documentData];
   const allDocumentsGrid = document.getElementById("all-documents-grid");
@@ -1825,7 +3235,6 @@ function loadAllDocuments() {
   }
 }
 
-// Create document card
 function createDocumentCard(doc) {
   const isLoggedIn = !!currentUser;
 
@@ -1863,12 +3272,10 @@ function createDocumentCard(doc) {
   `;
 }
 
-// Update document filters
 function updateDocumentFilters() {
   const documentCategoriesFilter = document.getElementById("document-categories-filter");
   if (!documentCategoriesFilter) return;
 
-  // Extract unique categories from documents
   const uniqueCategories = [...new Set(documentData.map((doc) => doc.category))];
 
   const categoriesHtml = `
@@ -1883,13 +3290,11 @@ function updateDocumentFilters() {
 
   documentCategoriesFilter.innerHTML = categoriesHtml;
 
-  // Add event listeners to category buttons
   documentCategoriesFilter.querySelectorAll("button").forEach((button) => {
     button.addEventListener("click", (e) => {
       const category = e.target.dataset.category;
       filterDocumentsByCategory(category);
 
-      // Update active state
       document.querySelectorAll("#document-categories-filter button").forEach((b) => {
         b.classList.remove("bg-purple-600", "text-white");
         b.classList.add("bg-transparent", "text-gray-700", "border-gray-300");
@@ -1900,7 +3305,6 @@ function updateDocumentFilters() {
   });
 }
 
-// Filter documents by category
 function filterDocumentsByCategory(category) {
   const allDocumentsGrid = document.getElementById("all-documents-grid");
   const documentResultsCount = document.getElementById("document-results-count");
@@ -1927,7 +3331,6 @@ function filterDocumentsByCategory(category) {
   }
 }
 
-// Filter documents by search
 function filterDocuments() {
   const searchTerm = document.getElementById("document-search").value.toLowerCase();
   const filtered = allDocuments.filter(
@@ -1952,7 +3355,6 @@ function filterDocuments() {
   }
 }
 
-// Show login notice on documents page
 function showLoginNotice() {
   const loginNotice = document.getElementById("login-notice");
   if (loginNotice) {
@@ -1964,18 +3366,15 @@ function showLoginNotice() {
   }
 }
 
-// View document
 function viewDocument(docId) {
   const doc = documentData.find((d) => d.id === docId);
   if (!doc) return;
 
-  // Check if user is logged in
   if (!currentUser) {
     showLoginModal();
     return;
   }
 
-  // Open in new tab
   window.open(doc.url, "_blank");
 }
 
@@ -1983,20 +3382,16 @@ function viewDocument(docId) {
 // Auth Functions
 // ============================================
 
-// Update auth UI
 function updateAuthUI() {
   const guestButtons = document.getElementById("guest-buttons");
   const userMenu = document.getElementById("user-menu");
 
-  // Mobile elements
   const mobileGuestButtons = document.getElementById("mobile-guest-buttons");
   const mobileUserMenu = document.getElementById("mobile-user-menu");
   const mobileUserName = document.getElementById("mobile-user-name");
   const mobileUserEmail = document.getElementById("mobile-user-email");
 
   if (currentUser) {
-    // User IS logged in
-    // Desktop
     if (guestButtons) {
       guestButtons.style.display = "none";
     }
@@ -2005,7 +3400,6 @@ function updateAuthUI() {
       userMenu.style.display = "flex";
     }
 
-    // Mobile
     if (mobileGuestButtons) {
       mobileGuestButtons.style.display = "none";
     }
@@ -2013,7 +3407,6 @@ function updateAuthUI() {
     if (mobileUserMenu) {
       mobileUserMenu.style.display = "flex";
 
-      // Update mobile user info
       if (mobileUserName) {
         mobileUserName.textContent = currentUser.name;
       }
@@ -2022,8 +3415,6 @@ function updateAuthUI() {
       }
     }
   } else {
-    // User is NOT logged in
-    // Desktop
     if (guestButtons) {
       guestButtons.style.display = "flex";
     }
@@ -2032,7 +3423,6 @@ function updateAuthUI() {
       userMenu.style.display = "none";
     }
 
-    // Mobile
     if (mobileGuestButtons) {
       mobileGuestButtons.style.display = "flex";
     }
@@ -2042,11 +3432,9 @@ function updateAuthUI() {
     }
   }
 
-  // Update course cards based on purchase status
   updateAllCourseCards();
 }
 
-// Login handler
 function handleLogin(e) {
   e.preventDefault();
   const email = document.getElementById("login-email").value;
@@ -2057,12 +3445,10 @@ function handleLogin(e) {
     return;
   }
 
-  // Check if user exists in localStorage
   const existingUsers = JSON.parse(localStorage.getItem("learnhub_users") || "[]");
   const existingUser = existingUsers.find((user) => user.email === email);
 
   if (existingUser && existingUser.password === password) {
-    // User exists, log them in
     const user = {
       id: existingUser.id,
       name: existingUser.name,
@@ -2073,7 +3459,6 @@ function handleLogin(e) {
     currentUser = user;
     localStorage.setItem("learnhub_user", JSON.stringify(user));
 
-    // Load user-specific data
     loadUserData(user.id);
 
     updateAuthUI();
@@ -2084,21 +3469,17 @@ function handleLogin(e) {
       loginForm.reset();
     }
 
-    // Refresh documents
     loadAllDocuments();
     loadFeaturedDocuments();
 
     showToast("Login successful! Welcome back.", "success");
 
-    // Close mobile menu
     closeMobileMenu();
 
-    // Update dashboard if on dashboard page
     if (currentPage.includes("dashboard")) {
       updateDashboard();
     }
 
-    // Redirect to home if not on dashboard
     if (window.location.hash !== "#dashboard") {
       window.location.hash = "home";
     }
@@ -2107,7 +3488,6 @@ function handleLogin(e) {
   }
 }
 
-// Register handler
 function handleRegister(e) {
   e.preventDefault();
   const name = document.getElementById("register-name").value;
@@ -2130,14 +3510,12 @@ function handleRegister(e) {
     return;
   }
 
-  // Check if user already exists
   const existingUsers = JSON.parse(localStorage.getItem("learnhub_users") || "[]");
   if (existingUsers.some((user) => user.email === email)) {
     showToast("Email already registered. Please login instead.", "error");
     return;
   }
 
-  // Create new user
   const user = {
     id: Date.now(),
     name: name,
@@ -2146,11 +3524,9 @@ function handleRegister(e) {
     createdAt: new Date().toISOString(),
   };
 
-  // Save to users list
   existingUsers.push(user);
   localStorage.setItem("learnhub_users", JSON.stringify(existingUsers));
 
-  // Set as current user
   currentUser = {
     id: user.id,
     name: user.name,
@@ -2160,12 +3536,10 @@ function handleRegister(e) {
 
   localStorage.setItem("learnhub_user", JSON.stringify(currentUser));
 
-  // Initialize empty arrays for new user
   purchasedCourses = [];
   transactions = [];
   currentVideoProgress = {};
 
-  // Save initial user data
   saveUserData(currentUser.id);
 
   updateAuthUI();
@@ -2176,22 +3550,17 @@ function handleRegister(e) {
     registerForm.reset();
   }
 
-  // Refresh documents
   loadAllDocuments();
   loadFeaturedDocuments();
 
   showToast("Registration successful! Welcome to LearnHub.", "success");
 
-  // Close mobile menu
   closeMobileMenu();
 
-  // Redirect to dashboard
   window.location.hash = "dashboard";
 }
 
-// Logout
 function logout() {
-  // Save data before logout
   if (currentUser) {
     saveUserData(currentUser.id);
   }
@@ -2201,25 +3570,19 @@ function logout() {
   transactions = [];
   currentVideoProgress = {};
 
-  // Clear current user session
   localStorage.removeItem("learnhub_user");
 
-  // Update UI
   updateAuthUI();
 
-  // Close mobile menu
   closeMobileMenu();
 
-  // Refresh documents
   loadAllDocuments();
   loadFeaturedDocuments();
 
-  // Update documents page if it's active
   if (currentPage === "documents") {
     showLoginNotice();
   }
 
-  // Go to home page
   window.location.hash = "home";
   showToast("Logged out successfully", "success");
 }
@@ -2228,9 +3591,7 @@ function logout() {
 // Modal Functions
 // ============================================
 
-// Show login modal
 function showLoginModal() {
-  // Create modal if it doesn't exist
   let modal = document.getElementById("login-modal");
   if (!modal) {
     createLoginModal();
@@ -2244,7 +3605,6 @@ function showLoginModal() {
   }
 }
 
-// Create login modal
 function createLoginModal() {
   const modalHTML = `
     <div id="login-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 items-center justify-center p-4">
@@ -2286,7 +3646,6 @@ function createLoginModal() {
 
   document.body.insertAdjacentHTML("beforeend", modalHTML);
 
-  // Add event listeners
   const loginForm = document.getElementById("login-form");
   const togglePasswordBtn = document.getElementById("toggle-login-password");
   const passwordInput = document.getElementById("login-password");
@@ -2307,7 +3666,6 @@ function createLoginModal() {
   }
 }
 
-// Close login modal
 function closeLoginModal() {
   const modal = document.getElementById("login-modal");
   if (modal) {
@@ -2317,9 +3675,7 @@ function closeLoginModal() {
   }
 }
 
-// Show register modal
 function showRegisterModal() {
-  // Create modal if it doesn't exist
   let modal = document.getElementById("register-modal");
   if (!modal) {
     createRegisterModal();
@@ -2333,7 +3689,6 @@ function showRegisterModal() {
   }
 }
 
-// Create register modal
 function createRegisterModal() {
   const modalHTML = `
     <div id="register-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 items-center justify-center p-4">
@@ -2383,7 +3738,6 @@ function createRegisterModal() {
 
   document.body.insertAdjacentHTML("beforeend", modalHTML);
 
-  // Add event listeners
   const registerForm = document.getElementById("register-form");
   const togglePasswordBtn = document.getElementById("toggle-register-password");
   const passwordInput = document.getElementById("register-password");
@@ -2404,7 +3758,6 @@ function createRegisterModal() {
   }
 }
 
-// Close register modal
 function closeRegisterModal() {
   const modal = document.getElementById("register-modal");
   if (modal) {
@@ -2418,41 +3771,38 @@ function closeRegisterModal() {
 // System & Utility Functions
 // ============================================
 
-// Update system status card
 function updateSystemStatusCard() {
-  const systemStatusCard = document.getElementById("system-status-card");
-  if (!systemStatusCard) return;
-
+  const desktopSystemStatus = document.getElementById("desktop-system-status");
+  const mobileSystemStatus = document.getElementById("mobile-system-status");
+  
   const isOpen = isSystemOpen();
 
-  if (isOpen) {
-    systemStatusCard.innerHTML = `
-      <div class="flex items-center">
-        <div class="mr-3">
-          <i class="fas fa-check-circle text-green-500 text-lg"></i>
-        </div>
-        <div>
-          <h4 class="font-bold text-green-600 dark:text-green-400">System Open</h4>
-          <p class="text-sm text-gray-600 dark:text-gray-400">Purchases are now available</p>
-        </div>
+  const statusHTML = isOpen ? `
+    <div class="flex items-center">
+      <div class="mr-3">
+        <i class="fas fa-check-circle text-green-500 text-lg"></i>
       </div>
-    `;
-  } else {
-    systemStatusCard.innerHTML = `
-      <div class="flex items-center">
-        <div class="mr-3">
-          <i class="fas fa-times-circle text-red-500 text-lg"></i>
-        </div>
-        <div>
-          <h4 class="font-bold text-red-600 dark:text-red-400">System Closed</h4>
-          <p class="text-sm text-gray-600 dark:text-gray-400">Purchases unavailable</p>
-        </div>
+      <div>
+        <h4 class="font-bold text-green-600 dark:text-green-400 text-sm">System Open</h4>
+        <p class="text-xs text-gray-600 dark:text-gray-400">Purchases available</p>
       </div>
-    `;
-  }
+    </div>
+  ` : `
+    <div class="flex items-center">
+      <div class="mr-3">
+        <i class="fas fa-times-circle text-red-500 text-lg"></i>
+      </div>
+      <div>
+        <h4 class="font-bold text-red-600 dark:text-red-400 text-sm">System Closed</h4>
+        <p class="text-xs text-gray-600 dark:text-gray-400">Purchases unavailable 8AM-10PM</p>
+      </div>
+    </div>
+  `;
+
+  if (desktopSystemStatus) desktopSystemStatus.innerHTML = statusHTML;
+  if (mobileSystemStatus) mobileSystemStatus.innerHTML = statusHTML;
 }
 
-// Check if system is open (8 AM to 10 PM)
 function isSystemOpen() {
   const now = new Date();
   const hour = now.getHours();
@@ -2463,7 +3813,6 @@ function isSystemOpen() {
 // Mobile Menu Functions
 // ============================================
 
-// Toggle mobile menu
 function toggleMobileMenu() {
   if (mobileMenu && mobileMenuBtn) {
     mobileMenu.classList.toggle("hidden");
@@ -2476,7 +3825,6 @@ function toggleMobileMenu() {
   }
 }
 
-// Close mobile menu
 function closeMobileMenu() {
   if (mobileMenu && mobileMenuBtn) {
     mobileMenu.classList.add("hidden");
@@ -2491,7 +3839,6 @@ function closeMobileMenu() {
 // Theme Functions
 // ============================================
 
-// Setup theme
 function setupTheme() {
   const savedTheme = localStorage.getItem("theme");
   if (savedTheme === "dark") {
@@ -2503,14 +3850,12 @@ function setupTheme() {
   }
 }
 
-// Toggle theme
 function toggleTheme() {
   const isDark = document.documentElement.classList.toggle("dark");
   localStorage.setItem("theme", isDark ? "dark" : "light");
   updateThemeIcon(isDark);
 }
 
-// Update theme icon
 function updateThemeIcon(isDark) {
   const icon = document.querySelector("#theme-toggle i");
   if (icon) {
@@ -2526,7 +3871,6 @@ function updateThemeIcon(isDark) {
 // Contact Form
 // ============================================
 
-// Handle contact form submission
 function handleContactSubmit(e) {
   e.preventDefault();
 
@@ -2535,13 +3879,11 @@ function handleContactSubmit(e) {
   const subject = document.getElementById("contact-subject").value;
   const message = document.getElementById("contact-message").value;
 
-  // Mock submission
   const contactSuccess = document.getElementById("contact-success");
   if (contactSuccess) {
     contactSuccess.classList.remove("hidden");
   }
 
-  // Reset form
   const contactForm = document.getElementById("contact-form");
   if (contactForm) {
     contactForm.reset();
@@ -2552,7 +3894,6 @@ function handleContactSubmit(e) {
     "success",
   );
 
-  // Hide success message after 5 seconds
   setTimeout(() => {
     if (contactSuccess) {
       contactSuccess.classList.add("hidden");
@@ -2564,9 +3905,7 @@ function handleContactSubmit(e) {
 // Toast Notification
 // ============================================
 
-// Show toast notification
 function showToast(message, type = "success") {
-  // Remove existing toasts
   document.querySelectorAll(".toast").forEach((toast) => toast.remove());
 
   const icon =
@@ -2596,7 +3935,6 @@ function showToast(message, type = "success") {
 
   document.body.appendChild(toast);
 
-  // Auto remove after 5 seconds
   setTimeout(() => {
     if (toast.parentElement) {
       toast.remove();
@@ -2608,13 +3946,10 @@ function showToast(message, type = "success") {
 // Initialize Application
 // ============================================
 
-// Initialize the application
 document.addEventListener("DOMContentLoaded", init);
 
-// Update system status every minute
 setInterval(updateSystemStatusCard, 60000);
 
-// Add CSS animation for toast
 const style = document.createElement("style");
 style.textContent = `
   @keyframes slide-up {
@@ -2630,6 +3965,116 @@ style.textContent = `
   
   .animate-slide-up {
     animation: slide-up 0.3s ease-out;
+  }
+
+  .free-module .module-content {
+    border-left: 3px solid #10b981;
+  }
+
+  .module-item.locked .module-content {
+    opacity: 0.8;
+  }
+
+  .module-item.locked .module-content:hover {
+    opacity: 0.9;
+  }
+
+  #mobile-modules-overlay {
+    transition: opacity 0.3s ease;
+  }
+
+  #mobile-modules-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #mobile-modules-overlay > div {
+    transform: translateX(0);
+    transition: transform 0.3s ease;
+  }
+
+  #mobile-modules-overlay.hidden > div {
+    transform: translateX(-100%);
+  }
+
+  #desktop-module-list {
+    max-height: 40vh;
+    overflow-y: auto;
+  }
+
+  #mobile-module-list {
+    overflow-y: auto;
+    max-height: calc(100vh - 280px);
+  }
+
+  #desktop-module-list::-webkit-scrollbar,
+  #mobile-module-list::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  #desktop-module-list::-webkit-scrollbar-track,
+  #mobile-module-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  .dark #desktop-module-list::-webkit-scrollbar-track,
+  .dark #mobile-module-list::-webkit-scrollbar-track {
+    background: #374151;
+  }
+
+  #desktop-module-list::-webkit-scrollbar-thumb,
+  #mobile-module-list::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 10px;
+  }
+
+  .dark #desktop-module-list::-webkit-scrollbar-thumb,
+  .dark #mobile-module-list::-webkit-scrollbar-thumb {
+    background: #6b7280;
+  }
+
+  #desktop-module-list::-webkit-scrollbar-thumb:hover,
+  #mobile-module-list::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+  }
+
+  .dark #desktop-module-list::-webkit-scrollbar-thumb:hover,
+  .dark #mobile-module-list::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+  }
+
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    .module-item .module-content {
+      padding: 0.75rem;
+    }
+    
+    .module-item h4 {
+      font-size: 0.9375rem;
+    }
+    
+    .module-item p {
+      font-size: 0.8125rem;
+    }
+  }
+
+  .btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
   }
 `;
 document.head.appendChild(style);
