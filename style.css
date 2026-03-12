@@ -95,7 +95,11 @@ body {
   overflow: hidden;
   font-family: inherit;
 }
-
+.nav-link.active{
+  color:#9333ea;
+  border-bottom:2px solid #9333ea;
+  padding-bottom:4px;
+}
 .btn:hover {
   transform: translateY(-2px);
   box-shadow:
