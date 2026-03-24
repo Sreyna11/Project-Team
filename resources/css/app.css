@@ -1,0 +1,192 @@
+@import '/vendor/filament/filament/resources/css/theme.css';
+
+@config '../../../tailwind.config.js';
+
+/* ── Sidebar gradient ── */
+.fi-sidebar {
+    background: linear-gradient(160deg, #1e1b4b 0%, #3b0764 100%) !important;
+    border-right: none !important;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.25) !important;
+}
+
+.fi-sidebar-item-button {
+    color: rgba(255,255,255,0.65) !important;
+    border-radius: 10px !important;
+    transition: all 0.2s !important;
+}
+
+.fi-sidebar-item-button:hover {
+    background: rgba(255,255,255,0.1) !important;
+    color: white !important;
+    transform: translateX(3px) !important;
+}
+
+.fi-sidebar-item-button[aria-current="page"],
+.fi-sidebar-item-button.fi-active {
+    background: rgba(255,255,255,0.15) !important;
+    color: white !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2) !important;
+}
+
+.fi-sidebar-group-label {
+    color: rgba(255,255,255,0.35) !important;
+    font-size: 10px !important;
+    letter-spacing: 1.5px !important;
+    text-transform: uppercase !important;
+}
+
+.fi-sidebar-header {
+    border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+    padding: 20px 16px !important;
+}
+
+.fi-brand-name {
+    color: white !important;
+    font-weight: 800 !important;
+    font-size: 20px !important;
+    letter-spacing: -0.5px !important;
+}
+
+/* ── Top bar ── */
+.fi-topbar nav {
+    background: white !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.06) !important;
+}
+
+.dark .fi-topbar nav {
+    background: #0f172a !important;
+    border-bottom-color: #1e293b !important;
+}
+
+/* ── Main background ── */
+.fi-main-ctn {
+    background: #f8fafc !important;
+}
+
+.dark .fi-main-ctn {
+    background: #0f172a !important;
+}
+
+/* ── Page header ── */
+.fi-simple-main,
+.fi-main {
+    background: #f8fafc !important;
+}
+
+.dark .fi-simple-main,
+.dark .fi-main {
+    background: #0f172a !important;
+}
+
+/* ── Section cards ── */
+.fi-section {
+    border-radius: 16px !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06) !important;
+    border: 1px solid #e5e7eb !important;
+    transition: box-shadow 0.2s !important;
+}
+
+.fi-section:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1) !important;
+}
+
+.dark .fi-section {
+    border-color: #1e293b !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3) !important;
+}
+
+/* ── Tables ── */
+.fi-ta-ctn {
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06) !important;
+    border: 1px solid #e5e7eb !important;
+}
+
+.dark .fi-ta-ctn {
+    border-color: #1e293b !important;
+}
+
+.fi-ta-header-cell {
+    background: #f8fafc !important;
+    font-weight: 700 !important;
+    font-size: 11px !important;
+    letter-spacing: 0.8px !important;
+    text-transform: uppercase !important;
+    color: #64748b !important;
+}
+
+.dark .fi-ta-header-cell {
+    background: #1e293b !important;
+    color: #94a3b8 !important;
+}
+
+.fi-ta-row:hover td {
+    background: #faf5ff !important;
+}
+
+.dark .fi-ta-row:hover td {
+    background: #1e1b4b20 !important;
+}
+
+/* ── Buttons ── */
+.fi-btn.fi-btn-color-primary {
+    background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 12px rgba(124,58,237,0.35) !important;
+    transition: all 0.2s !important;
+    border: none !important;
+}
+
+.fi-btn.fi-btn-color-primary:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 18px rgba(124,58,237,0.45) !important;
+}
+
+/* ── Inputs ── */
+.fi-input {
+    border-radius: 10px !important;
+    transition: all 0.2s !important;
+}
+
+.fi-input:focus {
+    box-shadow: 0 0 0 3px rgba(124,58,237,0.12) !important;
+    border-color: #7c3aed !important;
+}
+
+/* ── Widgets ── */
+.fi-wi-stats-overview-stat {
+    border-radius: 16px !important;
+    transition: transform 0.2s, box-shadow 0.2s !important;
+}
+
+.fi-wi-stats-overview-stat:hover {
+    transform: translateY(-2px) !important;
+}
+
+/* ── Badges ── */
+.fi-badge {
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    font-size: 11px !important;
+}
+
+/* ── Modal ── */
+.fi-modal-window {
+    border-radius: 20px !important;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15) !important;
+}
+
+/* ── Tabs ── */
+.fi-tabs-tab {
+    border-radius: 8px !important;
+    transition: all 0.2s !important;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+.dark ::-webkit-scrollbar-thumb { background: #334155; }
