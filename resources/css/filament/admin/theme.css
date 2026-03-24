@@ -1,0 +1,60 @@
+/* ── LearnHub Admin Premium Theme ────────────────────────── */
+
+/* Smooth Scroll */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Premium Card Style */
+.fi-wi-stats-overview-stat, 
+.fi-wi-widget > div {
+    transition: all 0.3s ease !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+
+.fi-wi-stats-overview-stat:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Sidebar Styling */
+.fi-sidebar {
+    border-right: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+
+.fi-sidebar-item-button {
+    border-radius: 12px !important;
+    margin: 2px 8px !important;
+    transition: all 0.2s ease !important;
+}
+
+.fi-sidebar-item-active .fi-sidebar-item-button {
+    background: linear-gradient(90deg, rgba(124, 58, 237, 0.1) 0%, rgba(124, 58, 237, 0.05) 100%) !important;
+    border-left: 4px solid rgb(124, 58, 237) !important;
+}
+
+/* Global Border Radius */
+.fi-btn, .fi-input, .fi-select, .fi-card, .rounded-xl {
+    border-radius: 12px !important;
+}
+
+/* Dark Mode Overrides */
+.dark .fi-wi-stats-overview-stat,
+.dark .fi-wi-widget > div {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    background-color: rgba(24, 24, 27, 0.8) !important;
+    backdrop-filter: blur(12px);
+}
+
+.dark .fi-sidebar-item-active .fi-sidebar-item-button {
+    background: linear-gradient(90deg, rgba(139, 92, 246, 0.2) 0%, rgba(139, 92, 246, 0.1) 100%) !important;
+}
+
+/* Navigation Group Hover */
+.fi-sidebar-group-label {
+    letter-spacing: 0.05em;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    font-size: 0.7rem !important;
+    opacity: 0.8;
+}
