@@ -1,4 +1,30 @@
+// ============================================
+// API Configuration
+// ============================================
+const API_URL = "http://learnhub_project.test/api";
+
+async function apiFetch(endpoint, options = {}) {
+  const token = localStorage.getItem("learnhub_token");
+  const headers = {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    ...options.headers,
+  };
+  try {
+    const res = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Request failed");
+    return data;
+  } catch (err) {
+    console.error(`API error [${endpoint}]:`, err.message);
+    throw err;
+  }
+}
+
+// ============================================
 // Application state
+// ============================================
 let currentUser = null;
 let purchasedCourses = [];
 let transactions = [];
@@ -18,7 +44,9 @@ const logoutBtn = document.getElementById("logout-btn");
 const mobileMenuBtn = document.getElementById("mobile-menu-btn");
 const mobileMenu = document.getElementById("mobile-menu");
 
-// Course Data
+// ============================================
+// Local Course Data (fallback)
+// ============================================
 const courseData = [
   {
     id: 1,
@@ -328,7 +356,7 @@ const courseData = [
   },
 ];
 
-// Document Data
+// Local Document Data (fallback)
 const documentData = [
   {
     id: 1,
@@ -583,1301 +611,633 @@ const documentData = [
 ];
 
 // ============================================
-// Modules Data - First module FREE, others LOCKED
-// ============================================
-
-const courseModulesData = {
-  1: [
-    // Frontend Web Development
-    {
-      id: 1,
-      title: "Introduction to Frontend development - FREE PREVIEW",
-      duration: "8 min",
-      isFree: true,
-      videoUrl:
-        "https://www.youtube.com/watch?v=WG5ikvJ2TKA&t=10s&pp=ygUWaW50cm9kdWN0aW9uIGZyb250IGVuZA%3D%3D",
-      description:
-        "Get an overview of frontend development and what you'll learn in this course",
-    },
-    {
-      id: 2,
-      title: "HTML Fundamentals",
-      duration: "1h 9min",
-      isFree: false,
-      videoUrl: "https://youtu.be/qz0aGYrrlhU",
-      description: "Learn the fundamentals of HTML5 and semantic markup",
-    },
-    {
-      id: 3,
-      title: "CSS3 Fundamentals",
-      duration: "1h",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=wRNinF7YQqQ&pp=ygUQY3NzMyBmdWxsIGNvdXJzZQ%3D%3D",
-      description: "Master CSS selectors, properties, and styling techniques",
-    },
-    {
-      id: 4,
-      title: "Flexbox and Grid Layouts",
-      duration: "18mn",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=3elGSZSWTbM&pp=ygUXZmxleGJveCBhbmQgZ3JpZCBsYXlvdXQ%3D",
-      description: "Create modern responsive layouts with Flexbox and Grid",
-    },
-    {
-      id: 5,
-      title: "Master CSS Animation Property",
-      duration: "8mn",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=Bhj4miRkSOc&pp=ygUNYW5pbWF0aW9uIGNzcw%3D%3D",
-      description:
-        "Learn to create engaging animations and transitions with CSS",
-    },
-    {
-      id: 6,
-      title: "JavaScript Basics",
-      duration: "18h 37mn",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=EerdGm-ehJQ&t=13086s&pp=ygUWamF2YXNjcmlwdCBmdWxsIGNvdXJzZQ%3D%3D",
-      description:
-        "Variables, data types, and basic programming concepts in JavaScript",
-    },
-    {
-      id: 7,
-      title: "DOM Manipulation",
-      duration: "2h 41mn",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=5fb2aPlgoys&pp=ygUeZG9tIG1hbmlwdWxhdGlvbiBpbiBqYXZhc2NyaXB0",
-      description: "Interact with web pages using JavaScript DOM methods",
-    },
-    {
-      id: 8,
-      title: "Bootstrap CSS Framework",
-      duration: "2h 46mn",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=-qfEOE4vtxE&t=54s&pp=ygUgYm9vdHN0cmFwIHR1dG9yaWFsIGZvciBiZWdpbm5lcnM%3D",
-      description:
-        "Build responsive websites quickly with the Bootstrap framework",
-    },
-    {
-      id: 9,
-      title: "Tailwind CSS Framework",
-      duration: "54mn",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=6biMWgD6_JY&pp=ygUVdGFpbHdpbmQgY3NzIHR1dG9yaWFs",
-      description: "Master utility-first CSS with Tailwind framework",
-    },
-    {
-      id: 10,
-      title: "Project for Front end Course",
-      duration: "1h 14mn",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=MYFgtnKMDp4&pp=ygUvcHJvamVjdCBmcm9udCBlbmQgZGV2ZWxvcGVyIGh0bWwgY3NzIGphdmFzY3JpcHQ%3D",
-      description: "Apply everything you've learned in a real frontend project",
-    },
-  ],
-  2: [
-    // Backend Development with Node.js
-    {
-      id: 1,
-      title: "Introduction to Backend Development - FREE PREVIEW",
-      duration: "4 min",
-      isFree: true,
-      videoUrl:
-        "https://www.youtube.com/watch?v=4r6WdaY3SOA&pp=ygUnaW50cm9kdWN0aW9uIHRvIGJhY2tlbmQgd2ViIGRldmVsb3BtZW50",
-      description:
-        "Understand backend development concepts and server-side programming",
-    },
-    {
-      id: 2,
-      title: "Node.js",
-      duration: "6h 50min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=f2EqECiTBL8&pp=ygUTbm9kZSBqcyBmdWxsIGNvdXJzZQ%3D%3D",
-      description:
-        "Get started with Node.js and npm for server-side JavaScript",
-    },
-    {
-      id: 3,
-      title: "Express.js Framework",
-      duration: "3h 57min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=fBzm9zja2Y8&pp=ygUWZXhwcmVzcyBqcyBmdWxsIGNvdXJzZQ%3D%3D",
-      description: "Build web applications with Express.js framework",
-    },
-    {
-      id: 4,
-      title: "SQL Database",
-      duration: "4h 19min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=qw--VYLpxG4&pp=ygUKcG9zdGdyZXNxbA%3D%3D",
-      description:
-        "Learn SQL databases, queries, and relational database management",
-    },
-    {
-      id: 5,
-      title: "No-SQL Database",
-      duration: "7h 50min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=8eJJe4Slnik&pp=ygUTbW9uZ29kYiBmdWxsIGNvdXJzZQ%3D%3D",
-      description:
-        "Master NoSQL databases with MongoDB and document-based data storage",
-    },
-    {
-      id: 6,
-      title: "Rest API",
-      duration: "51min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=qbLc5a9jdXo&pp=ygULcmVzdGZ1bCBhcGnSBwkJhwoBhyohjO8%3D",
-      description: "Create RESTful APIs with proper routing and middleware",
-    },
-    {
-      id: 7,
-      title: "Backend Project",
-      duration: "7min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=RQcsksmMYTE&pp=ygUeYmFja2VuZCBwcm9qZWN0cyBmb3IgYmVnaW5uZXJz",
-      description:
-        "Build a complete backend project applying all learned concepts",
-    },
-  ],
-  3: [
-    // Full Stack Web Development
-    {
-      id: 1,
-      title: "Course Overview - FREE PREVIEW",
-      duration: "7 min",
-      isFree: true,
-      videoUrl:
-        "https://www.youtube.com/watch?v=8KaJRw-rfn8&pp=ygUXZnVsbCBzdGFjayBpbnRyb2R1Y3Rpb24%3D",
-      description: "Introduction to full stack development and course roadmap",
-    },
-    {
-      id: 2,
-      title: "Frontend Full Course",
-      duration: "21h 14min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=zJSY8tbf_ys&pp=ygUUZnJvbnRlbmQgZnVsbCBjb3Vyc2XSBwkJhwoBhyohjO8%3D",
-      description:
-        "Complete frontend development with modern frameworks and tools",
-    },
-    {
-      id: 3,
-      title: "Backend with Node.js",
-      duration: "5h 17min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=9BD9eK9VqXA&pp=ygUjYmFja2VuZCB3ZWIgZGV2ZWxvcG1lbnQgZnVsbCBjb3Vyc2U%3D",
-      description: "Build the backend API with Node.js and Express",
-    },
-  ],
-  4: [
-    // Python Programming
-    {
-      id: 1,
-      title: "Introduction - FREE PREVIEW",
-      duration: "2min",
-      isFree: true,
-      videoUrl:
-        "https://www.youtube.com/watch?v=xkZMUX_oQX4&pp=ygUTcHl0aG9uIGludHJvZHVjdGlvbg%3D%3D",
-      description: "Learn Python syntax and basic concepts",
-    },
-    {
-      id: 2,
-      title: "Python Fundamental",
-      duration: "10min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=fWjsdhR3z3c&pp=ygUTcHl0aG9uIGZ1bmRhbWVudGFsc9IHCQmHCgGHKiGM7w%3D%3D",
-      description:
-        "Master Python fundamentals including data types and operations",
-    },
-    {
-      id: 3,
-      title: "Python Variables",
-      duration: "13mn",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=LKFrQXaoSMQ&pp=ygUZcHl0aG9uIHZhcmlhYmxlcyB0dXRvcmlhbA%3D%3D",
-      description:
-        "Understand variables, data types, and naming conventions in Python",
-    },
-    {
-      id: 4,
-      title: "Python Control Flow",
-      duration: "16mn",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=Zp5MuPOtsSY&pp=ygUTcHl0aG9uIGNvbnRyb2wgZmxvdw%3D%3D",
-      description: "Learn conditional statements and loops in Python",
-    },
-    {
-      id: 5,
-      title: "Python Data Structure & Functions",
-      duration: "30mn",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=u-OmVr_fT4s&pp=ygUPcHl0aG9uIGZ1bmN0aW9u",
-      description:
-        "Explore lists, tuples, dictionaries, sets and function creation",
-    },
-    {
-      id: 6,
-      title: "Python Object-Oriented-Programming",
-      duration: "2h 05min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=IbMDCwVm63M&pp=ygULcHl0aG9uIG9vcCA%3D",
-      description:
-        "Master classes, objects, inheritance, and OOP principles in Python",
-    },
-    {
-      id: 7,
-      title: "Python Projects",
-      duration: "53min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=yVl_G-F7m8c&pp=ygUOcHl0aG9uIHByb2plY3Q%3D",
-      description: "Build practical Python projects to apply your skills",
-    },
-  ],
-  5: [
-    // JavaScript Programming
-    {
-      id: 1,
-      title: "Introduction - FREE PREVIEW",
-      duration: "2min",
-      isFree: true,
-      videoUrl: "https://youtu.be/zofMnllkVfI",
-      description:
-        "Get started with JavaScript and its role in web development",
-    },
-    {
-      id: 2,
-      title: "JavaScript Fundamental",
-      duration: "12min",
-      isFree: false,
-      videoUrl:
-        "https://youtu.be/Ihy0QziLDf0?list=PLZPZq0r_RZOO1zkgO4bIdfuLpizCeHYKv",
-      description:
-        "Learn JavaScript basics including variables, data types, and operators",
-    },
-    {
-      id: 3,
-      title: "JavaScript Control Flow & Loop",
-      duration: "16min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=Wc1rH4uNKIE&pp=ygUXamF2YXNjcmlwdCBjb250cm9sIGZsb3c%3D",
-      description: "Master conditional statements and loops in JavaScript",
-    },
-    {
-      id: 4,
-      title: "JavaScript Function & Scope",
-      duration: "12min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=HFaxylC7bUc&pp=ygUUamF2YXNjcmlwdCBmdW5jdGlvbnM%3D",
-      description: "Understand functions, scope, and closures in JavaScript",
-    },
-    {
-      id: 5,
-      title: "JavaScript Array & Object",
-      duration: "51min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=RVxuGCWZ_8E&pp=ygUXamF2YXNjcmlwdCBhcnJheSBvYmplY3Q%3D",
-      description: "Work with arrays and objects for data manipulation",
-    },
-    {
-      id: 6,
-      title: "Advanced JavaScript",
-      duration: "1h 04min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=R9I85RhI7Cg&pp=ygUfYWR2YW5jZWQgamF2YXNjcmlwdCBmdWxsIGNvdXJzZQ%3D%3D",
-      description:
-        "Explore advanced concepts like promises, async/await, and ES6+ features",
-    },
-  ],
-  6: [
-    // Java Programming
-    {
-      id: 1,
-      title: "Introduction - FREE PREVIEW",
-      duration: "6min",
-      isFree: true,
-      videoUrl:
-        "https://www.youtube.com/watch?v=mG4NLNZ37y4&pp=ygURamF2YSBpbnRyb2R1Y3Rpb24%3D",
-      description:
-        "Introduction to Java programming language and its ecosystem",
-    },
-    {
-      id: 2,
-      title: "Java Basic",
-      duration: "12min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=so1iUWaLmKA&pp=ygUNamF2YSB2YXJpYWJsZQ%3D%3D",
-      description:
-        "Learn Java basics including variables, data types, and syntax",
-    },
-    {
-      id: 3,
-      title: "Java Control Flow",
-      duration: "16min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=LQsyrHJzNwA&pp=ygUcamF2YSBjb250cm9sIGZsb3cgc3RhdGVtZW50cw%3D%3D",
-      description: "Master control flow statements in Java",
-    },
-    {
-      id: 4,
-      title: "Java Method & Array",
-      duration: "9min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=r0SewFmbCUI&pp=ygUXamF2YSBtZXRob2RzIGFuZCBhcnJheXM%3D",
-      description: "Work with methods and arrays in Java",
-    },
-    {
-      id: 5,
-      title: "Java OOP",
-      duration: "1h 7min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=Af3s3KsxStY&pp=ygUIamF2YSBvb3A%3D",
-      description: "Master Object-Oriented Programming concepts in Java",
-    },
-    {
-      id: 6,
-      title: "Java Exception Handling",
-      duration: "1h 7min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=1XAfapkBQjk&pp=ygUXamF2YSBleGNlcHRpb24gaGFuZGxpbmc%3D",
-      description: "Learn to handle exceptions and errors in Java",
-    },
-    {
-      id: 7,
-      title: "Java Collections",
-      duration: "32min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=rH0winlka8A&pp=ygUlamF2YSBjb2xsZWN0aW9uIGZyYW1ld29yayBmdWxsIGNvdXJzZQ%3D%3D",
-      description: "Master Java Collections Framework for data management",
-    },
-    {
-      id: 8,
-      title: "Java File I/O",
-      duration: "8min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=ScUJx4aWRi0&pp=ygUMamF2YSBmaWxlIGlv",
-      description: "Learn file input/output operations in Java",
-    },
-    {
-      id: 9,
-      title: "Java GUI & DB Connectivity (JDBC)",
-      duration: "20min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=7v2OnUti2eM&t=932s&pp=ygUSamF2YSBndWkgd2l0aCBqZGJj",
-      description:
-        "Create GUI applications and connect to databases using JDBC",
-    },
-  ],
-  7: [
-    // C++ Programming
-    {
-      id: 1,
-      title: "Introduction - FREE PREVIEW",
-      duration: "5min",
-      isFree: true,
-      videoUrl:
-        "https://www.youtube.com/watch?v=jcYaWFhV8oY&pp=ygUQYysrIGludHJvZHVjdGlvbg%3D%3D",
-      description:
-        "Introduction to C++ programming language and its applications",
-    },
-    {
-      id: 2,
-      title: "C++ Variables & Data Types",
-      duration: "19min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=zgutFVxOlTY&pp=ygUcYysrIHZhcmlhYmxlcyBhbmQgZGF0YSB0eXBlcw%3D%3D",
-      description: "Learn variables, data types, and type modifiers in C++",
-    },
-    {
-      id: 3,
-      title: "C++ Control Flow",
-      duration: "16min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=jNl5gJ_xSNQ&pp=ygUbYysrIGNvbnRyb2wgZmxvdyBzdGF0ZW1lbnRz",
-      description: "Master control flow statements in C++",
-    },
-    {
-      id: 4,
-      title: "C++ Functions & Array",
-      duration: "26min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=C83tPpvxIJA&pp=ygUMYysrIGZ1bmN0aW9u",
-      description: "Work with functions and arrays in C++",
-    },
-    {
-      id: 5,
-      title: "Pointers & Memory Management",
-      duration: "15min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=rtgwvkaYt1A&pp=ygUMYysrIHBvaW50ZXJz",
-      description: "Understand pointers and memory management in C++",
-    },
-    {
-      id: 6,
-      title: "C++ OOP",
-      duration: "1h 30min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=wN0x9eZLix4&t=32s&pp=ygUHYysrIG9vcA%3D%3D",
-      description: "Master Object-Oriented Programming concepts in C++",
-    },
-  ],
-  8: [
-    // Swift Programming
-    {
-      id: 1,
-      title: "Introduction-FREE PREVIEW",
-      duration: "2min",
-      isFree: true,
-      videoUrl:
-        "https://www.youtube.com/watch?v=nAchMctX4YA&pp=ygUSc3dpZnQgaW50cm9kdWN0aW9u",
-      description:
-        "Introduction to Swift programming language for iOS development",
-    },
-    {
-      id: 2,
-      title: "Swift Basic",
-      duration: "18min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=xfvdxQJj7Vw&list=PLwvDm4VfkdpiLvzZFJI6rVIBtdolrJBVB&index=2&pp=iAQB",
-      description:
-        "Learn Swift basics including syntax and fundamental concepts",
-    },
-    {
-      id: 3,
-      title: "How to use basic types in swift",
-      duration: "16min",
-      isFree: false,
-      videoUrl:
-        "https://youtu.be/JeoaCW9fO0w?list=PLwvDm4VfkdpiLvzZFJI6rVIBtdolrJBVB",
-      description: "Master basic data types and type safety in Swift",
-    },
-    {
-      id: 4,
-      title: "How to use Variables and Constants",
-      duration: "12min",
-      isFree: false,
-      videoUrl:
-        "https://youtu.be/jRNa6hYTJLo?list=PLwvDm4VfkdpiLvzZFJI6rVIBtdolrJBVB",
-      description: "Learn to work with variables and constants in Swift",
-    },
-    {
-      id: 5,
-      title: "How to write if-statements and use operators",
-      duration: "24min",
-      isFree: false,
-      videoUrl:
-        "https://youtu.be/Q0DBDJqT3Ps?list=PLwvDm4VfkdpiLvzZFJI6rVIBtdolrJBVB",
-      description: "Master conditional statements and operators in Swift",
-    },
-    {
-      id: 6,
-      title: "How to use Functions in Swift",
-      duration: "36min",
-      isFree: false,
-      videoUrl:
-        "https://youtu.be/kr3SSplrJlw?list=PLwvDm4VfkdpiLvzZFJI6rVIBtdolrJBVB",
-      description: "Learn to create and use functions in Swift",
-    },
-    {
-      id: 7,
-      title: "What is Object Oriented Programming for Swift",
-      duration: "39min",
-      isFree: false,
-      videoUrl:
-        "https://youtu.be/XdZUVmqIkJE?list=PLwvDm4VfkdpiLvzZFJI6rVIBtdolrJBVB",
-      description: "Understand OOP concepts and their implementation in Swift",
-    },
-    {
-      id: 8,
-      title: "What is a Protocol in Swift and SwiftUI View protocol",
-      duration: "9min",
-      isFree: false,
-      videoUrl:
-        "https://youtu.be/nJmrkRlRu88?list=PLwvDm4VfkdpiLvzZFJI6rVIBtdolrJBVB",
-      description: "Master protocols and SwiftUI View protocol",
-    },
-    {
-      id: 9,
-      title: "Learn Swift online for FREE Series Conclusion",
-      duration: "3min",
-      isFree: false,
-      videoUrl:
-        "https://youtu.be/3284ruY8jbg?list=PLwvDm4VfkdpiLvzZFJI6rVIBtdolrJBVB",
-      description: "Review key concepts and next steps in Swift development",
-    },
-  ],
-  9: [
-    // React Native
-    {
-      id: 1,
-      title: "Introduction & Setup- FREE PREVIEW",
-      duration: "20min",
-      isFree: true,
-      videoUrl:
-        "https://www.youtube.com/watch?v=J2j1yk-34OY&pp=ygUScmVhY3QgbmF0aXZlIGJhc2lj",
-      description:
-        "Get started with React Native and setup development environment",
-    },
-    {
-      id: 2,
-      title: "UI Components & Layout",
-      duration: "14min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=UCbRTaX6i7g&list=PL4cUxeGkcC9hNTz3sxqGTfxAwU-DIHJd2&index=2&pp=iAQB",
-      description: "Learn React Native core components and layout system",
-    },
-    {
-      id: 3,
-      title: "Navigation",
-      duration: "16min",
-      isFree: false,
-      videoUrl: "https://youtu.be/3hLQURJM7ws",
-      description: "Implement navigation between screens in React Native",
-    },
-    {
-      id: 4,
-      title: "Backend Setup with Appwrite",
-      duration: "5min",
-      isFree: false,
-      videoUrl:
-        "https://youtu.be/eMbtOh17RuQ?list=PL4cUxeGkcC9hNTz3sxqGTfxAwU-DIHJd2",
-      description: "Configure backend services with Appwrite",
-    },
-    {
-      id: 5,
-      title: "Initial Auth State",
-      duration: "8min",
-      isFree: false,
-      videoUrl:
-        "https://youtu.be/TaQdARE8dO4?list=PL4cUxeGkcC9hNTz3sxqGTfxAwU-DIHJd2",
-      description: "Implement authentication state management",
-    },
-    {
-      id: 6,
-      title: "Creating New Records",
-      duration: "13min",
-      isFree: false,
-      videoUrl:
-        "https://youtu.be/xh7-JVZmM6w?list=PL4cUxeGkcC9hNTz3sxqGTfxAwU-DIHJd2",
-      description: "Learn to create and manage database records",
-    },
-    {
-      id: 7,
-      title: "Dynamic Routes",
-      duration: "8min",
-      isFree: false,
-      videoUrl:
-        "https://youtu.be/H0hk9pr9Sdg?list=PL4cUxeGkcC9hNTz3sxqGTfxAwU-DIHJd2",
-      description: "Implement dynamic routing in React Native",
-    },
-    {
-      id: 8,
-      title: "Fetching Single Records",
-      duration: "7min",
-      isFree: false,
-      videoUrl:
-        "https://youtu.be/T5fZBjWF8U4?list=PL4cUxeGkcC9hNTz3sxqGTfxAwU-DIHJd2",
-      description: "Retrieve and display individual records from database",
-    },
-    {
-      id: 9,
-      title: "React Native Async Storage",
-      duration: "23min",
-      isFree: false,
-      videoUrl: "https://youtu.be/UQrkf0kKLTM",
-      description: "Implement local data persistence with AsyncStorage",
-    },
-  ],
-  10: [
-    // Flutter
-    {
-      id: 1,
-      title:
-        "What is Flutter? & How it's Better than its Counterparts? - FREE PREVIEW",
-      duration: "2min",
-      isFree: true,
-      videoUrl:
-        "https://youtu.be/jqxz7QvdWk8?list=PLjVLYmrlmjGfGLShoW0vVX_tcyT8u1Y3E",
-      description:
-        "Introduction to Flutter and its advantages over other frameworks",
-    },
-    {
-      id: 2,
-      title: "Dart Programming Fundamentals",
-      duration: "1h 41min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=Ej_Pcr4uC2Q&pp=ygUdZGFydCBwcm9ncmFtbWluZyBmdW5kYW1lbnRhbHM%3D",
-      description: "Master Dart programming language fundamentals",
-    },
-    {
-      id: 3,
-      title: "Flutter Basic",
-      duration: "12min",
-      isFree: false,
-      videoUrl: "https://youtu.be/1xipg02Wu8s",
-      description: "Learn Flutter basics and widget fundamentals",
-    },
-    {
-      id: 4,
-      title: "Layout & UI Design",
-      duration: "2h 23min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=HQ_ytw58tC4&pp=ygUaZmx1dHRlciBkZXNpZ24gdWkgdHV0b3JpYWw%3D",
-      description: "Create beautiful layouts and UI designs in Flutter",
-    },
-    {
-      id: 5,
-      title: "Navigation & Routing",
-      duration: "14min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=h92VcrPLtBM&pp=ygUbZmx1dHRlciBuYXZpZ2F0aW9uICYgcm91dGluZw%3D%3D",
-      description: "Implement navigation and routing in Flutter apps",
-    },
-    {
-      id: 6,
-      title: "State Management",
-      duration: "14min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=3tm-R7ymwhc&pp=ygUYZmx1dHRlciBzdGF0ZSBtYW5hZ2VtZW50",
-      description: "Master state management techniques in Flutter",
-    },
-    {
-      id: 7,
-      title: "Forms & User Input",
-      duration: "6min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=2DX0TtM9Hug&pp=ygUZZmx1dHRlciBmb3JtICYgdXNlciBpbnB1dA%3D%3D",
-      description: "Handle forms and user input in Flutter applications",
-    },
-    {
-      id: 8,
-      title: "Working with APIs",
-      duration: "11min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=ExPFnu8Dm40&pp=ygUZZmx1dHRlciBXb3JraW5nIHdpdGggQVBJcw%3D%3D",
-      description: "Integrate REST APIs in Flutter applications",
-    },
-    {
-      id: 9,
-      title: "Local Storage",
-      duration: "10min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=FB9GpmL0Qe0&pp=ygUVZmx1dHRlciBsb2NhbCBzdG9yYWdl",
-      description: "Implement local data storage in Flutter",
-    },
-    {
-      id: 10,
-      title: "Deployment",
-      duration: "10min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=ZxjgV1YaOcQ&pp=ygUSZmx1dHRlciBkZXBsb3ltZW50",
-      description: "Prepare and deploy Flutter apps to app stores",
-    },
-  ],
-  11: [
-    // Kotlin
-    {
-      id: 1,
-      title: "What is Kotlin?- FREE PREVIEW",
-      duration: "10min",
-      isFree: true,
-      videoUrl:
-        "https://www.youtube.com/watch?v=PFVKjUUZMf8&pp=ygUTa290bGluIGludHJvZHVjdGlvbg%3D%3D",
-      description:
-        "Introduction to Kotlin programming language for Android development",
-    },
-    {
-      id: 2,
-      title: "Kotlin Fundamentals",
-      duration: "25min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=ffPq1usEZSI&pp=ygUTa290bGluIGZ1bmRhbWVudGFscw%3D%3D",
-      description: "Learn Kotlin fundamentals and basic syntax",
-    },
-    {
-      id: 3,
-      title: "Object-Oriented Programming in Kotlin",
-      duration: "54min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=H6Edy4o14xE&pp=ygUNb29wIGluIGtvdGxpbg%3D%3D",
-      description: "Master OOP concepts in Kotlin",
-    },
-    {
-      id: 4,
-      title: "Functional Programming in Kotlin",
-      duration: "15min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=obN78NEd47g&pp=ygUSZnVuY3Rpb24gaW4ga290bGlu",
-      description: "Explore functional programming features in Kotlin",
-    },
-    {
-      id: 5,
-      title: "Coroutines & Asynchronous Programming",
-      duration: "2h 7min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=lmRzRKIsn1g&pp=ygUvY29yb3V0aW5lcyAmIGFzeW5jaHJvbm91cyBwcm9ncmFtbWluZyBpbiBrb3RsaW4%3D",
-      description: "Master coroutines for asynchronous programming",
-    },
-    {
-      id: 6,
-      title: "Architecture Components",
-      duration: "41min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=-OGxVkxV32k&pp=ygUhYXJjaGl0ZWN0dXJlIGNvbXBvbmVudHMgaW4ga290bGlu",
-      description: "Learn Android architecture components in Kotlin",
-    },
-    {
-      id: 7,
-      title: "Networking",
-      duration: "29min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=D-KcDtvS0jE&pp=ygUUbmV0d29ya2luZyBpbiBrb3RsaW4%3D",
-      description: "Implement networking in Kotlin applications",
-    },
-    {
-      id: 8,
-      title: "Firebase Integration",
-      duration: "16min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=idbxxkF1l6k&pp=ygUeRmlyZWJhc2UgSW50ZWdyYXRpb24gaW4ga290bGlu",
-      description: "Integrate Firebase services in Kotlin apps",
-    },
-    {
-      id: 9,
-      title: "Testing & Deployment",
-      duration: "12min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=IIUw9pEMcKY&pp=ygUVIERlcGxveW1lbnQgaW4ga290bGlu",
-      description: "Learn testing practices and deploy Kotlin applications",
-    },
-    {
-      id: 10,
-      title: "Kotlin Project",
-      duration: "2h 26min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=_03sTtlxHqI&pp=ygUOa290bGluIHByb2plY3Q%3D",
-      description: "Build a complete Android application with Kotlin",
-    },
-  ],
-  12: [
-    // Data Structures & Algorithms
-    {
-      id: 1,
-      title: "What are data structures?- FREE PREVIEW",
-      duration: "16min",
-      isFree: true,
-      videoUrl:
-        "https://www.youtube.com/watch?v=bum_19loj9A&t=10s&pp=ygUuaW50cm9kdWN0aW9uIHRvIGRhdGEgc3RydWN0dXJlcyBhbmQgYWxnb3JpdGhtcw%3D%3D",
-      description: "Introduction to data structures and their importance",
-    },
-    {
-      id: 2,
-      title: "Programming Foundations for DSA",
-      duration: "13min",
-      isFree: false,
-      videoUrl:
-        "https://youtu.be/bL-o2xBENY0?list=PLxgZQoSe9cg0df_GxVjz3DD_Gck5tMXAd",
-      description: "Build programming foundations needed for DSA",
-    },
-    {
-      id: 3,
-      title: "Arrays & Strings",
-      duration: "7min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=0OK-kbu9Cwo&pp=ygUiYXJyYXkgYW5kIHN0cmluZyBpbiBkYXRhIHN0cnVjdHVyZQ%3D%3D",
-      description: "Master arrays and string manipulation techniques",
-    },
-    {
-      id: 4,
-      title: "Linked Lists",
-      duration: "13min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=N6dOwBde7-M&pp=ygUeTGlua2VkIExpc3RzIGluIGRhdGEgc3RydWN0dXJl",
-      description: "Understand and implement linked lists",
-    },
-    {
-      id: 5,
-      title: "Stack & Queue",
-      duration: "16min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=A3ZUpyrnCbM&pp=ygUhc3RhY2sgYW5kIHF1ZXVlIGluIGRhdGEgc3RydWN0dXJl",
-      description: "Learn stack and queue data structures",
-    },
-    {
-      id: 6,
-      title: "Recursion & Backtracking",
-      duration: "12min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=L0NxT2i-LOY&pp=ygUqUmVjdXJzaW9uICYgQmFja3RyYWNraW5nIGluIGRhdGEgc3RydWN0dXJl",
-      description: "Master recursion and backtracking algorithms",
-    },
-    {
-      id: 7,
-      title: "Searching & Sorting",
-      duration: "9min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=Lg20Q0-N5CI&list=PLC0rhPW3svhi9aTkMQxG2_0EyQkIDTBmg",
-      description: "Implement various searching and sorting algorithms",
-    },
-    {
-      id: 8,
-      title: "Trees",
-      duration: "10min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=1-l_UOFi1Xw&pp=ygUWdHJlZSBpbiBkYXRhIHN0cnVjdHVyZQ%3D%3D",
-      description: "Understand tree data structures and traversal methods",
-    },
-    {
-      id: 9,
-      title: "Heaps & Priority Queue",
-      duration: "51min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=HqPJF2L5h9U&pp=ygUrcHJpb3JpdHkgcXVldWUgaGVhcCBpbiBkYXRhIHN0cnVjdHVyZSB0YW1pbA%3D%3D",
-      description: "Master heap data structure and priority queues",
-    },
-    {
-      id: 10,
-      title: "Graphs",
-      duration: "16min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=gXgEDyodOJU&pp=ygUmZ3JhcGhzIGluIGRhdGEgc3RydWN0dXJlIGFuZCBhbGdvcml0aG0%3D",
-      description: "Learn graph data structures and algorithms",
-    },
-    {
-      id: 11,
-      title: "Greedy Algorithms",
-      duration: "1h 53min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=bC7o8P_Ste4&pp=ygUuR3JlZWR5IEFsZ29yaXRobXMgZGF0YSBzdHJ1Y3R1cmUgYW5kIGFsZ29yaXRobQ%3D%3D",
-      description: "Understand and implement greedy algorithms",
-    },
-    {
-      id: 12,
-      title: "Dynamic Programming",
-      duration: "14min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=vYquumk4nWw&pp=ygUTRHluYW1pYyBQcm9ncmFtbWluZ9IHCQmHCgGHKiGM7w%3D%3D",
-      description: "Master dynamic programming concepts and techniques",
-    },
-  ],
-  13: [
-    // Computer Networks
-    {
-      id: 1,
-      title: "Introduction to Computer Networks- FREE PREVIEW",
-      duration: "8min",
-      isFree: true,
-      videoUrl:
-        "https://www.youtube.com/watch?v=WO6P92v61y4&pp=ygUhSW50cm9kdWN0aW9uIHRvIENvbXB1dGVyIE5ldHdvcmtz",
-      description: "Introduction to computer networks and their importance",
-    },
-    {
-      id: 2,
-      title: "OSI & TCP/IP Models",
-      duration: "29min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=a0UIbw1MsUM&pp=ygUTT1NJICYgVENQL0lQIE1vZGVscw%3D%3D",
-      description: "Understand OSI and TCP/IP networking models",
-    },
-    {
-      id: 3,
-      title: "Physical & Data Link Layer",
-      duration: "35min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=eSE6drHgtyA&t=20s&pp=ygUaUGh5c2ljYWwgJiBEYXRhIExpbmsgTGF5ZXI%3D",
-      description: "Learn about physical and data link layers",
-    },
-    {
-      id: 4,
-      title: "Network Layer",
-      duration: "12min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=rW1jPlYgp_0&pp=ygUNTmV0d29yayBMYXllcg%3D%3D",
-      description: "Master network layer concepts and protocols",
-    },
-    {
-      id: 5,
-      title: "Transport Layer",
-      duration: "25min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=0VtGnhUze6Y&pp=ygUPVHJhbnNwb3J0IExheWVy",
-      description: "Understand transport layer protocols and services",
-    },
-    {
-      id: 6,
-      title: "Application Layer Protocols",
-      duration: "7min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=rxdBKMDCdN0&pp=ygUbQXBwbGljYXRpb24gTGF5ZXIgUHJvdG9jb2xz",
-      description: "Learn common application layer protocols",
-    },
-    {
-      id: 7,
-      title: "Network Security Basics",
-      duration: "20min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=VJelZrYc49c&pp=ygUXTmV0d29yayBTZWN1cml0eSBCYXNpY3PSBwkJhwoBhyohjO8%3D",
-      description: "Introduction to network security fundamentals",
-    },
-    {
-      id: 8,
-      title: "Wireless & Modern Networking",
-      duration: "9min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=DITTo5D0hSY&pp=ygUcV2lyZWxlc3MgJiBNb2Rlcm4gTmV0d29ya2luZw%3D%3D",
-      description: "Explore wireless and modern networking technologies",
-    },
-    {
-      id: 9,
-      title: "Routing & Switching (Advanced)",
-      duration: "1h 26min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=2dic_pDh_UI&pp=ygUeUm91dGluZyAmIFN3aXRjaGluZyAoQWR2YW5jZWQp",
-      description: "Master advanced routing and switching concepts",
-    },
-    {
-      id: 10,
-      title: "Network Troubleshooting",
-      duration: "15min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=vgisbCjtHz4&pp=ygUXTmV0d29yayBUcm91Ymxlc2hvb3Rpbmc%3D",
-      description: "Learn techniques for network troubleshooting",
-    },
-  ],
-  14: [
-    // Database Management
-    {
-      id: 1,
-      title: "Introduction to Databases- FREE PREVIEW",
-      duration: "3min",
-      isFree: true,
-      videoUrl:
-        "https://www.youtube.com/watch?v=X7v0O8yiUuY&pp=ygUqaW50cm9kdWN0aW9uIHRvIGRhdGFiYXNlIG1hbmFnZW1lbnQgc3lzdGVt",
-      description: "Introduction to database management systems",
-    },
-    {
-      id: 2,
-      title: "Database Models",
-      duration: "12min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=NPT__vt-hCg&t=225s&pp=ygUPRGF0YWJhc2UgTW9kZWxz",
-      description: "Understand different database models and their uses",
-    },
-    {
-      id: 3,
-      title: "Relational Database Concepts",
-      duration: "10min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=WI9dE8-TFAc&t=77s&pp=ygUcUmVsYXRpb25hbCBEYXRhYmFzZSBDb25jZXB0c9IHCQmHCgGHKiGM7w%3D%3D",
-      description: "Master relational database concepts and principles",
-    },
-    {
-      id: 4,
-      title: "SQL Basics",
-      duration: "44min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=h0nxCDiD-zg&pp=ygUKU1FMIEJhc2ljcw%3D%3D",
-      description: "Learn basic SQL queries and operations",
-    },
-    {
-      id: 5,
-      title: "Advanced SQL Queries",
-      duration: "1h 10min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=Hl4NZB1XR9c&pp=ygUUQWR2YW5jZWQgU1FMIFF1ZXJpZXM%3D",
-      description: "Master advanced SQL queries and optimization",
-    },
-    {
-      id: 6,
-      title: "Indexing & Views",
-      duration: "13min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=lmxdf6pyZpg&pp=ygUQSW5kZXhpbmcgJiBWaWV3cw%3D%3D",
-      description: "Understand indexing strategies and database views",
-    },
-    {
-      id: 7,
-      title: "Stored Procedures & Functions",
-      duration: "12min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=7vnxpcqmqNQ&pp=ygUdU3RvcmVkIFByb2NlZHVyZXMgJiBGdW5jdGlvbnM%3D",
-      description: "Create and use stored procedures and functions",
-    },
-    {
-      id: 8,
-      title: "Transactions & Concurrency",
-      duration: "45min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=onYjxRcToto&pp=ygUaVHJhbnNhY3Rpb25zICYgQ29uY3VycmVuY3k%3D",
-      description: "Learn about transactions and concurrency control",
-    },
-    {
-      id: 9,
-      title: "Database Design & Normalization",
-      duration: "28min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=GFQaEYEc8_8&pp=ygUfRGF0YWJhc2UgRGVzaWduICYgTm9ybWFsaXphdGlvbg%3D%3D",
-      description: "Master database design and normalization techniques",
-    },
-    {
-      id: 10,
-      title: "Database Security & Backup",
-      duration: "14min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=c3YaDqvSDrQ&pp=ygUaRGF0YWJhc2UgU2VjdXJpdHkgJiBCYWNrdXA%3D",
-      description: "Learn database security practices and backup strategies",
-    },
-  ],
-  15: [
-    // UX/UI Design
-    {
-      id: 1,
-      title: "Introduction to UX/UI Design- FREE PREVIEW",
-      duration: "8min",
-      isFree: true,
-      videoUrl:
-        "https://www.youtube.com/watch?v=ODpB9-MCa5s&pp=ygUcaW50cm9kdWN0aW9uIHRvIHV4L3VpIGRlc2lnbg%3D%3D",
-      description: "Introduction to UX/UI design principles and practices",
-    },
-    {
-      id: 2,
-      title: "User Research",
-      duration: "13min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=TRaNiRZqXwY&pp=ygUdVXNlciBSZXNlYXJjaCBpbiB1eC91aSBkZXNpZ24%3D",
-      description: "Learn user research methods and techniques",
-    },
-    {
-      id: 3,
-      title: "Information Architecture",
-      duration: "17min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=OJLfjgVlwDo&pp=ygUoSW5mb3JtYXRpb24gQXJjaGl0ZWN0dXJlIGluIHV4L3VpIGRlc2lnbg%3D%3D",
-      description: "Master information architecture principles",
-    },
-    {
-      id: 4,
-      title: "Wireframing & Prototyping",
-      duration: "4min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=Dh14MmPBvZA&pp=ygUpV2lyZWZyYW1pbmcgJiBQcm90b3R5cGluZyBpbiB1eC91aSBkZXNpZ24%3D",
-      description: "Create wireframes and interactive prototypes",
-    },
-    {
-      id: 5,
-      title: "Visual Design Principles",
-      duration: "27min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=yNDgFK2Jj1E&pp=ygUhVmlzdWFsIERlc2lnbiBQcmluY2lwbGVzIGluIHV4L3Vp",
-      description: "Learn visual design principles for digital products",
-    },
-    {
-      id: 6,
-      title: "UX Principles",
-      duration: "10min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=08MrVhy2qk8&pp=ygUWVVggUHJpbmNpcGxlcyBpbiB1eC91aQ%3D%3D",
-      description: "Master core UX principles and heuristics",
-    },
-    {
-      id: 7,
-      title: "UI Design in Practice",
-      duration: "10min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=f6p1ePt1Va8&pp=ygUVVUkgRGVzaWduIGluIFByYWN0aWNl0gcJCYcKAYcqIYzv",
-      description: "Apply UI design principles in practical projects",
-    },
-    {
-      id: 8,
-      title: "Design Systems",
-      duration: "15min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=w-r6quQx0zA&pp=ygUXZGVzaWduIHN5c3RlbXMgaW4gZmlnbWE%3D",
-      description: "Understand and create design systems",
-    },
-    {
-      id: 9,
-      title: "Usability Testing",
-      duration: "11min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=7pAOkWLW1Oo&pp=ygURVXNhYmlsaXR5IFRlc3Rpbmc%3D",
-      description: "Learn usability testing methods and practices",
-    },
-    {
-      id: 10,
-      title: "Portfolio & Projects",
-      duration: "17min",
-      isFree: false,
-      videoUrl:
-        "https://www.youtube.com/watch?v=mmgxspm9JWs&pp=ygUaUG9ydGZvbGlvICYgUHJvamVjdHMgdXggdWk%3D",
-      description: "Build a UX/UI design portfolio with real projects",
-    },
-  ],
-};
-// ============================================
 // Initialize Application
 // ============================================
-
 function init() {
   console.log("Initializing application...");
-
-  // Initialize state
   currentUser = null;
   purchasedCourses = [];
   transactions = [];
   currentVideoProgress = {};
 
-  // Check for saved user
   const savedUser = localStorage.getItem("learnhub_user");
-  if (savedUser) {
+  const savedToken = localStorage.getItem("learnhub_token");
+
+  if (savedUser && savedToken) {
     try {
       currentUser = JSON.parse(savedUser);
-      loadUserData(currentUser.id);
-      console.log("Loaded purchased courses on init:", purchasedCourses); // Debug log
+      loadUserDataFromAPI().then(() => {
+        updateAuthUI();
+        if (currentUser) updateDashboard();
+      });
     } catch (e) {
       console.error("Error loading user:", e);
       clearUserData();
     }
   }
 
-  // Load all data
   loadCategories();
   loadFeaturedCourses();
   loadAllCourses();
   loadFeaturedDocuments();
   loadAllDocuments();
   updateSystemStatusCard();
-
-  // Setup event listeners
   setupEventListeners();
-
-  // Setup navigation
   window.addEventListener("hashchange", handleHashChange);
   handleHashChange();
-
-  // Setup theme
   setupTheme();
-
-  // Update UI
   updateAuthUI();
-
-  if (currentUser) {
-    updateDashboard();
-  }
-
   console.log("Application initialized successfully");
 }
 
 // ============================================
-// Modules Management
+// API Data Loading
 // ============================================
+async function loadUserDataFromAPI() {
+  try {
+    const data = await apiFetch("/dashboard");
+    purchasedCourses = data.courses.map((c) => Number(c.course.courseItem_id));
+    transactions = data.courses.map((c) => ({
+      id: c.payment.payment_id,
+      transactionNumber: c.invoice_number,
+      courseId: Number(c.course.courseItem_id),
+      courseTitle: c.course.title,
+      courseCategory: c.course.category?.name || "",
+      courseImage: c.course.image,
+      courseModules: c.course.video_modules?.length || 0,
+      amount: c.amount_paid,
+      date: c.paid_at,
+      status: "completed",
+    }));
+    console.log("Loaded from API - purchased:", purchasedCourses);
+  } catch (e) {
+    console.error("Failed to load user data from API:", e);
+    purchasedCourses = [];
+    transactions = [];
+  }
+}
+
+async function loadFeaturedCourses() {
+  try {
+    const data = await apiFetch("/courses?featured=1");
+    const courses = data.courses || [];
+    const featuredCoursesGrid = document.getElementById(
+      "featured-courses-grid",
+    );
+    if (featuredCoursesGrid) {
+      featuredCoursesGrid.innerHTML =
+        courses.length > 0
+          ? courses.map((course) => createCourseCardFromAPI(course)).join("")
+          : '<div class="col-span-3 text-center py-8 text-gray-500">No featured courses yet</div>';
+    }
+  } catch (err) {
+    console.error("Failed to load featured courses:", err);
+  }
+}
+
+async function loadAllCourses() {
+  try {
+    const data = await apiFetch("/courses");
+    allCourses = data.courses || [];
+    const allCoursesGrid = document.getElementById("all-courses-grid");
+    if (allCoursesGrid) {
+      allCoursesGrid.innerHTML =
+        allCourses.length > 0
+          ? allCourses.map((course) => createCourseCardFromAPI(course)).join("")
+          : '<div class="text-center py-12 col-span-3"><p class="text-gray-500">No courses available</p></div>';
+    }
+    const courseResultsCount = document.getElementById("course-results-count");
+    const courseTotalCount = document.getElementById("course-total-count");
+    if (courseResultsCount) courseResultsCount.textContent = allCourses.length;
+    if (courseTotalCount) courseTotalCount.textContent = allCourses.length;
+  } catch (err) {
+    console.error("Failed to load courses:", err);
+    allCourses = [...courseData];
+    const allCoursesGrid = document.getElementById("all-courses-grid");
+    if (allCoursesGrid) {
+      allCoursesGrid.innerHTML = allCourses
+        .map((course) => createCourseCard(course))
+        .join("");
+    }
+  }
+}
+
+async function loadFeaturedDocuments() {
+  try {
+    const token = localStorage.getItem("learnhub_token");
+    if (!token) return;
+    const data = await apiFetch("/documents?featured=1");
+    const featured = data.documents || [];
+    const featuredDocumentsGrid = document.getElementById(
+      "featured-documents-grid",
+    );
+    if (featuredDocumentsGrid) {
+      featuredDocumentsGrid.innerHTML =
+        featured.length > 0
+          ? featured.map((doc) => createDocumentCardFromAPI(doc)).join("")
+          : '<div class="col-span-3 text-center py-8 text-gray-500">No featured documents yet</div>';
+    }
+  } catch (err) {
+    console.error("Failed to load featured documents:", err);
+  }
+}
+async function loadAllDocuments() {
+  try {
+    const token = localStorage.getItem("learnhub_token");
+    if (!token) {
+      allDocuments = [...documentData];
+      const allDocumentsGrid = document.getElementById("all-documents-grid");
+      if (allDocumentsGrid) {
+        allDocumentsGrid.innerHTML = allDocuments
+          .map((doc) => createDocumentCard(doc))
+          .join("");
+      }
+      return;
+    }
+    const data = await apiFetch("/documents");
+    allDocuments = data.documents;
+    const allDocumentsGrid = document.getElementById("all-documents-grid");
+    if (allDocumentsGrid) {
+      allDocumentsGrid.innerHTML =
+        allDocuments.length > 0
+          ? allDocuments.map((doc) => createDocumentCardFromAPI(doc)).join("")
+          : '<div class="text-center py-12 col-span-3"><i class="fas fa-file-alt text-gray-300 text-4xl mb-4"></i><p class="text-gray-500">No documents available</p></div>';
+    }
+    const documentResultsCount = document.getElementById(
+      "document-results-count",
+    );
+    const documentTotalCount = document.getElementById("document-total-count");
+    if (documentResultsCount)
+      documentResultsCount.textContent = allDocuments.length;
+    if (documentTotalCount)
+      documentTotalCount.textContent = allDocuments.length;
+  } catch (err) {
+    console.error("Failed to load documents:", err);
+    allDocuments = [...documentData];
+    const allDocumentsGrid = document.getElementById("all-documents-grid");
+    if (allDocumentsGrid) {
+      allDocumentsGrid.innerHTML = allDocuments
+        .map((doc) => createDocumentCard(doc))
+        .join("");
+    }
+  }
+}
+
+// ============================================
+// Course Card Templates
+// ============================================
+function createCourseCardFromAPI(course) {
+  const isPurchased = purchasedCourses.some(
+    (id) => Number(id) === Number(course.courseItem_id),
+  );
+  const originalPrice = Number(course.price);
+  const finalPrice = Number(course.final_price ?? course.price);
+  const hasDiscount = finalPrice < originalPrice;
+  const promotion = course.active_promotion;
+
+  return `
+        <div class="card course-card" data-course-id="${course.courseItem_id}">
+            <div class="relative aspect-video overflow-hidden rounded-t-xl">
+                <img src="${course.image || "Images/default-course.png"}" alt="${course.title}" class="w-full h-full object-cover">
+                <div class="absolute top-4 left-4">
+                    <span class="badge badge-primary text-xs">${course.category?.name || "General"}</span>
+                </div>
+                ${
+                  isPurchased
+                    ? `
+                    <div class="absolute top-4 right-4">
+                        <span class="bg-green-500 text-white text-xs px-2 py-1 rounded-full">
+                            <i class="fas fa-check mr-1"></i> Purchased
+                        </span>
+                    </div>`
+                    : ""
+                }
+                ${
+                  hasDiscount
+                    ? `
+                    <div class="absolute bottom-4 left-4">
+                        <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full animate-pulse">
+                            🎉 ${promotion?.promotion_name || "SALE!"}
+                        </span>
+                    </div>`
+                    : ""
+                }
+            </div>
+            <div class="p-5">
+                <h3 class="mb-2 font-bold text-lg line-clamp-2">${course.title}</h3>
+                <p class="mb-4 text-sm text-gray-600 dark:text-gray-400 line-clamp-2">${course.description || ""}</p>
+                <div class="flex items-center justify-between">
+                    <div>
+                        ${
+                          hasDiscount
+                            ? `
+                            <div class="flex items-center gap-2">
+                                <span class="text-gray-400 line-through text-sm">$${originalPrice.toFixed(2)}</span>
+                                <span class="bg-red-100 text-red-600 text-xs px-2 py-0.5 rounded-full font-bold">
+                                    ${promotion?.promotion_type === "percent" ? `-${promotion.discount_value}%` : `-$${promotion?.discount_value}`}
+                                </span>
+                            </div>
+                            <span class="font-bold text-xl text-red-500">$${finalPrice.toFixed(2)}</span>`
+                            : `<span class="font-bold text-lg text-purple-600 dark:text-purple-400">$${originalPrice.toFixed(2)}</span>`
+                        }
+                    </div>
+                    <button class="btn ${isPurchased ? "btn-outline" : "btn-primary"} view-details-btn text-sm py-1.5 px-3" data-course-id="${course.courseItem_id}">
+                        ${isPurchased ? '<i class="fas fa-play mr-1"></i> Watch Video' : "View Details"}
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function createCourseCard(course) {
+  const isPurchased = purchasedCourses.some(
+    (id) => Number(id) === Number(course.id),
+  );
+  return `
+        <div class="card course-card" data-course-id="${course.id}">
+            <div class="relative aspect-video overflow-hidden rounded-t-xl">
+                <img src="${course.image}" alt="${course.title}" class="w-full h-full object-cover">
+                <div class="absolute bottom-4 right-4 bg-black/70 text-white text-xs px-2 py-1 rounded">${course.duration}</div>
+                <div class="absolute top-4 left-4">
+                    <span class="badge badge-primary text-xs">${course.category}</span>
+                </div>
+                ${isPurchased ? `<div class="absolute top-4 right-4"><span class="bg-green-500 text-white text-xs px-2 py-1 rounded-full"><i class="fas fa-check mr-1"></i> Purchased</span></div>` : ""}
+            </div>
+            <div class="p-5">
+                <h3 class="mb-2 font-bold text-lg line-clamp-2">${course.title}</h3>
+                <p class="mb-4 text-sm text-gray-600 dark:text-gray-400 line-clamp-2">${course.description}</p>
+                <div class="flex items-center justify-between">
+                    <span class="font-bold text-lg text-purple-600 dark:text-purple-400">$${course.price.toFixed(2)}</span>
+                    <button class="btn ${isPurchased ? "btn-outline" : "btn-primary"} view-details-btn text-sm py-1.5 px-3" data-course-id="${course.id}">
+                        ${isPurchased ? '<i class="fas fa-play mr-1"></i> Watch Video' : "View Details"}
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// ============================================
+// Document Card Templates
+// ============================================
+function createDocumentCardFromAPI(doc) {
+  return `
+        <div class="card">
+            <div class="p-5">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="h-12 w-12 rounded-lg overflow-hidden bg-purple-100 flex items-center justify-center">
+                        ${doc.logo ? `<img src="${doc.logo}" alt="${doc.title}" class="w-full h-full object-cover">` : `<i class="fas fa-file-alt text-purple-600 text-xl"></i>`}
+                    </div>
+                    <span class="text-xs px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300">
+                        ${doc.category?.name || "General"}
+                    </span>
+                </div>
+                <h3 class="mb-2 font-bold text-lg line-clamp-2">${doc.title}</h3>
+                <p class="mb-4 text-sm text-gray-600 dark:text-gray-400 line-clamp-2">${doc.description || ""}</p>
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs text-gray-500 dark:text-gray-400">
+                        <i class="fas fa-external-link-alt mr-1"></i> External Resource
+                    </span>
+                </div>
+                ${
+                  currentUser
+                    ? doc.file
+                      ? `<a href="${doc.file}" target="_blank" class="btn btn-primary w-full text-sm py-2 block text-center"><i class="fas fa-external-link-alt mr-2"></i> View Document</a>`
+                      : `<button class="btn btn-outline w-full text-sm py-2" disabled>No file available</button>`
+                    : `<button class="btn btn-outline w-full login-to-read-btn text-sm py-2" data-doc-id="${doc.freeDocument_id}"><i class="fas fa-lock mr-2"></i> Login to Read</button>`
+                }
+            </div>
+        </div>
+    `;
+}
+
+function createDocumentCard(doc) {
+  const isLoggedIn = !!currentUser;
+  return `
+        <div class="card">
+            <div class="p-5">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="h-12 w-12 rounded-lg overflow-hidden">
+                        <img src="${doc.image}" alt="${doc.title}" class="w-full h-full object-cover">
+                    </div>
+                    <span class="text-xs px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300">${doc.category}</span>
+                </div>
+                <h3 class="mb-2 font-bold text-lg line-clamp-2">${doc.title}</h3>
+                <p class="mb-4 text-sm text-gray-600 dark:text-gray-400 line-clamp-2">${doc.description}</p>
+                <div class="flex items-center justify-between mb-5">
+                    <span class="text-xs text-gray-500 dark:text-gray-400"><i class="fas fa-external-link-alt mr-1"></i> ${doc.source}</span>
+                    ${doc.pages ? `<span class="text-xs text-gray-500 dark:text-gray-400">${doc.pages} pages</span>` : ""}
+                </div>
+                ${
+                  isLoggedIn
+                    ? `<a href="${doc.url}" target="_blank" class="btn btn-primary w-full view-document-btn text-sm py-2" data-doc-id="${doc.id}"><i class="fas fa-external-link-alt mr-2"></i> View Document</a>`
+                    : `<button class="btn btn-outline w-full login-to-read-btn text-sm py-2" data-doc-id="${doc.id}"><i class="fas fa-lock mr-2"></i> Login to Read</button>`
+                }
+            </div>
+        </div>
+    `;
+}
+
+// ============================================
+// Course Detail Page
+// ============================================
+async function showCourseDetail(courseId) {
+  try {
+    const data = await apiFetch(`/courses/${courseId}`);
+    const course = data.course;
+    const owned = data.owned;
+
+    localStorage.setItem("current_course_id", courseId);
+
+    const finalPrice = Number(course.final_price ?? course.price);
+    const category = course.category?.name || "";
+
+    // Update UI elements
+    const els = {
+      category: document.getElementById("course-detail-category"),
+      title: document.getElementById("course-detail-title"),
+      description: document.getElementById("course-detail-description"),
+      desktopPrice: document.getElementById("desktop-price"),
+      mobilePrice: document.getElementById("mobile-price"),
+    };
+
+    if (els.category) els.category.textContent = category;
+    if (els.title) els.title.textContent = course.title;
+    if (els.description)
+      els.description.textContent =
+        course.description || "No description available.";
+    if (els.desktopPrice)
+      els.desktopPrice.textContent = `$${finalPrice.toFixed(2)}`;
+    if (els.mobilePrice)
+      els.mobilePrice.textContent = `$${finalPrice.toFixed(2)}`;
+
+    // Remove old banner
+    const oldBanner = document.getElementById("promotion-banner");
+    if (oldBanner) oldBanner.remove();
+
+    // Show promotion banner
+    if (course.active_promotion && finalPrice < Number(course.price)) {
+      const promo = course.active_promotion;
+      const savings = Number(course.price) - finalPrice;
+      const discount =
+        promo.promotion_type === "percent"
+          ? `${promo.discount_value}% OFF`
+          : `$${promo.discount_value} OFF`;
+      const endDate = new Date(promo.end_date).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+
+      const banner = document.createElement("div");
+      banner.id = "promotion-banner";
+      banner.innerHTML = `
+                <div style="
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+                    border-radius: 16px;
+                    padding: 20px 24px;
+                    margin-bottom: 20px;
+                    position: relative;
+                    overflow: hidden;
+                    box-shadow: 0 10px 40px rgba(102,126,234,0.4);
+                ">
+                    <div style="position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:rgba(255,255,255,0.08);border-radius:50%;"></div>
+                    <div style="position:absolute;bottom:-30px;left:100px;width:80px;height:80px;background:rgba(255,255,255,0.06);border-radius:50%;"></div>
+                    <div style="display:flex;align-items:center;gap:16px;position:relative;z-index:1;flex-wrap:wrap;">
+                        <div style="background:rgba(255,255,255,0.2);border-radius:14px;width:56px;height:56px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.3);">🎉</div>
+                        <div style="flex:1;min-width:150px;">
+                            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;">
+                                <span style="background:rgba(255,255,255,0.25);color:white;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:1px;text-transform:uppercase;border:1px solid rgba(255,255,255,0.3);">🔥 Limited Offer</span>
+                                <span style="color:rgba(255,255,255,0.8);font-size:12px;">⏰ Ends ${endDate}</span>
+                            </div>
+                            <p style="color:white;font-weight:800;font-size:18px;margin:0 0 4px 0;line-height:1.2;">${promo.promotion_name}</p>
+                            <p style="color:rgba(255,255,255,0.9);font-size:13px;margin:0;">
+                                You save <span style="background:rgba(255,255,255,0.25);padding:2px 8px;border-radius:8px;font-weight:700;margin:0 4px;">$${savings.toFixed(2)}</span> • ${discount} applied automatically
+                            </p>
+                        </div>
+                        <div style="text-align:right;flex-shrink:0;">
+                            <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:2px;">Now only</div>
+                            <div style="color:white;font-weight:900;font-size:26px;line-height:1;">$${finalPrice.toFixed(2)}</div>
+                            <div style="color:rgba(255,255,255,0.6);font-size:13px;text-decoration:line-through;">$${Number(course.price).toFixed(2)}</div>
+                            <div style="background:rgba(255,255,255,0.25);color:white;font-size:12px;font-weight:700;padding:2px 10px;border-radius:20px;margin-top:4px;display:inline-block;">${discount}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+      const titleEl = document.getElementById("course-detail-title");
+      if (titleEl) titleEl.parentNode.insertBefore(banner, titleEl);
+    }
+
+    // Learning points from modules
+    const learningPointsList = document.getElementById(
+      "course-learning-points",
+    );
+    if (learningPointsList) {
+      const modules = course.video_modules || [];
+      learningPointsList.innerHTML =
+        modules.length > 0
+          ? modules
+              .map(
+                (mod) => `
+                    <li class="flex items-start">
+                        <i class="fas fa-check text-purple-600 dark:text-purple-400 mt-1 mr-3"></i>
+                        <span>${mod.title}</span>
+                    </li>`,
+              )
+              .join("")
+          : "";
+    }
+
+    // Show page
+    pages.forEach((p) => p.classList.add("page-hidden"));
+    const courseDetailPage = document.getElementById("course-detail-page");
+    if (courseDetailPage) {
+      courseDetailPage.classList.remove("page-hidden");
+      currentPage = "course-detail";
+    }
+
+    setTimeout(() => {
+      generateCourseModulesFromAPI(courseId, course, owned);
+      initMobileModulesMenu();
+      restoreWatchedModules(courseId);
+    }, 100);
+  } catch (err) {
+    console.error("Failed to load course detail:", err);
+    // Fallback to local data
+    const course = courseData.find((c) => Number(c.id) === Number(courseId));
+    if (!course) {
+      window.location.hash = "courses";
+      return;
+    }
+
+    localStorage.setItem("current_course_id", courseId);
+
+    const courseDetailCategory = document.getElementById(
+      "course-detail-category",
+    );
+    const courseDetailTitle = document.getElementById("course-detail-title");
+    const courseDetailDescription = document.getElementById(
+      "course-detail-description",
+    );
+
+    if (courseDetailCategory)
+      courseDetailCategory.textContent = course.category || "";
+    if (courseDetailTitle) courseDetailTitle.textContent = course.title;
+    if (courseDetailDescription)
+      courseDetailDescription.textContent = course.description || "";
+
+    const learningPointsList = document.getElementById(
+      "course-learning-points",
+    );
+    if (learningPointsList) {
+      learningPointsList.innerHTML = (course.learningPoints || [])
+        .map(
+          (point) => `
+                <li class="flex items-start">
+                    <i class="fas fa-check text-purple-600 dark:text-purple-400 mt-1 mr-3"></i>
+                    <span>${point}</span>
+                </li>`,
+        )
+        .join("");
+    }
+
+    pages.forEach((p) => p.classList.add("page-hidden"));
+    const courseDetailPage = document.getElementById("course-detail-page");
+    if (courseDetailPage) {
+      courseDetailPage.classList.remove("page-hidden");
+      currentPage = "course-detail";
+    }
+
+    setTimeout(() => {
+      generateCourseModules(courseId);
+      initMobileModulesMenu();
+      restoreWatchedModules(courseId);
+    }, 100);
+  }
+}
+
+// ============================================
+// Generate Modules from API
+// ============================================
+function generateCourseModulesFromAPI(courseId, course, owned) {
+  const modules = course.video_modules || [];
+  const finalPrice = Number(course.final_price ?? course.price);
+
+  // Update sidebar info
+  const els = {
+    sidebarTitle: document.getElementById("sidebar-course-title"),
+    sidebarModules: document.getElementById("sidebar-course-modules"),
+    sidebarPrice: document.getElementById("sidebar-course-price"),
+    mobileSidebarTitle: document.getElementById("mobile-sidebar-title"),
+    mobileSidebarModules: document.getElementById("mobile-sidebar-modules"),
+    mobileSidebarPrice: document.getElementById("mobile-sidebar-price"),
+    desktopPrice: document.getElementById("desktop-price"),
+    mobilePrice: document.getElementById("mobile-price"),
+  };
+
+  if (els.sidebarTitle) els.sidebarTitle.textContent = course.title;
+  if (els.sidebarModules)
+    els.sidebarModules.textContent = `${modules.length} modules`;
+  if (els.sidebarPrice)
+    els.sidebarPrice.textContent = `$${finalPrice.toFixed(2)}`;
+  if (els.mobileSidebarTitle) els.mobileSidebarTitle.textContent = course.title;
+  if (els.mobileSidebarModules)
+    els.mobileSidebarModules.textContent = `${modules.length} modules`;
+  if (els.mobileSidebarPrice)
+    els.mobileSidebarPrice.textContent = `$${finalPrice.toFixed(2)}`;
+  if (els.desktopPrice)
+    els.desktopPrice.textContent = `$${finalPrice.toFixed(2)}`;
+  if (els.mobilePrice)
+    els.mobilePrice.textContent = `$${finalPrice.toFixed(2)}`;
+
+  const moduleHTML = (mod, isMobile = false) => {
+    const isLocked = !owned && !mod.is_free;
+    const padding = isMobile ? "p-4 mb-3 rounded-xl" : "p-3 mb-2 rounded-lg";
+    const iconSize = isMobile ? "text-lg" : "text-sm";
+    return `
+            <div class="${isMobile ? "mobile-module-item" : "module-item"} ${isLocked ? "locked" : ""}"
+                 data-module-id="${mod.videoCourseItem_id}"
+                 data-course-id="${courseId}"
+                 data-video-url="${mod.video_url || ""}"
+                 data-is-locked="${isLocked}"
+                 data-is-free="${mod.is_free}">
+                <div class="module-content ${padding} border ${
+                  isLocked
+                    ? "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50"
+                    : "border-purple-200 dark:border-purple-800 hover:border-purple-400 cursor-pointer transition-all"
+                }">
+                    <div class="flex items-start gap-3">
+                        <div class="module-status mt-1">
+                            ${
+                              isLocked
+                                ? `<i class="fas fa-lock text-gray-400 ${iconSize}"></i>`
+                                : `<i class="fas fa-play-circle text-purple-600 ${iconSize} default-icon"></i>`
+                            }
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-1">
+                                <h4 class="font-medium text-sm truncate pr-2 ${isLocked ? "text-gray-500" : "text-gray-900 dark:text-white"}">
+                                    ${mod.title}
+                                </h4>
+                                <span class="text-xs ${isLocked ? "text-gray-400" : "text-purple-600"} whitespace-nowrap">
+                                    ${mod.duration || ""}
+                                </span>
+                            </div>
+                            <p class="text-xs text-gray-500 line-clamp-2 mb-2">${mod.description || ""}</p>
+                            ${
+                              mod.is_free
+                                ? '<span class="inline-block px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">FREE PREVIEW</span>'
+                                : owned
+                                  ? '<span class="inline-block px-2 py-0.5 bg-purple-100 text-purple-700 text-xs rounded-full">Purchased</span>'
+                                  : '<span class="inline-block px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full">Locked</span>'
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+  };
+
+  const desktopModuleList = document.getElementById("desktop-module-list");
+  if (desktopModuleList) {
+    desktopModuleList.innerHTML =
+      modules.map((mod) => moduleHTML(mod, false)).join("") ||
+      '<div class="text-center py-8"><i class="fas fa-video text-gray-300 text-3xl mb-3"></i><p class="text-gray-500 text-sm">No modules available</p></div>';
+    addModuleClickListeners(desktopModuleList, owned, false, courseId);
+  }
+
+  const mobileModuleList = document.getElementById("mobile-module-list");
+  if (mobileModuleList) {
+    mobileModuleList.innerHTML =
+      modules.map((mod) => moduleHTML(mod, true)).join("") ||
+      '<div class="text-center py-12"><i class="fas fa-video text-gray-300 text-4xl mb-3"></i><p class="text-gray-500">No modules available</p></div>';
+    addModuleClickListeners(mobileModuleList, owned, true, courseId);
+  }
+
+  updatePurchaseButtons(
+    courseId,
+    { price: finalPrice, modules: modules.length },
+    owned,
+  );
+  updateProgressBars(0, modules.length, owned);
+}
+
+// ============================================
+// Generate Modules (local fallback)
+// ============================================
+const courseModulesData = {};
 
 function generateCourseModules(courseId) {
   const course = courseData.find((c) => c.id === courseId);
   if (!course) return;
 
-  console.log("Generating modules for course:", courseId);
-  console.log("Purchased courses:", purchasedCourses);
-  console.log("Is purchased?", purchasedCourses.includes(courseId));
+  const isPurchased = purchasedCourses.some(
+    (id) => Number(id) === Number(courseId),
+  );
+  let modules = courseModulesData[courseId] || [];
 
-  // Get modules for this course
-  let modules = courseModulesData[courseId];
-
-  // If no modules defined, create default ones
-  if (!modules) {
+  if (!modules || modules.length === 0) {
     modules = [];
     for (let i = 1; i <= (course.modules || 8); i++) {
       modules.push({
@@ -1887,43 +1247,21 @@ function generateCourseModules(courseId) {
             ? `Module ${i}: Introduction - FREE PREVIEW`
             : `Module ${i}: ${getDefaultModuleTitle(course.category, i)}`,
         duration: `${Math.floor(Math.random() * 45) + 30} min`,
-        isFree: i === 1, // First module is always free
+        isFree: i === 1,
         videoUrl: getDefaultVideoUrl(course.category, i),
         description:
           i === 1
             ? `Free introduction to ${course.category}`
-            : `Learn advanced ${course.category} concepts in this module`,
+            : `Learn advanced ${course.category} concepts`,
       });
     }
   }
 
-  // Check if course is purchased - ensure we're comparing numbers
-  const isPurchased = purchasedCourses.some(
-    (id) => Number(id) === Number(courseId),
-  );
-
-  // Generate desktop modules
   generateDesktopModules(courseId, modules, isPurchased);
-
-  // Generate mobile modules
   generateMobileModules(courseId, modules, isPurchased);
-
-  // Update module counts and progress
   updateModuleCounts(modules.length, course, isPurchased);
-
-  // Update purchase buttons
   updatePurchaseButtons(courseId, course, isPurchased);
 }
-
-const links = document.querySelectorAll(".nav-link");
-
-links.forEach((link) => {
-  link.addEventListener("click", function () {
-    links.forEach((l) => l.classList.remove("active"));
-
-    this.classList.add("active");
-  });
-});
 
 function getDefaultModuleTitle(category, moduleNum) {
   const titles = {
@@ -1958,7 +1296,6 @@ function getDefaultModuleTitle(category, moduleNum) {
       "Deployment",
     ],
   };
-
   const categoryTitles = titles[category] || [
     "Introduction",
     "Core Concepts",
@@ -1969,18 +1306,15 @@ function getDefaultModuleTitle(category, moduleNum) {
     "Review",
     "Next Steps",
   ];
-
   return categoryTitles[(moduleNum - 1) % categoryTitles.length];
 }
 
 function getDefaultVideoUrl(category, moduleNum) {
-  // Return a default YouTube embed URL based on category
   const urls = {
     "Web Development": "https://www.youtube.com/embed/zJSY8tbf_ys",
     "Programming Language": "https://www.youtube.com/embed/ix9cRaBkVe0",
     "Mobile Development": "https://www.youtube.com/embed/0-S5a0eXPoc",
   };
-
   return urls[category] || "https://www.youtube.com/embed/zJSY8tbf_ys";
 }
 
@@ -1991,63 +1325,49 @@ function generateDesktopModules(courseId, modules, isPurchased) {
   const modulesHTML = modules
     .map((module) => {
       const isLocked = !isPurchased && !module.isFree;
-
       return `
-      <div class="module-item ${isLocked ? "locked" : ""} ${module.isFree ? "free-module" : ""}" 
-           data-module-id="${module.id}" 
-           data-course-id="${courseId}" 
-           data-video-url="${module.videoUrl}" 
-           data-is-locked="${isLocked}"
-           data-is-free="${module.isFree}"
-           data-watched="false">
-        <div class="module-content p-3 mb-2 rounded-lg border ${isLocked ? "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50" : "border-purple-200 dark:border-purple-800 hover:border-purple-400 dark:hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20 cursor-pointer transition-all"}">
-          <div class="flex items-start gap-3">
-            <div class="module-status mt-1">
-              ${
-                isLocked
-                  ? '<i class="fas fa-lock text-gray-400 dark:text-gray-500 text-sm"></i>'
-                  : '<i class="fas fa-play-circle text-purple-600 dark:text-purple-400 text-sm watched-icon" style="display: none;"></i>' +
-                    '<i class="fas fa-check-circle text-green-500 text-sm completed-icon" style="display: none;"></i>' +
-                    '<i class="fas fa-play-circle text-purple-600 dark:text-purple-400 text-sm default-icon"></i>'
-              }
-            </div>
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center justify-between mb-1">
-                <h4 class="font-medium text-sm truncate pr-2 ${isLocked ? "text-gray-500 dark:text-gray-400" : "text-gray-900 dark:text-white"}">
-                  ${module.title}
-                </h4>
-                <span class="text-xs ${isLocked ? "text-gray-400 dark:text-gray-500" : "text-purple-600 dark:text-purple-400"} whitespace-nowrap">
-                  ${module.duration}
-                </span>
-              </div>
-              <p class="text-xs ${isLocked ? "text-gray-400 dark:text-gray-500" : "text-gray-500 dark:text-gray-400"} line-clamp-2 mb-2">
-                ${module.description}
-              </p>
-              ${
-                module.isFree
-                  ? '<span class="inline-block px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs rounded-full">FREE PREVIEW</span>'
-                  : isPurchased
-                    ? '<span class="inline-block px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 text-xs rounded-full">Purchased</span>'
-                    : '<span class="inline-block px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs rounded-full">Locked</span>'
-              }
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
+            <div class="module-item ${isLocked ? "locked" : ""} ${module.isFree ? "free-module" : ""}"
+                 data-module-id="${module.id}" data-course-id="${courseId}"
+                 data-video-url="${module.videoUrl}" data-is-locked="${isLocked}"
+                 data-is-free="${module.isFree}" data-watched="false">
+                <div class="module-content p-3 mb-2 rounded-lg border ${
+                  isLocked
+                    ? "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50"
+                    : "border-purple-200 dark:border-purple-800 hover:border-purple-400 hover:bg-purple-50 cursor-pointer transition-all"
+                }">
+                    <div class="flex items-start gap-3">
+                        <div class="module-status mt-1">
+                            ${
+                              isLocked
+                                ? '<i class="fas fa-lock text-gray-400 text-sm"></i>'
+                                : '<i class="fas fa-play-circle text-purple-600 text-sm watched-icon" style="display:none;"></i>' +
+                                  '<i class="fas fa-check-circle text-green-500 text-sm completed-icon" style="display:none;"></i>' +
+                                  '<i class="fas fa-play-circle text-purple-600 text-sm default-icon"></i>'
+                            }
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-1">
+                                <h4 class="font-medium text-sm truncate pr-2 ${isLocked ? "text-gray-500" : "text-gray-900 dark:text-white"}">${module.title}</h4>
+                                <span class="text-xs ${isLocked ? "text-gray-400" : "text-purple-600"} whitespace-nowrap">${module.duration}</span>
+                            </div>
+                            <p class="text-xs text-gray-500 line-clamp-2 mb-2">${module.description}</p>
+                            ${
+                              module.isFree
+                                ? '<span class="inline-block px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">FREE PREVIEW</span>'
+                                : isPurchased
+                                  ? '<span class="inline-block px-2 py-0.5 bg-purple-100 text-purple-700 text-xs rounded-full">Purchased</span>'
+                                  : '<span class="inline-block px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full">Locked</span>'
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>`;
     })
     .join("");
 
   desktopModuleList.innerHTML =
     modulesHTML ||
-    `
-    <div class="text-center py-8">
-      <i class="fas fa-video text-gray-300 dark:text-gray-600 text-3xl mb-3"></i>
-      <p class="text-gray-500 dark:text-gray-400 text-sm">No modules available</p>
-    </div>
-  `;
-
-  // Add click event listeners
+    '<div class="text-center py-8"><i class="fas fa-video text-gray-300 text-3xl mb-3"></i><p class="text-gray-500 text-sm">No modules available</p></div>';
   addModuleClickListeners(desktopModuleList, isPurchased, false, courseId);
 }
 
@@ -2058,65 +1378,51 @@ function generateMobileModules(courseId, modules, isPurchased) {
   const modulesHTML = modules
     .map((module) => {
       const isLocked = !isPurchased && !module.isFree;
-
       return `
-      <div class="mobile-module-item ${isLocked ? "locked" : ""} ${module.isFree ? "free-module" : ""}" 
-           data-module-id="${module.id}" 
-           data-course-id="${courseId}" 
-           data-video-url="${module.videoUrl}" 
-           data-is-locked="${isLocked}"
-           data-is-free="${module.isFree}"
-           data-watched="false">
-        <div class="module-content p-4 mb-3 rounded-xl border ${isLocked ? "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50" : "border-purple-200 dark:border-purple-800 hover:border-purple-400 dark:hover:border-purple-600 bg-white dark:bg-gray-800 shadow-sm"}">
-          <div class="flex items-start gap-4">
-            <div class="module-status w-6 flex-shrink-0 mt-1">
-              ${
-                isLocked
-                  ? '<i class="fas fa-lock text-gray-400 dark:text-gray-500 text-base"></i>'
-                  : '<i class="fas fa-play-circle text-purple-600 dark:text-purple-400 text-lg watched-icon" style="display: none;"></i>' +
-                    '<i class="fas fa-check-circle text-green-500 text-lg completed-icon" style="display: none;"></i>' +
-                    '<i class="fas fa-play-circle text-purple-600 dark:text-purple-400 text-lg default-icon"></i>'
-              }
-            </div>
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center justify-between mb-2">
-                <h4 class="font-semibold text-base ${isLocked ? "text-gray-500 dark:text-gray-400" : "text-gray-900 dark:text-white"} line-clamp-1">
-                  ${module.title}
-                </h4>
-                <span class="text-sm ${isLocked ? "text-gray-400 dark:text-gray-500" : "text-purple-600 dark:text-purple-400"} font-medium ml-2 whitespace-nowrap">
-                  ${module.duration}
-                </span>
-              </div>
-              <p class="text-sm ${isLocked ? "text-gray-400 dark:text-gray-500" : "text-gray-600 dark:text-gray-400"} line-clamp-2 mb-3">
-                ${module.description}
-              </p>
-              <div class="flex items-center gap-2 flex-wrap">
-                ${
-                  module.isFree
-                    ? '<span class="inline-block px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs rounded-full font-medium">FREE PREVIEW</span>'
-                    : isPurchased
-                      ? '<span class="inline-block px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 text-xs rounded-full font-medium">Purchased</span>'
-                      : '<span class="inline-block px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs rounded-full">Locked - Purchase to Unlock</span>'
-                }
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
+            <div class="mobile-module-item ${isLocked ? "locked" : ""} ${module.isFree ? "free-module" : ""}"
+                 data-module-id="${module.id}" data-course-id="${courseId}"
+                 data-video-url="${module.videoUrl}" data-is-locked="${isLocked}"
+                 data-is-free="${module.isFree}" data-watched="false">
+                <div class="module-content p-4 mb-3 rounded-xl border ${
+                  isLocked
+                    ? "border-gray-200 bg-gray-50"
+                    : "border-purple-200 bg-white dark:bg-gray-800 shadow-sm"
+                }">
+                    <div class="flex items-start gap-4">
+                        <div class="module-status w-6 flex-shrink-0 mt-1">
+                            ${
+                              isLocked
+                                ? '<i class="fas fa-lock text-gray-400 text-base"></i>'
+                                : '<i class="fas fa-play-circle text-purple-600 text-lg watched-icon" style="display:none;"></i>' +
+                                  '<i class="fas fa-check-circle text-green-500 text-lg completed-icon" style="display:none;"></i>' +
+                                  '<i class="fas fa-play-circle text-purple-600 text-lg default-icon"></i>'
+                            }
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-semibold text-base ${isLocked ? "text-gray-500" : "text-gray-900 dark:text-white"} line-clamp-1">${module.title}</h4>
+                                <span class="text-sm ${isLocked ? "text-gray-400" : "text-purple-600"} font-medium ml-2 whitespace-nowrap">${module.duration}</span>
+                            </div>
+                            <p class="text-sm text-gray-500 line-clamp-2 mb-3">${module.description}</p>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                ${
+                                  module.isFree
+                                    ? '<span class="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs rounded-full font-medium">FREE PREVIEW</span>'
+                                    : isPurchased
+                                      ? '<span class="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-xs rounded-full font-medium">Purchased</span>'
+                                      : '<span class="inline-block px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">Locked - Purchase to Unlock</span>'
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
     })
     .join("");
 
   mobileModuleList.innerHTML =
     modulesHTML ||
-    `
-    <div class="text-center py-12">
-      <i class="fas fa-video text-gray-300 dark:text-gray-600 text-4xl mb-3"></i>
-      <p class="text-gray-500 dark:text-gray-400">No modules available</p>
-    </div>
-  `;
-
-  // Add click event listeners
+    '<div class="text-center py-12"><i class="fas fa-video text-gray-300 text-4xl mb-3"></i><p class="text-gray-500">No modules available</p></div>';
   addModuleClickListeners(mobileModuleList, isPurchased, true, courseId);
 }
 
@@ -2127,33 +1433,40 @@ function addModuleClickListeners(
   courseId,
 ) {
   const moduleItems = container.querySelectorAll("[data-module-id]");
-
   moduleItems.forEach((item) => {
+    item.style.cursor =
+      item.dataset.isLocked === "true" ? "not-allowed" : "pointer";
     item.addEventListener("click", (e) => {
-      // Don't trigger if clicking on a button inside the module
-      if (e.target.closest("button")) return;
+      if (e.target.closest("button") || e.target.closest("a")) return;
 
       const moduleId = item.dataset.moduleId;
       const videoUrl = item.dataset.videoUrl;
       const isLocked = item.dataset.isLocked === "true";
 
       if (isLocked) {
-        showToast("This module requires course purchase", "error");
-
+        showToast("This module requires course purchase to watch.", "error");
         // Highlight purchase button
-        const purchaseBtn = document.getElementById(
-          isMobile ? "mobile-purchase-button" : "desktop-purchase-button",
+        ["desktop-purchase-button", "mobile-purchase-button"].forEach(
+          (btnId) => {
+            const purchaseBtn = document.getElementById(btnId);
+            if (purchaseBtn && !purchaseBtn.disabled) {
+              purchaseBtn.classList.add("animate-pulse");
+              setTimeout(
+                () => purchaseBtn.classList.remove("animate-pulse"),
+                2000,
+              );
+            }
+          },
         );
-        if (purchaseBtn) {
-          purchaseBtn.classList.add("animate-pulse", "bg-yellow-500");
-          setTimeout(() => {
-            purchaseBtn.classList.remove("animate-pulse", "bg-yellow-500");
-          }, 2000);
-        }
         return;
       }
 
-      // Play the module video
+      if (!videoUrl || videoUrl.trim() === "") {
+        showToast("No video available for this module.", "error");
+        return;
+      }
+
+      // ✅ Play the video!
       playModuleVideo(courseId, moduleId, videoUrl);
     });
   });
@@ -2163,56 +1476,38 @@ function playModuleVideo(courseId, moduleId, videoUrl) {
   const videoPlayer = document.getElementById("course-video-player");
   if (!videoPlayer) return;
 
-  // Get module info
-  const modules = courseModulesData[courseId] || [];
-  const module = modules.find((m) => m.id == moduleId);
-
-  // Convert YouTube URL to embed format
-  let embedUrl = videoUrl;
-
-  // Handle different YouTube URL formats
-  if (videoUrl.includes("youtube.com/watch?v=")) {
-    // Format: https://www.youtube.com/watch?v=VIDEO_ID
-    const videoId = videoUrl.split("v=")[1]?.split("&")[0];
-    embedUrl = `https://www.youtube.com/embed/${videoId}`;
-  } else if (videoUrl.includes("youtu.be/")) {
-    // Format: https://youtu.be/VIDEO_ID
-    const videoId = videoUrl.split("youtu.be/")[1]?.split("?")[0];
-    embedUrl = `https://www.youtube.com/embed/${videoId}`;
-  } else if (videoUrl.includes("youtube.com/embed/")) {
-    // Already in embed format
-    embedUrl = videoUrl;
+  if (!videoUrl || videoUrl.trim() === "") {
+    showToast("No video available for this module.", "error");
+    return;
   }
 
-  // Add autoplay parameter
+  let embedUrl = videoUrl;
+  if (videoUrl.includes("youtube.com/watch?v=")) {
+    const videoId = videoUrl.split("v=")[1]?.split("&")[0];
+    if (videoId) embedUrl = `https://www.youtube.com/embed/${videoId}`;
+  } else if (videoUrl.includes("youtu.be/")) {
+    const videoId = videoUrl.split("youtu.be/")[1]?.split("?")[0];
+    if (videoId) embedUrl = `https://www.youtube.com/embed/${videoId}`;
+  }
   embedUrl += embedUrl.includes("?") ? "&autoplay=1" : "?autoplay=1";
 
-  console.log("Playing video:", embedUrl); // Debug log
-
   videoPlayer.innerHTML = `
-    <div class="relative w-full h-full bg-black rounded-xl overflow-hidden">
-      <iframe 
-        src="${embedUrl}" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen
-        class="absolute top-0 left-0 w-full h-full"
-        title="${module?.title || "Course video"}"
-      ></iframe>
-    </div>
-  `;
+        <div class="relative w-full h-full bg-black rounded-xl overflow-hidden">
+            <iframe src="${embedUrl}" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen class="absolute top-0 left-0 w-full h-full"
+                title="Course Video"></iframe>
+        </div>`;
 
-  // Mark module as watched/in progress
   markModuleAsWatched(courseId, moduleId);
-
-  // Close mobile menu if open
   closeMobileModulesMenu();
-
-  // Update active module styling
   updateActiveModule(courseId, moduleId);
 
-  // Show success message for free preview
-  if (module && module.isFree) {
+  // Check if free preview
+  const modEl = document.querySelector(`[data-module-id="${moduleId}"]`);
+  const isFree = modEl?.dataset?.isFree === "true";
+  const isPurchased = purchasedCourses.includes(Number(courseId));
+  if (isFree && !isPurchased) {
     showToast(
       "Enjoying the free preview! Purchase to unlock all modules.",
       "success",
@@ -2221,7 +1516,6 @@ function playModuleVideo(courseId, moduleId, videoUrl) {
 }
 
 function markModuleAsWatched(courseId, moduleId) {
-  // Initialize progress for this course if not exists
   if (!currentVideoProgress[courseId]) {
     currentVideoProgress[courseId] = {
       started: new Date().toISOString(),
@@ -2231,311 +1525,192 @@ function markModuleAsWatched(courseId, moduleId) {
     };
   }
 
-  // Add module to watched modules if not already there
   const courseProgress = currentVideoProgress[courseId];
+
   if (!courseProgress.watchedModules.includes(parseInt(moduleId))) {
     courseProgress.watchedModules.push(parseInt(moduleId));
     courseProgress.lastModule = parseInt(moduleId);
 
-    // Get total modules for this course
-    const modules = courseModulesData[courseId] || [];
-    const totalModules = modules.length;
+    // ← Get total modules from DOM (works for both API and local)
+    const totalModules =
+      document.querySelectorAll("#desktop-module-list [data-module-id]")
+        .length || 1;
 
-    // Calculate progress percentage
+    // ← Calculate correctly
     const watchedCount = courseProgress.watchedModules.length;
-    const unlockedModules = modules.filter(
-      (m) => m.isFree || purchasedCourses.includes(courseId),
-    ).length;
-    const progress = Math.round((watchedCount / unlockedModules) * 100);
+    const progress = Math.min(
+      Math.round((watchedCount / totalModules) * 100),
+      100,
+    );
     courseProgress.progress = progress;
 
-    // Save to localStorage
     if (currentUser) {
-      const userProgressKey = `learnhub_video_progress_${currentUser.id}`;
       localStorage.setItem(
-        userProgressKey,
+        `learnhub_video_progress_${currentUser.id}`,
         JSON.stringify(currentVideoProgress),
       );
     }
 
-    // Update UI
     updateModuleWatchedStatus(courseId, moduleId);
     updateCourseProgress(courseId, progress);
   }
 }
 
 function updateModuleWatchedStatus(courseId, moduleId) {
-  // Update desktop module
-  const desktopModule = document.querySelector(
-    `#desktop-module-list [data-module-id="${moduleId}"]`,
-  );
-  if (desktopModule) {
-    const defaultIcon = desktopModule.querySelector(".default-icon");
-    const watchedIcon = desktopModule.querySelector(".watched-icon");
-    const completedIcon = desktopModule.querySelector(".completed-icon");
-
-    if (defaultIcon) defaultIcon.style.display = "none";
-    if (watchedIcon) watchedIcon.style.display = "inline-block";
-  }
-
-  // Update mobile module
-  const mobileModule = document.querySelector(
-    `#mobile-module-list [data-module-id="${moduleId}"]`,
-  );
-  if (mobileModule) {
-    const defaultIcon = mobileModule.querySelector(".default-icon");
-    const watchedIcon = mobileModule.querySelector(".watched-icon");
-    const completedIcon = mobileModule.querySelector(".completed-icon");
-
-    if (defaultIcon) defaultIcon.style.display = "none";
-    if (watchedIcon) watchedIcon.style.display = "inline-block";
-  }
+  ["desktop-module-list", "mobile-module-list"].forEach((listId) => {
+    const mod = document.querySelector(
+      `#${listId} [data-module-id="${moduleId}"]`,
+    );
+    if (mod) {
+      const defaultIcon = mod.querySelector(".default-icon");
+      const watchedIcon = mod.querySelector(".watched-icon");
+      if (defaultIcon) defaultIcon.style.display = "none";
+      if (watchedIcon) watchedIcon.style.display = "inline-block";
+    }
+  });
 }
 
 function updateCourseProgress(courseId, progress) {
-  // Update desktop progress
-  const sidebarProgressBar = document.getElementById("sidebar-progress-bar");
-  const sidebarProgressPercentage = document.getElementById(
-    "sidebar-progress-percentage",
-  );
-  const sidebarProgressText = document.getElementById("sidebar-progress-text");
-
-  if (sidebarProgressBar) sidebarProgressBar.style.width = `${progress}%`;
-  if (sidebarProgressPercentage)
-    sidebarProgressPercentage.textContent = `${progress}%`;
-  if (sidebarProgressText)
-    sidebarProgressText.textContent = `${progress}% complete • Keep learning`;
-
-  // Update mobile progress
-  const mobileProgressBar = document.getElementById("mobile-progress-bar");
-  const mobileProgressPercentage = document.getElementById(
-    "mobile-progress-percentage",
-  );
-  const mobileProgressText = document.getElementById("mobile-progress-text");
-
-  if (mobileProgressBar) mobileProgressBar.style.width = `${progress}%`;
-  if (mobileProgressPercentage)
-    mobileProgressPercentage.textContent = `${progress}%`;
-  if (mobileProgressText)
-    mobileProgressText.textContent = `${progress}% complete • Keep learning`;
+  const els = {
+    sidebarBar: document.getElementById("sidebar-progress-bar"),
+    sidebarPct: document.getElementById("sidebar-progress-percentage"),
+    sidebarTxt: document.getElementById("sidebar-progress-text"),
+    mobileBar: document.getElementById("mobile-progress-bar"),
+    mobilePct: document.getElementById("mobile-progress-percentage"),
+    mobileTxt: document.getElementById("mobile-progress-text"),
+  };
+  if (els.sidebarBar) els.sidebarBar.style.width = `${progress}%`;
+  if (els.sidebarPct) els.sidebarPct.textContent = `${progress}%`;
+  if (els.sidebarTxt)
+    els.sidebarTxt.textContent = `${progress}% complete • Keep learning`;
+  if (els.mobileBar) els.mobileBar.style.width = `${progress}%`;
+  if (els.mobilePct) els.mobilePct.textContent = `${progress}%`;
+  if (els.mobileTxt)
+    els.mobileTxt.textContent = `${progress}% complete • Keep learning`;
 }
 
 function updateActiveModule(courseId, activeModuleId) {
-  // Desktop modules
-  const desktopModules = document.querySelectorAll(
-    "#desktop-module-list [data-module-id]",
-  );
-  desktopModules.forEach((module) => {
-    const moduleContent = module.querySelector(".module-content");
-    if (module.dataset.moduleId == activeModuleId) {
-      moduleContent.classList.add(
-        "bg-purple-100",
-        "dark:bg-purple-900/40",
-        "border-purple-500",
-        "dark:border-purple-500",
-      );
-    } else {
-      moduleContent.classList.remove(
-        "bg-purple-100",
-        "dark:bg-purple-900/40",
-        "border-purple-500",
-        "dark:border-purple-500",
-      );
-    }
-  });
-
-  // Mobile modules
-  const mobileModules = document.querySelectorAll(
-    "#mobile-module-list [data-module-id]",
-  );
-  mobileModules.forEach((module) => {
-    const moduleContent = module.querySelector(".module-content");
-    if (module.dataset.moduleId == activeModuleId) {
-      moduleContent.classList.add(
-        "bg-purple-100",
-        "dark:bg-purple-900/40",
-        "border-purple-500",
-        "dark:border-purple-500",
-      );
-    } else {
-      moduleContent.classList.remove(
-        "bg-purple-100",
-        "dark:bg-purple-900/40",
-        "border-purple-500",
-        "dark:border-purple-500",
-      );
-    }
+  ["desktop-module-list", "mobile-module-list"].forEach((listId) => {
+    document
+      .querySelectorAll(`#${listId} [data-module-id]`)
+      .forEach((module) => {
+        const moduleContent = module.querySelector(".module-content");
+        if (!moduleContent) return;
+        if (module.dataset.moduleId == activeModuleId) {
+          moduleContent.classList.add("bg-purple-100", "border-purple-500");
+        } else {
+          moduleContent.classList.remove("bg-purple-100", "border-purple-500");
+        }
+      });
   });
 }
 
 function updateModuleCounts(totalModules, course, isPurchased) {
-  // Update desktop sidebar
-  const sidebarCourseTitle = document.getElementById("sidebar-course-title");
-  const sidebarCourseModules = document.getElementById(
-    "sidebar-course-modules",
-  );
-  const sidebarCoursePrice = document.getElementById("sidebar-course-price");
-  const desktopPrice = document.getElementById("desktop-price");
-  const mobilePrice = document.getElementById("mobile-price");
-  const mobileModulesCount = document.getElementById("mobile-modules-count");
-  const desktopPurchaseModulesCount = document.getElementById(
-    "desktop-purchase-modules-count",
-  );
-  const mobileCoursePrice = document.getElementById("mobile-course-price");
+  const price = Number(course.price || 0);
+  const els = {
+    sidebarCourseTitle: document.getElementById("sidebar-course-title"),
+    sidebarCourseModules: document.getElementById("sidebar-course-modules"),
+    sidebarCoursePrice: document.getElementById("sidebar-course-price"),
+    desktopPrice: document.getElementById("desktop-price"),
+    mobilePrice: document.getElementById("mobile-price"),
+    mobileSidebarTitle: document.getElementById("mobile-sidebar-title"),
+    mobileSidebarModules: document.getElementById("mobile-sidebar-modules"),
+    mobileSidebarPrice: document.getElementById("mobile-sidebar-price"),
+  };
+  if (els.sidebarCourseTitle) els.sidebarCourseTitle.textContent = course.title;
+  if (els.sidebarCourseModules)
+    els.sidebarCourseModules.textContent = `${totalModules} modules (1 free)`;
+  if (els.sidebarCoursePrice)
+    els.sidebarCoursePrice.textContent = `$${price.toFixed(2)}`;
+  if (els.desktopPrice) els.desktopPrice.textContent = `$${price.toFixed(2)}`;
+  if (els.mobilePrice) els.mobilePrice.textContent = `$${price.toFixed(2)}`;
+  if (els.mobileSidebarTitle) els.mobileSidebarTitle.textContent = course.title;
+  if (els.mobileSidebarModules)
+    els.mobileSidebarModules.textContent = `${totalModules} modules (1 free)`;
+  if (els.mobileSidebarPrice)
+    els.mobileSidebarPrice.textContent = `$${price.toFixed(2)}`;
 
-  // New mobile sidebar elements
-  const mobileSidebarTitle = document.getElementById("mobile-sidebar-title");
-  const mobileSidebarModules = document.getElementById(
-    "mobile-sidebar-modules",
-  );
-  const mobileSidebarPrice = document.getElementById("mobile-sidebar-price");
-  const mobilePurchaseModulesCount = document.getElementById(
-    "mobile-purchase-modules-count",
-  );
-
-  if (sidebarCourseTitle) sidebarCourseTitle.textContent = course.title;
-  if (sidebarCourseModules)
-    sidebarCourseModules.textContent = `${totalModules} modules (1 free)`;
-  if (sidebarCoursePrice)
-    sidebarCoursePrice.textContent = `$${course.price.toFixed(2)}`;
-  if (desktopPrice) desktopPrice.textContent = `$${course.price.toFixed(2)}`;
-  if (mobilePrice) mobilePrice.textContent = `$${course.price.toFixed(2)}`;
-  if (mobileCoursePrice)
-    mobileCoursePrice.textContent = `$${course.price.toFixed(2)}`;
-  if (mobileModulesCount)
-    mobileModulesCount.textContent = `${totalModules} modules`;
-  if (desktopPurchaseModulesCount)
-    desktopPurchaseModulesCount.textContent = totalModules;
-
-  // Update mobile sidebar
-  if (mobileSidebarTitle) mobileSidebarTitle.textContent = course.title;
-  if (mobileSidebarModules)
-    mobileSidebarModules.textContent = `${totalModules} modules (1 free)`;
-  if (mobileSidebarPrice)
-    mobileSidebarPrice.textContent = `$${course.price.toFixed(2)}`;
-  if (mobilePurchaseModulesCount)
-    mobilePurchaseModulesCount.textContent = totalModules;
-
-  // Get saved progress for this course
   let progress = 0;
-  if (currentVideoProgress[course.id]) {
+  if (currentVideoProgress[course.id])
     progress = currentVideoProgress[course.id].progress || 0;
-  }
-
-  // Update progress bars
   updateProgressBars(progress, totalModules, isPurchased);
 }
 
 function updateProgressBars(progress, totalModules, isPurchased) {
-  const sidebarProgressBar = document.getElementById("sidebar-progress-bar");
-  const sidebarProgressPercentage = document.getElementById(
-    "sidebar-progress-percentage",
-  );
-  const sidebarProgressText = document.getElementById("sidebar-progress-text");
-  const mobileProgressBar = document.getElementById("mobile-progress-bar");
-  const mobileProgressPercentage = document.getElementById(
-    "mobile-progress-percentage",
-  );
-  const mobileProgressText = document.getElementById("mobile-progress-text");
-
-  const progressWidth = progress ? `${progress}%` : "0%";
-  const progressPercentage = progress ? `${progress}%` : "0%";
+  const progressWidth = `${progress || 0}%`;
+  const progressPercentage = `${progress || 0}%`;
   const progressMessage = isPurchased
     ? progress
       ? `${progress}% complete • Keep learning`
       : "Start learning to track progress"
     : "Purchase to unlock all modules";
 
-  // Desktop
-  if (sidebarProgressBar) sidebarProgressBar.style.width = progressWidth;
-  if (sidebarProgressPercentage)
-    sidebarProgressPercentage.textContent = progressPercentage;
-  if (sidebarProgressText) sidebarProgressText.textContent = progressMessage;
+  const els = {
+    sidebarBar: document.getElementById("sidebar-progress-bar"),
+    sidebarPct: document.getElementById("sidebar-progress-percentage"),
+    sidebarTxt: document.getElementById("sidebar-progress-text"),
+    mobileBar: document.getElementById("mobile-progress-bar"),
+    mobilePct: document.getElementById("mobile-progress-percentage"),
+    mobileTxt: document.getElementById("mobile-progress-text"),
+  };
+  if (els.sidebarBar) els.sidebarBar.style.width = progressWidth;
+  if (els.sidebarPct) els.sidebarPct.textContent = progressPercentage;
+  if (els.sidebarTxt) els.sidebarTxt.textContent = progressMessage;
+  if (els.mobileBar) els.mobileBar.style.width = progressWidth;
+  if (els.mobilePct) els.mobilePct.textContent = progressPercentage;
+  if (els.mobileTxt) els.mobileTxt.textContent = progressMessage;
+}
 
-  // Mobile
-  if (mobileProgressBar) mobileProgressBar.style.width = progressWidth;
-  if (mobileProgressPercentage)
-    mobileProgressPercentage.textContent = progressPercentage;
-  if (mobileProgressText) mobileProgressText.textContent = progressMessage;
+function restoreWatchedModules(courseId) {
+  if (currentVideoProgress[courseId]) {
+    const watchedModules = currentVideoProgress[courseId].watchedModules || [];
+    watchedModules.forEach((moduleId) =>
+      updateModuleWatchedStatus(courseId, moduleId),
+    );
+    updateCourseProgress(
+      courseId,
+      currentVideoProgress[courseId].progress || 0,
+    );
+  }
 }
 
 // ============================================
 // Purchase Functions
 // ============================================
-
 function updatePurchaseButtons(courseId, course, isPurchased) {
-  // Desktop purchase button
-  const desktopPurchaseBtn = document.getElementById("desktop-purchase-button");
-
-  if (desktopPurchaseBtn) {
+  ["desktop-purchase-button", "mobile-purchase-button"].forEach((btnId) => {
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
     if (isPurchased) {
-      desktopPurchaseBtn.innerHTML =
-        '<i class="fas fa-check mr-2"></i> Course Purchased';
-      desktopPurchaseBtn.disabled = true;
-      desktopPurchaseBtn.classList.add("bg-green-600", "hover:bg-green-700");
-      desktopPurchaseBtn.classList.remove(
-        "bg-purple-600",
-        "hover:bg-purple-700",
-      );
+      // ✅ Already purchased — disable and show green
+      btn.innerHTML = '<i class="fas fa-check mr-2"></i> Course Purchased';
+      btn.disabled = true;
+      btn.style.cssText =
+        "background:#16a34a;color:white;cursor:not-allowed;opacity:1;";
+      btn.onclick = null;
     } else {
-      desktopPurchaseBtn.innerHTML =
+      // ❌ Not purchased — enable purple button
+      btn.innerHTML =
         '<i class="fas fa-shopping-cart mr-2"></i> Purchase Course';
-      desktopPurchaseBtn.disabled = false;
-      desktopPurchaseBtn.classList.add("bg-purple-600", "hover:bg-purple-700");
-      desktopPurchaseBtn.classList.remove("bg-green-600", "hover:bg-green-700");
-      desktopPurchaseBtn.onclick = () => purchaseCourse(courseId);
+      btn.disabled = false;
+      btn.style.cssText = "";
+      btn.onclick = () => purchaseCourse(courseId);
     }
-  }
-
-  // Mobile purchase button
-  const mobilePurchaseBtn = document.getElementById("mobile-purchase-button");
-  if (mobilePurchaseBtn) {
-    if (isPurchased) {
-      mobilePurchaseBtn.innerHTML =
-        '<i class="fas fa-check mr-2"></i> Course Purchased';
-      mobilePurchaseBtn.disabled = true;
-      mobilePurchaseBtn.classList.add("bg-green-600", "hover:bg-green-700");
-      mobilePurchaseBtn.classList.remove(
-        "bg-purple-600",
-        "hover:bg-purple-700",
-      );
-    } else {
-      mobilePurchaseBtn.innerHTML =
-        '<i class="fas fa-shopping-cart mr-2"></i> Purchase Course';
-      mobilePurchaseBtn.disabled = false;
-      mobilePurchaseBtn.classList.add("bg-purple-600", "hover:bg-purple-700");
-      mobilePurchaseBtn.classList.remove("bg-green-600", "hover:bg-green-700");
-      mobilePurchaseBtn.onclick = () => purchaseCourse(courseId);
-    }
-  }
-
-  // Update system status
+  });
   updateSystemStatusCard();
 }
 
-function purchaseCourse(courseId) {
-  console.log("Purchase clicked for course:", courseId);
-
+async function purchaseCourse(courseId) {
   if (!currentUser) {
     showLoginModal();
     return;
   }
 
   if (!isSystemOpen()) {
-    showToast(
-      "System is closed. Purchases are only available from 8:00 AM to 10:00 PM (EST).",
-      "error",
-    );
+    showToast("System is closed. Purchases only available 8AM-10PM.", "error");
     return;
   }
 
-  const course = courseData.find((c) => c.id === courseId);
-  if (!course) {
-    showToast("Course not found", "error");
-    return;
-  }
-
-  // Convert to number for comparison
   const numericCourseId = Number(courseId);
 
   if (purchasedCourses.includes(numericCourseId)) {
@@ -2543,70 +1718,708 @@ function purchaseCourse(courseId) {
     return;
   }
 
-  const timestamp = Date.now();
-  const randomNum = Math.floor(Math.random() * 10000)
-    .toString()
-    .padStart(4, "0");
-  const transactionNumber = `RCP-${timestamp}-${randomNum}`;
+  // Show loading
+  ["desktop-purchase-button", "mobile-purchase-button"].forEach((btnId) => {
+    const btn = document.getElementById(btnId);
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Generating QR...';
+      btn.style.cssText = "opacity:0.8;cursor:not-allowed;background:#7c3aed;color:white;width:100%;padding:12px;border-radius:8px;border:none;font-size:16px;font-weight:600;";
+    }
+  });
 
-  const transactionDate = new Date();
-  const transaction = {
-    id: timestamp,
-    transactionNumber: transactionNumber,
-    courseId: numericCourseId,
-    courseTitle: course.title,
-    courseCategory: course.category,
-    courseDuration: course.duration,
-    courseInstructor: course.instructor,
-    courseImage: course.image,
-    courseModules: course.modules || 0,
-    amount: course.price,
-    date: transactionDate.toISOString(),
-    userId: currentUser.id,
-    userName: currentUser.name,
-    userEmail: currentUser.email,
-    status: "completed",
-    paymentMethod: "Credit Card",
-    paymentDetails: "•••• 4242",
-  };
+  try {
+    const data = await apiFetch("/khqr/generate", {
+      method: "POST",
+      body: JSON.stringify({ course_item_id: numericCourseId }),
+    });
 
-  purchasedCourses.push(numericCourseId);
-  transactions.push(transaction);
+    // ✅ Check if user already paid FIRST
+    if (data.status === "paid") {
+      // Add to purchased courses if not already there
+      if (!purchasedCourses.includes(numericCourseId)) {
+        purchasedCourses.push(numericCourseId);
+      }
+      
+      // Re-enable buttons
+      ["desktop-purchase-button", "mobile-purchase-button"].forEach((btnId) => {
+        const btn = document.getElementById(btnId);
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-shopping-cart mr-2"></i> Purchase Course';
+          btn.style.cssText = "background:#7c3aed;color:white;width:100%;padding:12px;border-radius:8px;border:none;font-size:16px;font-weight:600;cursor:pointer;";
+        }
+      });
+      
+      // Show the paid modal (this will show the "already paid" status)
+      showKhqrModal(data, numericCourseId);
+      return; // Don't proceed further
+    }
 
-  console.log("After purchase - purchased courses:", purchasedCourses); // Debug log
+    // Re-enable buttons before showing QR
+    ["desktop-purchase-button", "mobile-purchase-button"].forEach((btnId) => {
+      const btn = document.getElementById(btnId);
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-shopping-cart mr-2"></i> Purchase Course';
+        btn.style.cssText = "background:#7c3aed;color:white;width:100%;padding:12px;border-radius:8px;border:none;font-size:16px;font-weight:600;cursor:pointer;";
+      }
+    });
 
-  saveUserData(currentUser.id);
+    // Show QR modal for unpaid purchase
+    showKhqrModal(data, numericCourseId);
 
-  // Update all course cards
-  updateAllCourseCards();
+  } catch (err) {
+    showToast(err.message || "Failed to generate QR. Please try again.", "error");
 
-  showToast(
-    `Purchase complete! All ${course.modules} modules are now unlocked.`,
-    "success",
-  );
-
-  updateDashboard();
-
-  if (currentPage === "dashboard") {
-    loadRecentCourses();
+    // Re-enable buttons on error
+    ["desktop-purchase-button", "mobile-purchase-button"].forEach((btnId) => {
+      const btn = document.getElementById(btnId);
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-shopping-cart mr-2"></i> Purchase Course';
+        btn.style.cssText = "background:#7c3aed;color:white;width:100%;padding:12px;border-radius:8px;border:none;font-size:16px;font-weight:600;cursor:pointer;";
+      }
+    });
   }
+}
 
-  // If on course detail page, regenerate modules
-  if (
-    currentPage === "course-detail" &&
-    localStorage.getItem("current_course_id") == courseId
-  ) {
-    // Small delay to ensure data is saved
-    setTimeout(() => {
-      generateCourseModules(courseId);
-    }, 100);
+function showPaidModal(courseTitle) {
+  // Remove existing modal
+  const existing = document.getElementById("khqr-modal");
+  if (existing) existing.remove();
+
+  const modal = document.createElement("div");
+  modal.id = "khqr-modal";
+  modal.style.cssText = `
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.3s ease-out;
+  `;
+
+  modal.innerHTML = `
+    <div style="
+      background: white;
+      border-radius: 28px;
+      padding: 40px 32px;
+      max-width: 450px;
+      width: 90%;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      position: relative;
+      animation: slideUp 0.4s ease-out;
+    ">
+      <button onclick="closeKhqrModal()" style="
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: #f1f5f9;
+        border: none;
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        color: #64748b;
+        transition: all 0.2s;
+      " onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#f1f5f9'">✕</button>
+
+      <div style="
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #10b981, #059669);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+      ">
+        <svg style="width: 48px; height: 48px; color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+        </svg>
+      </div>
+
+      <h2 style="
+        color: #065f46;
+        font-size: 28px;
+        font-weight: 800;
+        margin: 0 0 12px 0;
+      ">✅ Payment Completed!</h2>
+      
+      <p style="
+        margin: 0 0 8px 0;
+        color: #1f2937;
+        font-size: 18px;
+        font-weight: 500;
+      ">You have already paid for:</p>
+      
+      <p style="
+        margin: 0 0 24px 0;
+        color: #7c3aed;
+        font-size: 20px;
+        font-weight: 700;
+        background: #f3f4f6;
+        padding: 12px;
+        border-radius: 12px;
+      ">${courseTitle}</p>
+      
+      <button onclick="closeKhqrModal()" style="
+        background: linear-gradient(135deg, #7c3aed, #6d28d9);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 12px 24px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s;
+        width: 100%;
+      " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        Continue Learning
+      </button>
+    </div>
+    
+    <style>
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+    </style>
+  `;
+
+  document.body.appendChild(modal);
+  document.body.style.overflow = "hidden";
+  
+  // Auto close after 4 seconds (optional)
+  setTimeout(() => {
+    if (document.getElementById("khqr-modal")) {
+      modal.style.animation = "fadeOut 0.3s ease-out forwards";
+      setTimeout(() => {
+        closeKhqrModal();
+      }, 300);
+    }
+  }, 4000);
+}
+
+let khqrPollingInterval = null;
+
+function showKhqrModal(data, courseId) {
+  // Remove existing modal
+  const existing = document.getElementById("khqr-modal");
+  if (existing) existing.remove();
+
+  const modal = document.createElement("div");
+  modal.id = "khqr-modal";
+  modal.style.cssText =
+    "position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);";
+
+  // Check if user already paid
+  const isPaid = data.status === "paid";
+
+  modal.innerHTML = `
+    <div style="
+        background:white;
+        border-radius:24px;
+        padding:32px;
+        max-width:400px;
+        width:100%;
+        box-shadow:0 20px 60px rgba(0,0,0,0.3);
+        text-align:center;
+        position:relative;
+    ">
+        <!-- Close button -->
+        <button onclick="closeKhqrModal()" style="
+            position:absolute;top:16px;right:16px;
+            background:#f1f5f9;border:none;border-radius:50%;
+            width:32px;height:32px;cursor:pointer;
+            display:flex;align-items:center;justify-content:center;
+            font-size:16px;color:#64748b;
+        ">✕</button>
+
+        <!-- Bakong Logo -->
+        <div style="margin-bottom:16px;">
+            <div style="
+                background:linear-gradient(135deg,#e31837,#c41230);
+                border-radius:16px;
+                padding:12px 24px;
+                display:inline-block;
+                margin-bottom:8px;
+            ">
+                <span style="color:white;font-weight:800;font-size:20px;letter-spacing:1px;">BAKONG</span>
+            </div>
+            <p style="color:#64748b;font-size:13px;margin:0;">
+                ${isPaid ? "Payment already completed" : "Scan with Bakong app to pay"}
+            </p>
+        </div>
+
+        <!-- Course Info -->
+        <div style="
+            background:#f8fafc;
+            border-radius:12px;
+            padding:12px 16px;
+            margin-bottom:16px;
+            text-align:left;
+        ">
+            <p style="margin:0;font-size:13px;color:#64748b;">Course</p>
+            <p style="margin:4px 0 0;font-weight:600;font-size:14px;color:#1e293b;">${data.course_title}</p>
+        </div>
+
+        ${
+          !isPaid
+            ? `
+            <!-- QR Code - Only shown if NOT paid -->
+            <div style="
+                border:3px solid #e2e8f0;
+                border-radius:16px;
+                padding:16px;
+                margin-bottom:16px;
+                display:inline-block;
+            ">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(data.qr_string)}" 
+                    alt="KHQR Code" 
+                    style="width:220px;height:220px;display:block;"
+                    onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'220\' height=\'220\'><text y=\'110\' x=\'50%\' text-anchor=\'middle\' font-size=\'14\'>QR Load Failed</text></svg>'">
+            </div>
+
+            <!-- Amount - Only shown if NOT paid -->
+            <div style="
+                background:linear-gradient(135deg,#7c3aed,#6d28d9);
+                border-radius:12px;
+                padding:12px 24px;
+                margin-bottom:20px;
+                display:inline-block;
+            ">
+                <p style="margin:0;color:rgba(255,255,255,0.8);font-size:12px;">Amount to Pay</p>
+                <p style="margin:4px 0 0;color:white;font-weight:800;font-size:28px;">
+                    $${Number(data.amount).toFixed(2)}
+                </p>
+            </div>
+
+            <!-- Status - Pending payment -->
+            <div id="khqr-status" style="
+                display:flex;align-items:center;justify-content:center;
+                gap:8px;margin-bottom:16px;
+                background:#fef9c3;
+                border-radius:10px;padding:10px 16px;
+            ">
+                <div style="
+                    width:8px;height:8px;border-radius:50%;
+                    background:#f59e0b;
+                    animation:pulse 1.5s infinite;
+                "></div>
+                <span id="khqr-status-text" style="font-size:13px;color:#92400e;font-weight:500;">
+                    Waiting for payment...
+                </span>
+            </div>
+
+            <p style="color:#94a3b8;font-size:12px;margin:0;">
+                QR expires in <span id="khqr-timer" style="font-weight:600;color:#ef4444;">5:00</span>
+            </p>
+            `
+            : `
+            <!-- Paid Status - Only shown if PAID -->
+            <div style="
+                background:linear-gradient(135deg,#10b981,#059669);
+                border-radius:16px;
+                padding:24px;
+                margin-bottom:16px;
+                text-align:center;
+            ">
+                <div style="font-size:48px;margin-bottom:12px;">✅</div>
+                <p style="margin:0;color:white;font-size:18px;font-weight:700;">Payment Completed!</p>
+                <p style="margin:8px 0 0;color:rgba(255,255,255,0.9);font-size:14px;">
+                    You have already paid for this course.
+                </p>
+            </div>
+            `
+        }
+
+        <style>
+            @keyframes pulse {
+                0%, 100% { opacity: 1; transform: scale(1); }
+                50% { opacity: 0.5; transform: scale(1.3); }
+            }
+        </style>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+  document.body.style.overflow = "hidden";
+
+  // Only start polling and timer if NOT paid
+  if (!isPaid) {
+    startKhqrPolling(data.payment_id, courseId);
+    startKhqrTimer(300);
   }
+}
+
+function startKhqrPolling(paymentId, courseId) {
+  clearInterval(khqrPollingInterval);
+  khqrPollingInterval = setInterval(async () => {
+    try {
+      const result = await apiFetch("/khqr/check-status", {
+        method: "POST",
+        body: JSON.stringify({ payment_id: paymentId }),
+      });
+      
+      // Check if payment is successful
+      if (result.status === "SUCCESS" || result.status === "paid") {
+        // Clear the polling interval immediately
+        clearInterval(khqrPollingInterval);
+        khqrPollingInterval = null;
+        
+        // Add course to purchased list
+        if (!purchasedCourses.includes(courseId)) {
+          purchasedCourses.push(courseId);
+        }
+        
+        // Close the QR modal
+        closeKhqrModal();
+        
+        // Show a large, centered success modal
+        showSuccessModal("Payment Confirmed! 🎉", "Your course has been unlocked successfully!");
+        
+        // Optional: Refresh the page after 3 seconds to update UI
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
+      }
+    } catch (e) {
+      console.error("Polling error:", e);
+      // Keep polling on error, don't close modal
+    }
+  }, 3000); // Check every 3 seconds
+}
+
+// New function to show a large success modal
+function showSuccessModal(title, message) {
+  // Remove any existing success modal
+  const existing = document.getElementById("success-modal");
+  if (existing) existing.remove();
+  
+  const modal = document.createElement("div");
+  modal.id = "success-modal";
+  modal.style.cssText = `
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(8px);
+    animation: fadeIn 0.3s ease-out;
+  `;
+  
+  modal.innerHTML = `
+    <div style="
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-radius: 32px;
+      padding: 48px 32px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      transform: scale(1);
+      animation: bounceIn 0.5s ease-out;
+    ">
+      <div style="
+        width: 80px;
+        height: 80px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+        animation: checkmark 0.5s ease-out 0.2s both;
+      ">
+        <svg style="width: 48px; height: 48px; color: #10b981;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+        </svg>
+      </div>
+      
+      <h2 style="
+        color: white;
+        font-size: 32px;
+        font-weight: 800;
+        margin: 0 0 12px 0;
+        letter-spacing: -0.5px;
+      ">${title}</h2>
+      
+      <p style="
+        color: rgba(255, 255, 255, 0.95);
+        font-size: 18px;
+        margin: 0 0 32px 0;
+        line-height: 1.5;
+      ">${message}</p>
+      
+      <div style="
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        padding: 8px 20px;
+        margin-top: 8px;
+      ">
+        <span style="
+          color: white;
+          font-size: 14px;
+          font-weight: 500;
+        ">Redirecting in 3 seconds...</span>
+      </div>
+    </div>
+    
+    <style>
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      
+      @keyframes bounceIn {
+        0% {
+          opacity: 0;
+          transform: scale(0.3);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.05);
+        }
+        70% {
+          transform: scale(0.9);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      
+      @keyframes checkmark {
+        0% {
+          opacity: 0;
+          transform: scale(0.5);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.2);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+    </style>
+  `;
+  
+  document.body.appendChild(modal);
+  document.body.style.overflow = "hidden";
+  
+  // Auto close after 3 seconds (with redirect)
+  setTimeout(() => {
+    const successModal = document.getElementById("success-modal");
+    if (successModal) {
+      successModal.style.animation = "fadeOut 0.3s ease-out forwards";
+      setTimeout(() => {
+        successModal.remove();
+        document.body.style.overflow = "";
+      }, 300);
+    }
+  }, 3000);
+}
+function startKhqrTimer(seconds) {
+  const timerEl = document.getElementById("khqr-timer");
+  let remainingSeconds = seconds;
+  
+  const timerInterval = setInterval(() => {
+    remainingSeconds--;
+    
+    if (!timerEl || remainingSeconds <= 0) {
+      // Timer expired
+      clearInterval(timerInterval);
+      clearInterval(khqrPollingInterval);
+      khqrPollingInterval = null;
+      
+      // Close modal if it's still open
+      if (document.getElementById("khqr-modal")) {
+        closeKhqrModal();
+        showToast("QR code expired. Please try again.", "error");
+      }
+      return;
+    }
+    
+    const mins = Math.floor(remainingSeconds / 60);
+    const secs = remainingSeconds % 60;
+    if (timerEl) {
+      timerEl.textContent = `${mins}:${secs.toString().padStart(2, "0")}`;
+    }
+    
+    // Update status text for last 30 seconds
+    if (remainingSeconds <= 30) {
+      const statusText = document.getElementById("khqr-status-text");
+      if (statusText) {
+        statusText.textContent = "⏰ QR expiring soon...";
+        statusText.style.color = "#dc2626";
+      }
+    }
+  }, 1000);
+}
+
+function closeKhqrModal() {
+  // Clear any running intervals
+  if (khqrPollingInterval) {
+    clearInterval(khqrPollingInterval);
+    khqrPollingInterval = null;
+  }
+  
+  // Remove modal from DOM
+  const modal = document.getElementById("khqr-modal");
+  if (modal) {
+    modal.remove();
+  }
+  
+  // Re-enable scrolling
+  document.body.style.overflow = "";
+  
+  // Optional: Re-enable purchase buttons if they were disabled
+  ["desktop-purchase-button", "mobile-purchase-button"].forEach((btnId) => {
+    const btn = document.getElementById(btnId);
+    if (btn && btn.disabled) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-shopping-cart mr-2"></i> Purchase Course';
+      btn.style.cssText = "background:#7c3aed;color:white;width:100%;padding:12px;border-radius:8px;border:none;font-size:16px;font-weight:600;cursor:pointer;";
+    }
+  });
+}
+
+
+
+// ✅ Unlock all modules in the UI immediately after purchase
+function unlockAllModules(courseId) {
+  ["desktop-module-list", "mobile-module-list"].forEach((listId) => {
+    const container = document.getElementById(listId);
+    if (!container) return;
+
+    const moduleItems = container.querySelectorAll("[data-module-id]");
+    moduleItems.forEach((item) => {
+      // ← Clone to remove ALL old event listeners
+      const newItem = item.cloneNode(true);
+
+      // Update locked state
+      newItem.dataset.isLocked = "false";
+      newItem.style.cursor = "pointer";
+
+      const moduleContent = newItem.querySelector(".module-content");
+      if (moduleContent) {
+        moduleContent.classList.remove(
+          "border-gray-200",
+          "bg-gray-50",
+          "dark:border-gray-700",
+          "dark:bg-gray-800/50",
+        );
+        moduleContent.classList.add(
+          "border-purple-200",
+          "dark:border-purple-800",
+          "hover:border-purple-400",
+          "cursor-pointer",
+          "transition-all",
+        );
+      }
+
+      // Replace lock icon with play icon
+      const moduleStatus = newItem.querySelector(".module-status");
+      if (moduleStatus) {
+        moduleStatus.innerHTML =
+          '<i class="fas fa-play-circle text-purple-600 text-sm default-icon"></i>';
+      }
+
+      // Update title color
+      const title = newItem.querySelector("h4");
+      if (title) {
+        title.classList.remove("text-gray-500", "dark:text-gray-400");
+        title.classList.add("text-gray-900", "dark:text-white");
+      }
+
+      // Update duration color
+      const duration = newItem.querySelector("span.whitespace-nowrap");
+      if (duration) {
+        duration.classList.remove("text-gray-400");
+        duration.classList.add("text-purple-600");
+      }
+
+      // Replace Locked badge with Purchased
+      const allSpans = newItem.querySelectorAll("span");
+      allSpans.forEach((span) => {
+        if (span.textContent.includes("Locked")) {
+          span.className =
+            "inline-block px-2 py-0.5 bg-purple-100 text-purple-700 text-xs rounded-full";
+          span.textContent = "Purchased";
+        }
+      });
+
+      // Replace old item with cloned item
+      item.parentNode.replaceChild(newItem, item);
+
+      // ← Add fresh click listener on cloned item
+      newItem.addEventListener("click", (e) => {
+        if (e.target.closest("button") || e.target.closest("a")) return;
+        const videoUrl = newItem.dataset.videoUrl;
+        const moduleId = newItem.dataset.moduleId;
+        if (!videoUrl || videoUrl.trim() === "") {
+          showToast("No video available for this module.", "error");
+          return;
+        }
+        playModuleVideo(courseId, moduleId, videoUrl);
+      });
+    });
+  });
+
+  // Update progress bar
+  ["sidebar-progress-text", "mobile-progress-text"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = "Start learning to track progress";
+  });
 }
 
 // ============================================
 // Mobile Modules Menu
 // ============================================
-
 function initMobileModulesMenu() {
   const mobileToggle = document.getElementById("mobile-modules-toggle");
   const mobileOverlay = document.getElementById("mobile-modules-overlay");
@@ -2621,16 +2434,11 @@ function initMobileModulesMenu() {
       }
     });
   }
-
-  if (closeButton) {
+  if (closeButton)
     closeButton.addEventListener("click", closeMobileModulesMenu);
-  }
-
   if (mobileOverlay) {
     mobileOverlay.addEventListener("click", (e) => {
-      if (e.target === mobileOverlay) {
-        closeMobileModulesMenu();
-      }
+      if (e.target === mobileOverlay) closeMobileModulesMenu();
     });
   }
 }
@@ -2644,253 +2452,10 @@ function closeMobileModulesMenu() {
 }
 
 // ============================================
-// Show Course Detail (Modified to include modules)
-// ============================================
-
-function showCourseDetail(courseId) {
-  const course = courseData.find((c) => c.id === courseId);
-  if (!course) {
-    window.location.hash = "courses";
-    return;
-  }
-
-  // Save current course ID
-  localStorage.setItem("current_course_id", courseId);
-
-  // Update course detail page
-  const courseDetailCategory = document.getElementById(
-    "course-detail-category",
-  );
-  const courseDetailTitle = document.getElementById("course-detail-title");
-  const courseDetailDescription = document.getElementById(
-    "course-detail-description",
-  );
-  const courseDurationValue = document.getElementById("course-duration-value");
-
-  if (courseDetailCategory) courseDetailCategory.textContent = course.category;
-  if (courseDetailTitle) courseDetailTitle.textContent = course.title;
-  if (courseDetailDescription)
-    courseDetailDescription.textContent = course.description;
-  if (courseDurationValue) courseDurationValue.textContent = course.duration;
-
-  // Update learning points
-  const learningPointsList = document.getElementById("course-learning-points");
-  if (learningPointsList) {
-    learningPointsList.innerHTML = course.learningPoints
-      .map(
-        (point) => `
-          <li class="flex items-start">
-            <i class="fas fa-check text-purple-600 dark:text-purple-400 mt-1 mr-3"></i>
-            <span>${point}</span>
-          </li>
-        `,
-      )
-      .join("");
-  }
-
-  // Show course detail page
-  pages.forEach((p) => p.classList.add("page-hidden"));
-  const courseDetailPage = document.getElementById("course-detail-page");
-  if (courseDetailPage) {
-    courseDetailPage.classList.remove("page-hidden");
-    currentPage = "course-detail";
-  }
-
-  // Generate modules
-  setTimeout(() => {
-    generateCourseModules(courseId);
-    initMobileModulesMenu();
-
-    // Restore watched module icons if any
-    restoreWatchedModules(courseId);
-  }, 100);
-}
-
-function restoreWatchedModules(courseId) {
-  if (currentVideoProgress[courseId]) {
-    const watchedModules = currentVideoProgress[courseId].watchedModules || [];
-    watchedModules.forEach((moduleId) => {
-      updateModuleWatchedStatus(courseId, moduleId);
-    });
-
-    // Update progress bar
-    const progress = currentVideoProgress[courseId].progress || 0;
-    updateCourseProgress(courseId, progress);
-  }
-}
-
-// ============================================
-// Load User Data Functions
-// ============================================
-
-function loadUserData(userId) {
-  try {
-    const userPurchasedKey = `learnhub_purchased_${userId}`;
-    const userTransactionsKey = `learnhub_transactions_${userId}`;
-    const userProgressKey = `learnhub_video_progress_${userId}`;
-
-    const savedPurchased = localStorage.getItem(userPurchasedKey);
-    const savedTransactions = localStorage.getItem(userTransactionsKey);
-    const savedProgress = localStorage.getItem(userProgressKey);
-
-    purchasedCourses = savedPurchased ? JSON.parse(savedPurchased) : [];
-    transactions = savedTransactions ? JSON.parse(savedTransactions) : [];
-    currentVideoProgress = savedProgress ? JSON.parse(savedProgress) : {};
-
-    // Ensure purchasedCourses is an array of numbers
-    if (Array.isArray(purchasedCourses)) {
-      purchasedCourses = purchasedCourses.map((id) => Number(id));
-    } else {
-      purchasedCourses = [];
-    }
-
-    console.log("Loaded purchased courses:", purchasedCourses); // Debug log
-
-    if (!Array.isArray(transactions)) transactions = [];
-    if (typeof currentVideoProgress !== "object") currentVideoProgress = {};
-
-    return true;
-  } catch (e) {
-    console.error("Error loading user data:", e);
-    purchasedCourses = [];
-    transactions = [];
-    currentVideoProgress = {};
-    return false;
-  }
-}
-
-function saveUserData(userId) {
-  try {
-    const userPurchasedKey = `learnhub_purchased_${userId}`;
-    const userTransactionsKey = `learnhub_transactions_${userId}`;
-    const userProgressKey = `learnhub_video_progress_${userId}`;
-
-    localStorage.setItem(userPurchasedKey, JSON.stringify(purchasedCourses));
-    localStorage.setItem(userTransactionsKey, JSON.stringify(transactions));
-    localStorage.setItem(userProgressKey, JSON.stringify(currentVideoProgress));
-
-    return true;
-  } catch (e) {
-    console.error("Error saving user data:", e);
-    return false;
-  }
-}
-
-function clearUserData() {
-  localStorage.removeItem("learnhub_user");
-  localStorage.removeItem("learnhub_purchased");
-  localStorage.removeItem("learnhub_transactions");
-  localStorage.removeItem("learnhub_video_progress");
-
-  currentUser = null;
-  purchasedCourses = [];
-  transactions = [];
-  currentVideoProgress = {};
-}
-
-// ============================================
-// Event Listeners Setup
-// ============================================
-
-function setupEventListeners() {
-  if (themeToggle) {
-    themeToggle.addEventListener("click", toggleTheme);
-  }
-
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", logout);
-  }
-
-  if (mobileMenuBtn && mobileMenu) {
-    mobileMenuBtn.addEventListener("click", toggleMobileMenu);
-    setupClickOutsideHandler();
-  }
-
-  const courseSearch = document.getElementById("course-search");
-  if (courseSearch) {
-    courseSearch.addEventListener("input", filterCourses);
-  }
-
-  const documentSearch = document.getElementById("document-search");
-  if (documentSearch) {
-    documentSearch.addEventListener("input", filterDocuments);
-  }
-
-  const contactForm = document.getElementById("contact-form");
-  if (contactForm) {
-    contactForm.addEventListener("submit", handleContactSubmit);
-  }
-
-  const logoContainer = document.querySelector(".logo-container");
-  if (logoContainer) {
-    logoContainer.addEventListener("click", (e) => {
-      e.preventDefault();
-      window.location.hash = "home";
-    });
-  }
-
-  setupEventDelegation();
-}
-
-function setupEventDelegation() {
-  document.addEventListener("click", (e) => {
-    if (e.target.closest(".view-details-btn")) {
-      const btn = e.target.closest(".view-details-btn");
-      const courseId = parseInt(btn.dataset.courseId);
-      if (courseId) {
-        window.location.hash = `course-${courseId}`;
-      }
-    }
-
-    if (e.target.closest(".dashboard-watch-btn")) {
-      const btn = e.target.closest(".dashboard-watch-btn");
-      const courseId = parseInt(btn.dataset.courseId);
-      if (courseId) {
-        window.location.hash = `course-${courseId}`;
-      }
-    }
-
-    if (e.target.closest(".view-document-btn")) {
-      const btn = e.target.closest(".view-document-btn");
-      const docId = parseInt(btn.dataset.docId);
-      if (docId) {
-        viewDocument(docId);
-      }
-    }
-
-    if (e.target.closest(".login-to-read-btn")) {
-      showLoginModal();
-    }
-
-    if (e.target.closest(".course-card") && !e.target.closest("button")) {
-      const card = e.target.closest(".course-card");
-      const courseId = parseInt(card.dataset.courseId);
-      if (courseId) {
-        window.location.hash = `course-${courseId}`;
-      }
-    }
-  });
-}
-
-function setupClickOutsideHandler() {
-  document.addEventListener("click", (e) => {
-    if (
-      !mobileMenu.classList.contains("hidden") &&
-      !mobileMenu.contains(e.target) &&
-      !mobileMenuBtn.contains(e.target)
-    ) {
-      closeMobileMenu();
-    }
-  });
-}
-
-// ============================================
 // Navigation & Page Management
 // ============================================
-
 function handleHashChange() {
   const hash = window.location.hash.substring(1);
-
   const validPages = [
     "home",
     "about",
@@ -2902,23 +2467,14 @@ function handleHashChange() {
 
   if (validPages.includes(hash)) {
     showPage(hash);
-    if (hash === "documents") {
-      showLoginNotice();
-    }
-    if (hash === "dashboard") {
-      updateDashboard();
-    }
+    if (hash === "documents") showLoginNotice();
+    if (hash === "dashboard") updateDashboard();
   } else if (hash.startsWith("course-")) {
     const courseId = parseInt(hash.split("-")[1]);
-    if (courseId) {
-      showCourseDetail(courseId);
-    }
+    if (courseId) showCourseDetail(courseId);
   } else {
-    if (window.location.hash !== "#home") {
-      window.location.hash = "home";
-    } else {
-      showPage("home");
-    }
+    if (window.location.hash !== "#home") window.location.hash = "home";
+    else showPage("home");
   }
 }
 
@@ -2928,20 +2484,16 @@ function showPage(page) {
     window.location.hash = "home";
     return;
   }
-
   pages.forEach((p) => p.classList.add("page-hidden"));
-
   const targetPage = document.getElementById(`${page}-page`);
   if (targetPage) {
     targetPage.classList.remove("page-hidden");
     currentPage = page;
-
     if (page === "dashboard") {
       updateDashboard();
       showDashboardView("main");
-    } else if (page === "courses") {
-      updateCourseFilters();
-    } else if (page === "documents") {
+    } else if (page === "courses") updateCourseFilters();
+    else if (page === "documents") {
       updateDocumentFilters();
       showLoginNotice();
     }
@@ -2951,218 +2503,212 @@ function showPage(page) {
 // ============================================
 // Dashboard Functions
 // ============================================
-
 function showDashboardView(view) {
-  document.querySelectorAll(".dashboard-view").forEach((view) => {
-    view.classList.add("hidden");
-  });
-
+  document
+    .querySelectorAll(".dashboard-view")
+    .forEach((v) => v.classList.add("hidden"));
   const targetView = document.getElementById(`dashboard-${view}-view`);
-  if (targetView) {
-    targetView.classList.remove("hidden");
-  }
+  if (targetView) targetView.classList.remove("hidden");
+  if (view === "courses") loadDashboardCoursesView();
+  else if (view === "receipts") loadDashboardReceiptsView();
+  else if (view === "main") updateDashboard();
+}
 
-  if (view === "courses") {
-    loadDashboardCoursesView();
-  } else if (view === "receipts") {
-    loadDashboardReceiptsView();
-  } else if (view === "main") {
-    updateDashboard();
+async function updateDashboard() {
+  if (!currentUser) return;
+  try {
+    const data = await apiFetch("/dashboard");
+    const els = {
+      name: document.getElementById("dashboard-user-name"),
+      email: document.getElementById("dashboard-user-email"),
+      memberDate: document.getElementById("dashboard-member-date"),
+      courseCount: document.getElementById("dashboard-course-count"),
+      receiptsCount: document.getElementById("dashboard-receipts-count"),
+      purchasedCount: document.getElementById("purchased-courses-count"),
+      totalSpent: document.getElementById("total-spent-amount"),
+      lastPurchaseDate: document.getElementById("last-purchase-date"),
+      lastPurchaseCourse: document.getElementById("last-purchase-course"),
+    };
+    if (els.name) els.name.textContent = data.user.name || "User";
+    if (els.email) els.email.textContent = data.user.email || "";
+    if (els.memberDate && data.user.created_at) {
+      els.memberDate.textContent = new Date(
+        data.user.created_at,
+      ).toLocaleDateString("en-US", { month: "short", year: "numeric" });
+    }
+    if (els.courseCount) els.courseCount.textContent = data.total_courses;
+    if (els.receiptsCount) els.receiptsCount.textContent = data.total_courses;
+    if (els.purchasedCount) els.purchasedCount.textContent = data.total_courses;
+    if (els.totalSpent)
+      els.totalSpent.textContent = `$${Number(data.total_spent).toFixed(2)}`;
+
+    if (data.courses.length > 0) {
+      const last = data.courses[0];
+      if (els.lastPurchaseDate)
+        els.lastPurchaseDate.textContent = new Date(
+          last.paid_at,
+        ).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        });
+      if (els.lastPurchaseCourse)
+        els.lastPurchaseCourse.textContent = last.course.title;
+    } else {
+      if (els.lastPurchaseDate) els.lastPurchaseDate.textContent = "-";
+      if (els.lastPurchaseCourse)
+        els.lastPurchaseCourse.textContent = "No purchases yet";
+    }
+
+    purchasedCourses = data.courses.map((c) => Number(c.course.courseItem_id));
+    transactions = data.courses.map((c) => ({
+      id: c.payment.payment_id,
+      transactionNumber: c.invoice_number,
+      courseId: Number(c.course.courseItem_id),
+      courseTitle: c.course.title,
+      courseCategory: c.course.category?.name || "",
+      courseImage: c.course.image,
+      courseModules: c.course.video_modules?.length || 0,
+      amount: c.amount_paid,
+      date: c.paid_at,
+      status: "completed",
+    }));
+
+    loadRecentCoursesFromAPI(data.courses);
+  } catch (err) {
+    console.error("Dashboard load failed:", err);
   }
 }
 
-function updateDashboard() {
-  if (!currentUser) return;
-
-  const dashboardUserName = document.getElementById("dashboard-user-name");
-  const dashboardUserEmail = document.getElementById("dashboard-user-email");
-  const dashboardMemberDate = document.getElementById("dashboard-member-date");
-
-  if (dashboardUserName)
-    dashboardUserName.textContent = currentUser.name || "User";
-  if (dashboardUserEmail)
-    dashboardUserEmail.textContent = currentUser.email || "No email";
-
-  if (dashboardMemberDate && currentUser.createdAt) {
-    const date = new Date(currentUser.createdAt);
-    dashboardMemberDate.textContent = date.toLocaleDateString("en-US", {
-      month: "short",
-      year: "numeric",
-    });
+function loadRecentCoursesFromAPI(courses) {
+  const recentCoursesGrid = document.getElementById("recent-courses-grid");
+  if (!recentCoursesGrid) return;
+  if (courses.length === 0) {
+    recentCoursesGrid.innerHTML = `
+            <div class="text-center py-12 col-span-3">
+                <i class="fas fa-video text-gray-300 text-4xl mb-4"></i>
+                <h3 class="text-lg font-semibold mb-2">No Courses Purchased</h3>
+                <p class="text-gray-600 mb-4">You haven't purchased any courses yet.</p>
+                <button onclick="window.location.hash='courses'" class="btn btn-primary py-2 px-4">Browse Courses</button>
+            </div>`;
+    return;
   }
-
-  document.getElementById("dashboard-course-count").textContent =
-    purchasedCourses.length;
-  document.getElementById("dashboard-receipts-count").textContent =
-    transactions.length;
-  document.getElementById("purchased-courses-count").textContent =
-    purchasedCourses.length;
-
-  const totalSpent = transactions.reduce((total, t) => total + t.amount, 0);
-  document.getElementById("total-spent-amount").textContent =
-    `$${totalSpent.toFixed(2)}`;
-
-  const lastPurchaseDate = document.getElementById("last-purchase-date");
-  const lastPurchaseCourse = document.getElementById("last-purchase-course");
-
-  if (transactions.length > 0) {
-    const lastTransaction = [...transactions].sort(
-      (a, b) => new Date(b.date) - new Date(a.date),
-    )[0];
-    const date = new Date(lastTransaction.date);
-    lastPurchaseDate.textContent = date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-    lastPurchaseCourse.textContent = lastTransaction.courseTitle;
-  } else {
-    lastPurchaseDate.textContent = "-";
-    lastPurchaseCourse.textContent = "No purchases yet";
-  }
-
-  loadRecentCourses();
+  recentCoursesGrid.innerHTML = courses
+    .slice(0, 3)
+    .map(
+      (c) => `
+        <div class="card">
+            <div class="relative h-40 overflow-hidden rounded-t-xl">
+                <img src="${c.course.image || "Images/default-course.png"}" alt="${c.course.title}" class="w-full h-full object-cover">
+                <div class="absolute top-3 left-3"><span class="badge badge-primary text-xs">Purchased</span></div>
+            </div>
+            <div class="p-4">
+                <h3 class="font-bold text-lg mb-2 line-clamp-1">${c.course.title}</h3>
+                <div class="mb-3">
+                    <div class="flex justify-between text-sm mb-1">
+                        <span class="text-gray-600">Progress</span>
+                        <span class="font-medium text-purple-600">${c.progress_percent}%</span>
+                    </div>
+                    <div class="h-2 bg-gray-200 rounded-full">
+                        <div class="h-full bg-purple-600 rounded-full" style="width:${c.progress_percent}%"></div>
+                    </div>
+                </div>
+                <button onclick="window.location.hash='course-${c.course.courseItem_id}'" class="btn btn-primary w-full py-1.5 text-sm">
+                    <i class="fas fa-play mr-1"></i> Watch Now
+                </button>
+            </div>
+        </div>
+    `,
+    )
+    .join("");
 }
 
 function loadRecentCourses() {
   const recentCoursesGrid = document.getElementById("recent-courses-grid");
   if (!recentCoursesGrid) return;
-
   if (purchasedCourses.length === 0) {
     recentCoursesGrid.innerHTML = `
-      <div class="text-center py-12 col-span-3">
-        <i class="fas fa-video text-gray-300 dark:text-gray-600 text-4xl mb-4"></i>
-        <h3 class="text-lg font-semibold mb-2">No Courses Purchased</h3>
-        <p class="text-gray-600 dark:text-gray-400 mb-4">
-          You haven't purchased any courses yet.
-        </p>
-        <button onclick="window.location.hash = 'courses'" class="btn btn-primary py-2 px-4">
-          Browse Courses
-        </button>
-      </div>
-    `;
+            <div class="text-center py-12 col-span-3">
+                <i class="fas fa-video text-gray-300 text-4xl mb-4"></i>
+                <h3 class="text-lg font-semibold mb-2">No Courses Purchased</h3>
+                <p class="text-gray-600 mb-4">You haven't purchased any courses yet.</p>
+                <button onclick="window.location.hash='courses'" class="btn btn-primary py-2 px-4">Browse Courses</button>
+            </div>`;
     return;
   }
-
   const recentCourseIds = [...purchasedCourses].reverse().slice(0, 3);
-  let coursesHTML = "";
-
-  recentCourseIds.forEach((courseId) => {
-    const course = courseData.find((c) => c.id === courseId);
-    if (course) {
-      coursesHTML += `
-        <div class="card">
-          <div class="relative h-40 overflow-hidden rounded-t-xl">
-            <img src="${course.image}" alt="${course.title}" class="w-full h-full object-cover">
-            <div class="absolute top-3 left-3">
-              <span class="badge badge-primary text-xs">Purchased</span>
-            </div>
-          </div>
-          <div class="p-4">
-            <h3 class="font-bold text-lg mb-2 line-clamp-1">${course.title}</h3>
-            <p class="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">${course.description}</p>
-            <button onclick="window.location.hash = 'course-${course.id}'" class="btn btn-primary w-full py-1.5 text-sm">
-              <i class="fas fa-play mr-1"></i> Watch Now
-            </button>
-          </div>
-        </div>
-      `;
-    }
-  });
-
-  recentCoursesGrid.innerHTML = coursesHTML;
+  recentCoursesGrid.innerHTML = recentCourseIds
+    .map((courseId) => {
+      const course = courseData.find((c) => c.id === courseId);
+      if (!course) return "";
+      return `
+            <div class="card">
+                <div class="relative h-40 overflow-hidden rounded-t-xl">
+                    <img src="${course.image}" alt="${course.title}" class="w-full h-full object-cover">
+                    <div class="absolute top-3 left-3"><span class="badge badge-primary text-xs">Purchased</span></div>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-2 line-clamp-1">${course.title}</h3>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-2">${course.description}</p>
+                    <button onclick="window.location.hash='course-${course.id}'" class="btn btn-primary w-full py-1.5 text-sm">
+                        <i class="fas fa-play mr-1"></i> Watch Now
+                    </button>
+                </div>
+            </div>`;
+    })
+    .join("");
 }
 
 function loadDashboardCoursesView() {
   const coursesView = document.getElementById("dashboard-courses-view");
   if (!coursesView) return;
-
-  let coursesHTML = `
-    <div class="mb-8">
-      <div class="flex justify-between items-center mb-6">
-        <div>
-          <h2 class="text-2xl font-bold mb-2">My Courses</h2>
-          <p class="text-gray-600 dark:text-gray-400">All your purchased video courses in one place.</p>
-        </div>
-        <button onclick="window.location.hash = 'courses'" class="btn btn-outline">
-          <i class="fas fa-plus mr-2"></i> Buy More Courses
-        </button>
-      </div>
-  `;
-
+  let html = `
+        <div class="mb-8">
+            <div class="flex justify-between items-center mb-6">
+                <div><h2 class="text-2xl font-bold mb-2">My Courses</h2><p class="text-gray-600">All your purchased video courses.</p></div>
+                <button onclick="window.location.hash='courses'" class="btn btn-outline"><i class="fas fa-plus mr-2"></i> Buy More Courses</button>
+            </div>`;
   if (purchasedCourses.length === 0) {
-    coursesHTML += `
-      <div class="text-center py-12 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-        <i class="fas fa-video text-gray-300 dark:text-gray-600 text-4xl mb-4"></i>
-        <h3 class="text-lg font-semibold mb-2">No Courses Purchased</h3>
-        <p class="text-gray-600 dark:text-gray-400 mb-4">
-          You haven't purchased any courses yet.
-        </p>
-        <button onclick="window.location.hash = 'courses'" class="btn btn-primary">
-          Browse Courses
-        </button>
-      </div>
-    `;
+    html += `<div class="text-center py-12 bg-white rounded-xl border border-gray-200">
+            <i class="fas fa-video text-gray-300 text-4xl mb-4"></i>
+            <h3 class="text-lg font-semibold mb-2">No Courses Purchased</h3>
+            <button onclick="window.location.hash='courses'" class="btn btn-primary">Browse Courses</button>
+        </div>`;
   } else {
-    coursesHTML +=
+    html +=
       '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">';
-
     purchasedCourses.forEach((courseId) => {
       const course = courseData.find((c) => c.id === courseId);
-      if (course) {
-        // Get progress for this course
-        const progress = currentVideoProgress[courseId]?.progress || 0;
-
-        coursesHTML += `
-          <div class="card">
-            <div class="relative h-40 overflow-hidden rounded-t-xl">
-              <img src="${course.image}" alt="${course.title}" class="w-full h-full object-cover">
-              <div class="absolute top-3 left-3">
-                <span class="badge badge-primary text-xs">Purchased</span>
-              </div>
-              <div class="absolute top-3 right-3">
-                <span class="badge badge-secondary text-xs">${course.category}</span>
-              </div>
-              ${
-                progress > 0
-                  ? `
-                <div class="absolute bottom-0 left-0 right-0 h-1 bg-gray-200">
-                  <div class="h-full bg-green-500" style="width: ${progress}%"></div>
-                </div>
-              `
-                  : ""
-              }
-            </div>
-            <div class="p-4">
-              <h3 class="font-bold text-lg mb-2 line-clamp-1">${course.title}</h3>
-              <p class="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">${course.description}</p>
-              <div class="flex justify-between items-center">
-                <span class="text-sm text-gray-500">${course.duration}</span>
-                <div class="flex items-center gap-2">
-                  ${progress > 0 ? `<span class="text-xs text-green-600">${progress}%</span>` : ""}
-                  <button onclick="window.location.hash = 'course-${course.id}'" class="btn btn-primary py-1.5 px-3 text-sm">
-                    <i class="fas fa-play mr-1"></i> Watch
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-      }
+      if (!course) return;
+      const progress = currentVideoProgress[courseId]?.progress || 0;
+      html += `
+                <div class="card">
+                    <div class="relative h-40 overflow-hidden rounded-t-xl">
+                        <img src="${course.image}" alt="${course.title}" class="w-full h-full object-cover">
+                        <div class="absolute top-3 left-3"><span class="badge badge-primary text-xs">Purchased</span></div>
+                        ${progress > 0 ? `<div class="absolute bottom-0 left-0 right-0 h-1 bg-gray-200"><div class="h-full bg-green-500" style="width:${progress}%"></div></div>` : ""}
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg mb-2 line-clamp-1">${course.title}</h3>
+                        <p class="text-gray-600 text-sm mb-4 line-clamp-2">${course.description}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">${course.duration}</span>
+                            <button onclick="window.location.hash='course-${course.id}'" class="btn btn-primary py-1.5 px-3 text-sm">
+                                <i class="fas fa-play mr-1"></i> Watch
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
     });
-
-    coursesHTML += "</div>";
+    html += "</div>";
   }
-
-  coursesHTML += "</div>";
-  coursesView.innerHTML = coursesHTML;
+  html += "</div>";
+  coursesView.innerHTML = html;
 }
 
 function loadDashboardReceiptsView() {
   const receiptsView = document.getElementById("dashboard-receipts-view");
   if (!receiptsView) return;
-
-  const totalPurchases = transactions.length;
   const totalSpent = transactions.reduce((total, t) => total + t.amount, 0);
   const lastPurchase =
     transactions.length > 0
@@ -3171,140 +2717,68 @@ function loadDashboardReceiptsView() {
         )
       : null;
 
-  let receiptsHTML = `
-    <div class="mb-8">
-      <div class="mb-8">
-        <h2 class="text-2xl font-bold mb-2">Purchase History</h2>
-        <p class="text-gray-600 dark:text-gray-400">
-          View all your purchase receipts and transaction details.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-          <div class="flex items-center mb-4">
-            <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-3">
-              <i class="fas fa-shopping-cart text-blue-600 dark:text-blue-400"></i>
-            </div>
-            <div>
-              <h3 class="font-bold">Total Purchases</h3>
-            </div>
-          </div>
-          <div class="text-3xl font-bold">${totalPurchases}</div>
-        </div>
-
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-          <div class="flex items-center mb-4">
-            <div class="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900 flex items-center justify-center mr-3">
-              <i class="fas fa-dollar-sign text-green-600 dark:text-green-400"></i>
-            </div>
-            <div>
-              <h3 class="font-bold">Total Spent</h3>
-            </div>
-          </div>
-          <div class="text-3xl font-bold">$${totalSpent.toFixed(2)}</div>
-        </div>
-
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-          <div class="flex items-center mb-4">
-            <div class="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900 flex items-center justify-center mr-3">
-              <i class="fas fa-calendar-alt text-purple-600 dark:text-purple-400"></i>
-            </div>
-            <div>
-              <h3 class="font-bold">Last Purchase</h3>
-            </div>
-          </div>
-          <div class="text-xl font-bold">
-            ${lastPurchase ? lastPurchase.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "-"}
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-bold">All Receipts</h3>
-          <p class="text-sm text-gray-600 dark:text-gray-400">
-            Showing ${transactions.length} receipts
-          </p>
-        </div>
-  `;
+  let html = `
+        <div class="mb-8">
+            <div class="mb-8"><h2 class="text-2xl font-bold mb-2">Purchase History</h2></div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white rounded-xl p-6 border border-gray-200">
+                    <h3 class="font-bold mb-4 text-blue-600">Total Purchases</h3>
+                    <div class="text-3xl font-bold">${transactions.length}</div>
+                </div>
+                <div class="bg-white rounded-xl p-6 border border-gray-200">
+                    <h3 class="font-bold mb-4 text-green-600">Total Spent</h3>
+                    <div class="text-3xl font-bold">$${totalSpent.toFixed(2)}</div>
+                </div>
+                <div class="bg-white rounded-xl p-6 border border-gray-200">
+                    <h3 class="font-bold mb-4 text-purple-600">Last Purchase</h3>
+                    <div class="text-xl font-bold">${lastPurchase ? lastPurchase.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "-"}</div>
+                </div>
+            </div>`;
 
   if (transactions.length === 0) {
-    receiptsHTML += `
-      <div class="text-center py-12 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-        <i class="fas fa-receipt text-gray-300 dark:text-gray-600 text-4xl mb-4"></i>
-        <h3 class="text-lg font-semibold mb-2">No Purchase History</h3>
-        <p class="text-gray-600 dark:text-gray-400 mb-4">
-          You haven't made any purchases yet.
-        </p>
-        <button onclick="window.location.hash = 'courses'" class="btn btn-primary">
-          Browse Courses
-        </button>
-      </div>
-    `;
+    html += `<div class="text-center py-12 bg-white rounded-xl border border-gray-200">
+            <i class="fas fa-receipt text-gray-300 text-4xl mb-4"></i>
+            <h3 class="text-lg font-semibold mb-2">No Purchase History</h3>
+            <button onclick="window.location.hash='courses'" class="btn btn-primary">Browse Courses</button>
+        </div>`;
   } else {
-    receiptsHTML += `
-      <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-        <div class="overflow-x-auto">
-          <table class="w-full">
-            <thead class="bg-gray-50 dark:bg-gray-700">
-              <tr>
-                <th class="py-3 px-4 text-left text-sm font-medium text-gray-700 dark:text-gray-300">RECEIPT ID</th>
-                <th class="py-3 px-4 text-left text-sm font-medium text-gray-700 dark:text-gray-300">COURSE</th>
-                <th class="py-3 px-4 text-left text-sm font-medium text-gray-700 dark:text-gray-300">DATE</th>
-                <th class="py-3 px-4 text-left text-sm font-medium text-gray-700 dark:text-gray-300">AMOUNT</th>
-                <th class="py-3 px-4 text-left text-sm font-medium text-gray-700 dark:text-gray-300">ACTIONS</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-    `;
+    html += `<div class="bg-white rounded-xl border border-gray-200 overflow-hidden"><div class="overflow-x-auto"><table class="w-full">
+            <thead class="bg-gray-50"><tr>
+                <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">RECEIPT ID</th>
+                <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">COURSE</th>
+                <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">DATE</th>
+                <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">AMOUNT</th>
+                <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">ACTIONS</th>
+            </tr></thead>
+            <tbody class="divide-y divide-gray-200">`;
 
-    const sortedTransactions = [...transactions].sort(
-      (a, b) => new Date(b.date) - new Date(a.date),
-    );
-
-    sortedTransactions.forEach((transaction) => {
-      const course = courseData.find((c) => c.id === transaction.courseId);
-      if (!course) return;
-
-      const date = new Date(transaction.date);
-      const formattedDate = date.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
+    [...transactions]
+      .sort((a, b) => new Date(b.date) - new Date(a.date))
+      .forEach((transaction) => {
+        const date = new Date(transaction.date);
+        const formattedDate = date.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        });
+        const shortId =
+          transaction.transactionNumber || `RCP-${transaction.id}`;
+        html += `<tr>
+                <td class="py-3 px-4 text-sm">${shortId}</td>
+                <td class="py-3 px-4 text-sm">${transaction.courseTitle}</td>
+                <td class="py-3 px-4 text-sm">${formattedDate}</td>
+                <td class="py-3 px-4 text-sm font-medium">$${Number(transaction.amount).toFixed(2)}</td>
+                <td class="py-3 px-4 text-sm">
+                    <button onclick="viewReceiptDetail(${transaction.id})" class="btn btn-outline btn-sm py-1 px-3">
+                        <i class="fas fa-eye mr-1 text-xs"></i> View
+                    </button>
+                </td>
+            </tr>`;
       });
-
-      const shortReceiptId = `RCP-${transaction.transactionNumber?.split("-")[1]?.substring(0, 8) || "N/A"}`;
-
-      receiptsHTML += `
-        <tr>
-          <td class="py-3 px-4 text-sm">${shortReceiptId}</td>
-          <td class="py-3 px-4 text-sm">${course.title}</td>
-          <td class="py-3 px-4 text-sm">${formattedDate}</td>
-          <td class="py-3 px-4 text-sm font-medium">$${transaction.amount.toFixed(2)}</td>
-          <td class="py-3 px-4 text-sm">
-            <button onclick="viewReceiptDetail(${transaction.id})" class="btn btn-outline btn-sm py-1 px-3">
-              <i class="fas fa-eye mr-1 text-xs"></i> View
-            </button>
-          </td>
-        </tr>
-      `;
-    });
-
-    receiptsHTML += `
-            </tbody>
-          </table>
-        </div>
-      </div>
-    `;
+    html += `</tbody></table></div></div>`;
   }
-
-  receiptsHTML += `
-      </div>
-    </div>
-  `;
-
-  receiptsView.innerHTML = receiptsHTML;
+  html += "</div>";
+  receiptsView.innerHTML = html;
 }
 
 function viewReceiptDetail(receiptId) {
@@ -3314,588 +2788,335 @@ function viewReceiptDetail(receiptId) {
     return;
   }
 
-  const course = courseData.find((c) => c.id === transaction.courseId);
-
   const modalHTML = `
-    <div id="receipt-detail-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-auto">
-        <div class="p-6">
-          <div class="flex justify-between items-center mb-6">
-            <h3 class="text-xl font-bold text-gray-800 dark:text-white">Receipt Details</h3>
-            <button onclick="closeReceiptDetailModal()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-              <i class="fas fa-times text-gray-600 dark:text-gray-300"></i>
-            </button>
-          </div>
-          <div class="space-y-4">
-            <div class="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg mb-4">
-              <h4 class="font-bold text-purple-700 dark:text-purple-300 mb-2">Transaction Summary</h4>
-              <div class="text-2xl font-bold text-gray-800 dark:text-white">$${transaction.amount.toFixed(2)}</div>
-              <div class="text-sm text-gray-600 dark:text-gray-400">${transaction.transactionNumber}</div>
+        <div id="receipt-detail-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-auto">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold">Receipt Details</h3>
+                        <button onclick="closeReceiptDetailModal()" class="p-2 hover:bg-gray-100 rounded-lg"><i class="fas fa-times text-gray-600"></i></button>
+                    </div>
+                    <div class="bg-purple-50 p-4 rounded-lg mb-4">
+                        <div class="text-2xl font-bold">$${Number(transaction.amount).toFixed(2)}</div>
+                        <div class="text-sm text-gray-600">${transaction.transactionNumber || "N/A"}</div>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between"><span class="text-gray-600">Course:</span><span class="font-medium">${transaction.courseTitle}</span></div>
+                        <div class="flex justify-between"><span class="text-gray-600">Category:</span><span class="font-medium">${transaction.courseCategory}</span></div>
+                        <div class="flex justify-between"><span class="text-gray-600">Date:</span><span class="font-medium">${new Date(transaction.date).toLocaleString()}</span></div>
+                        <div class="flex justify-between"><span class="text-gray-600">Status:</span><span class="font-medium text-green-600">Completed</span></div>
+                    </div>
+                    <div class="mt-6 pt-6 border-t border-gray-200">
+                        <button onclick="closeReceiptDetailModal()" class="btn btn-primary w-full">Close</button>
+                    </div>
+                </div>
             </div>
-            
-            <div class="space-y-3">
-              <div class="flex justify-between">
-                <span class="text-gray-600 dark:text-gray-400">Course:</span>
-                <span class="font-medium">${transaction.courseTitle}</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-gray-600 dark:text-gray-400">Category:</span>
-                <span class="font-medium">${transaction.courseCategory}</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-gray-600 dark:text-gray-400">Date:</span>
-                <span class="font-medium">${new Date(transaction.date).toLocaleString()}</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-gray-600 dark:text-gray-400">Instructor:</span>
-                <span class="font-medium">${transaction.courseInstructor}</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-gray-600 dark:text-gray-400">Duration:</span>
-                <span class="font-medium">${transaction.courseDuration}</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-gray-600 dark:text-gray-400">Modules:</span>
-                <span class="font-medium">${transaction.courseModules}</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-gray-600 dark:text-gray-400">Status:</span>
-                <span class="font-medium text-green-600 dark:text-green-400">Completed</span>
-              </div>
-            </div>
-            
-            <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
-              <p class="text-sm text-gray-600 dark:text-gray-400">
-                This receipt has been saved to your account. You can access this course anytime from your dashboard.
-              </p>
-            </div>
-          </div>
-          <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
-            <button onclick="closeReceiptDetailModal()" class="btn btn-primary w-full">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-
+        </div>`;
   document.body.insertAdjacentHTML("beforeend", modalHTML);
 }
 
 function closeReceiptDetailModal() {
   const modal = document.getElementById("receipt-detail-modal");
-  if (modal) {
-    modal.remove();
-  }
+  if (modal) modal.remove();
 }
 
 // ============================================
-// Course Management
+// Categories & Filters
 // ============================================
-
-function loadCategories() {
-  const uniqueCategories = [
-    ...new Set(courseData.map((course) => course.category)),
-  ];
-  allCategories = uniqueCategories.map((category, index) => ({
-    id: index + 1,
-    name: category,
-    description: `Learn ${category} skills`,
-  }));
-
-  const coursesCount = document.getElementById("courses-count");
-  const categoriesCount = document.getElementById("categories-count");
-  const documentsCount = document.getElementById("documents-count");
-
-  if (coursesCount) coursesCount.textContent = courseData.length;
-  if (categoriesCount) categoriesCount.textContent = allCategories.length;
-  if (documentsCount) documentsCount.textContent = documentData.length;
-}
-
-function loadFeaturedCourses() {
-  const featured = courseData.filter((course) => course.featured);
-  const featuredCoursesGrid = document.getElementById("featured-courses-grid");
-  if (featuredCoursesGrid) {
-    featuredCoursesGrid.innerHTML = featured
-      .map((course) => createCourseCard(course))
-      .join("");
+async function loadCategories() {
+  try {
+    const data = await apiFetch("/categories");
+    allCategories = data.categories;
+  } catch (err) {
+    const uniqueCategories = [...new Set(courseData.map((c) => c.category))];
+    allCategories = uniqueCategories.map((category, index) => ({
+      category_id: index + 1,
+      name: category,
+    }));
   }
+  const els = {
+    coursesCount: document.getElementById("courses-count"),
+    categoriesCount: document.getElementById("categories-count"),
+    documentsCount: document.getElementById("documents-count"),
+  };
+  if (els.coursesCount) els.coursesCount.textContent = courseData.length;
+  if (els.categoriesCount)
+    els.categoriesCount.textContent = allCategories.length;
+  if (els.documentsCount) els.documentsCount.textContent = documentData.length;
 }
 
-function loadAllCourses() {
-  allCourses = [...courseData];
-  const allCoursesGrid = document.getElementById("all-courses-grid");
-  if (allCoursesGrid) {
-    allCoursesGrid.innerHTML = allCourses
-      .map((course) => createCourseCard(course))
-      .join("");
-  }
-
-  const courseResultsCount = document.getElementById("course-results-count");
-  const courseTotalCount = document.getElementById("course-total-count");
-  if (courseResultsCount && courseTotalCount) {
-    courseResultsCount.textContent = allCourses.length;
-    courseTotalCount.textContent = allCourses.length;
-  }
-}
-
-function createCourseCard(course) {
-  const isPurchased = purchasedCourses.some(
-    (id) => Number(id) === Number(course.id),
-  );
-
-  return `
-    <div class="card course-card" data-course-id="${course.id}">
-      <div class="relative aspect-video overflow-hidden rounded-t-xl">
-        <img src="${course.image}" alt="${course.title}" class="w-full h-full object-cover">
-        <div class="absolute bottom-4 right-4 bg-black/70 text-white text-xs px-2 py-1 rounded">
-          ${course.duration}
-        </div>
-        <div class="absolute top-4 left-4">
-          <span class="badge badge-primary text-xs">${course.category}</span>
-        </div>
-        ${
-          isPurchased
-            ? `
-          <div class="absolute top-4 right-4">
-            <span class="bg-green-500 text-white text-xs px-2 py-1 rounded-full">
-              <i class="fas fa-check mr-1"></i> Purchased
-            </span>
-          </div>
-        `
-            : ""
-        }
-      </div>
-      <div class="p-5">
-        <h3 class="mb-2 font-bold text-lg line-clamp-2">${course.title}</h3>
-        <p class="mb-4 text-sm text-gray-600 dark:text-gray-400 line-clamp-2">${course.description}</p>
-        <div class="flex items-center justify-between">
-          <span class="font-bold text-lg text-purple-600 dark:text-purple-400">$${course.price.toFixed(2)}</span>
-          <button class="btn ${isPurchased ? "btn-outline" : "btn-primary"} view-details-btn text-sm py-1.5 px-3" data-course-id="${course.id}">
-            ${isPurchased ? '<i class="fas fa-play mr-1"></i> Watch Video' : "View Details"}
-          </button>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-function updateCourseFilters() {
+async function updateCourseFilters() {
   const courseCategoriesFilter = document.getElementById(
     "course-categories-filter",
   );
   if (!courseCategoriesFilter) return;
+  try {
+    const data = await apiFetch("/categories");
+    allCategories = data.categories;
+  } catch (err) {
+    console.error("Failed to load categories:", err);
+  }
 
-  const categoriesHtml = `
-    <button class="btn border border-gray-300 dark:border-gray-600 px-3 py-1.5 rounded-lg bg-purple-600 text-white text-sm" data-category="all">All</button>
-    ${allCategories
-      .map(
-        (category) =>
-          `<button class="btn border border-gray-300 dark:border-gray-600 px-3 py-1.5 rounded-lg bg-transparent text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm" data-category="${category.name}">${category.name}</button>`,
-      )
-      .join("")}
-  `;
-
-  courseCategoriesFilter.innerHTML = categoriesHtml;
+  courseCategoriesFilter.innerHTML = `
+        <button class="btn border border-gray-300 px-3 py-1.5 rounded-lg bg-purple-600 text-white text-sm" data-category="all">All</button>
+        ${allCategories
+          .map(
+            (cat) => `
+            <button class="btn border border-gray-300 px-3 py-1.5 rounded-lg bg-transparent text-gray-700 hover:bg-gray-100 text-sm" data-category="${cat.category_id}">${cat.name}</button>
+        `,
+          )
+          .join("")}`;
 
   courseCategoriesFilter.querySelectorAll("button").forEach((button) => {
-    button.addEventListener("click", (e) => {
-      const category = e.target.dataset.category;
-      filterCoursesByCategory(category);
-
+    button.addEventListener("click", async (e) => {
+      const categoryId = e.target.dataset.category;
       document
         .querySelectorAll("#course-categories-filter button")
         .forEach((b) => {
           b.classList.remove("bg-purple-600", "text-white");
-          b.classList.add("bg-transparent", "text-gray-700", "border-gray-300");
+          b.classList.add("bg-transparent", "text-gray-700");
         });
       e.target.classList.add("bg-purple-600", "text-white");
-      e.target.classList.remove(
-        "bg-transparent",
-        "text-gray-700",
-        "border-gray-300",
-      );
+      e.target.classList.remove("bg-transparent", "text-gray-700");
+      await filterCoursesByCategoryAPI(categoryId);
     });
   });
 }
 
-function filterCoursesByCategory(category) {
-  const allCoursesGrid = document.getElementById("all-courses-grid");
-  const courseResultsCount = document.getElementById("course-results-count");
-
-  if (category === "all") {
-    if (allCoursesGrid) {
-      allCoursesGrid.innerHTML = allCourses
-        .map((course) => createCourseCard(course))
+async function filterCoursesByCategoryAPI(categoryId) {
+  try {
+    const url =
+      categoryId === "all" ? "/courses" : `/courses?category_id=${categoryId}`;
+    const data = await apiFetch(url);
+    const allCoursesGrid = document.getElementById("all-courses-grid");
+    const courseResultsCount = document.getElementById("course-results-count");
+    if (allCoursesGrid)
+      allCoursesGrid.innerHTML = data.courses
+        .map((c) => createCourseCardFromAPI(c))
         .join("");
-    }
-    if (courseResultsCount) {
-      courseResultsCount.textContent = allCourses.length;
-    }
-  } else {
-    const filtered = allCourses.filter(
-      (course) => course.category === category,
-    );
-    if (allCoursesGrid) {
-      allCoursesGrid.innerHTML = filtered
-        .map((course) => createCourseCard(course))
-        .join("");
-    }
-    if (courseResultsCount) {
-      courseResultsCount.textContent = filtered.length;
-    }
+    if (courseResultsCount)
+      courseResultsCount.textContent = data.courses.length;
+  } catch (err) {
+    console.error("Failed to filter courses:", err);
   }
 }
 
-function filterCourses() {
-  const searchTerm = document
-    .getElementById("course-search")
-    .value.toLowerCase();
-  const filtered = allCourses.filter(
-    (course) =>
-      course.title.toLowerCase().includes(searchTerm) ||
-      course.description.toLowerCase().includes(searchTerm) ||
-      course.category.toLowerCase().includes(searchTerm),
+async function filterCourses() {
+  const searchTerm = document.getElementById("course-search").value;
+  try {
+    const data = await apiFetch(`/courses?search=${searchTerm}`);
+    const allCoursesGrid = document.getElementById("all-courses-grid");
+    const courseResultsCount = document.getElementById("course-results-count");
+    if (allCoursesGrid)
+      allCoursesGrid.innerHTML = data.courses
+        .map((c) => createCourseCardFromAPI(c))
+        .join("");
+    if (courseResultsCount)
+      courseResultsCount.textContent = data.courses.length;
+  } catch (err) {
+    console.error("Search failed:", err);
+  }
+}
+
+async function updateDocumentFilters() {
+  const documentCategoriesFilter = document.getElementById(
+    "document-categories-filter",
   );
-
-  const allCoursesGrid = document.getElementById("all-courses-grid");
-  const courseResultsCount = document.getElementById("course-results-count");
-
-  if (allCoursesGrid) {
-    allCoursesGrid.innerHTML = filtered
-      .map((course) => createCourseCard(course))
-      .join("");
+  if (!documentCategoriesFilter) return;
+  try {
+    const data = await apiFetch("/categories");
+    allCategories = data.categories;
+  } catch (err) {
+    console.error("Failed to load categories:", err);
   }
 
-  if (courseResultsCount) {
-    courseResultsCount.textContent = filtered.length;
+  documentCategoriesFilter.innerHTML = `
+        <button class="btn border border-gray-300 px-3 py-1.5 rounded-lg bg-purple-600 text-white text-sm" data-category="all">All</button>
+        ${allCategories
+          .map(
+            (cat) => `
+            <button class="btn border border-gray-300 px-3 py-1.5 rounded-lg bg-transparent text-gray-700 hover:bg-gray-100 text-sm" data-category="${cat.category_id}">${cat.name}</button>
+        `,
+          )
+          .join("")}`;
+
+  documentCategoriesFilter.querySelectorAll("button").forEach((button) => {
+    button.addEventListener("click", async (e) => {
+      const categoryId = e.target.dataset.category;
+      document
+        .querySelectorAll("#document-categories-filter button")
+        .forEach((b) => {
+          b.classList.remove("bg-purple-600", "text-white");
+          b.classList.add("bg-transparent", "text-gray-700");
+        });
+      e.target.classList.add("bg-purple-600", "text-white");
+      e.target.classList.remove("bg-transparent", "text-gray-700");
+      await filterDocumentsByCategoryAPI(categoryId);
+    });
+  });
+}
+
+async function filterDocumentsByCategoryAPI(categoryId) {
+  try {
+    const url =
+      categoryId === "all"
+        ? "/documents"
+        : `/documents?category_id=${categoryId}`;
+    const data = await apiFetch(url);
+    const allDocumentsGrid = document.getElementById("all-documents-grid");
+    const documentResultsCount = document.getElementById(
+      "document-results-count",
+    );
+    if (allDocumentsGrid) {
+      allDocumentsGrid.innerHTML =
+        data.documents.length > 0
+          ? data.documents.map((doc) => createDocumentCardFromAPI(doc)).join("")
+          : '<div class="text-center py-12 col-span-3"><p class="text-gray-500">No documents in this category</p></div>';
+    }
+    if (documentResultsCount)
+      documentResultsCount.textContent = data.documents.length;
+  } catch (err) {
+    console.error("Failed to filter documents:", err);
+  }
+}
+
+async function filterDocuments() {
+  const searchTerm = document.getElementById("document-search").value;
+  try {
+    const url = searchTerm ? `/documents?search=${searchTerm}` : "/documents";
+    const data = await apiFetch(url);
+    const allDocumentsGrid = document.getElementById("all-documents-grid");
+    const documentResultsCount = document.getElementById(
+      "document-results-count",
+    );
+    if (allDocumentsGrid) {
+      allDocumentsGrid.innerHTML =
+        data.documents.length > 0
+          ? data.documents.map((doc) => createDocumentCardFromAPI(doc)).join("")
+          : '<div class="text-center py-12 col-span-3"><p class="text-gray-500">No documents found</p></div>';
+    }
+    if (documentResultsCount)
+      documentResultsCount.textContent = data.documents.length;
+  } catch (err) {
+    console.error("Search failed:", err);
   }
 }
 
 function updateAllCourseCards() {
   const allCoursesGrid = document.getElementById("all-courses-grid");
   const featuredCoursesGrid = document.getElementById("featured-courses-grid");
-
-  if (allCoursesGrid) {
+  if (allCoursesGrid && allCourses.length > 0) {
     allCoursesGrid.innerHTML = allCourses
-      .map((course) => createCourseCard(course))
+      .map((c) => createCourseCardFromAPI(c))
       .join("");
   }
-
-  if (featuredCoursesGrid) {
-    const featured = courseData.filter((course) => course.featured);
-    featuredCoursesGrid.innerHTML = featured
-      .map((course) => createCourseCard(course))
+  if (featuredCoursesGrid && allCourses.length > 0) {
+    featuredCoursesGrid.innerHTML = allCourses
+      .slice(0, 6)
+      .map((c) => createCourseCardFromAPI(c))
       .join("");
-  }
-}
-
-// ============================================
-// Document Management
-// ============================================
-
-function loadFeaturedDocuments() {
-  const featured = documentData.filter((doc) => doc.featured);
-  const featuredDocumentsGrid = document.getElementById(
-    "featured-documents-grid",
-  );
-  if (featuredDocumentsGrid) {
-    featuredDocumentsGrid.innerHTML = featured
-      .map((doc) => createDocumentCard(doc))
-      .join("");
-  }
-}
-
-function loadAllDocuments() {
-  allDocuments = [...documentData];
-  const allDocumentsGrid = document.getElementById("all-documents-grid");
-  if (allDocumentsGrid) {
-    allDocumentsGrid.innerHTML = allDocuments
-      .map((doc) => createDocumentCard(doc))
-      .join("");
-  }
-
-  const documentResultsCount = document.getElementById(
-    "document-results-count",
-  );
-  const documentTotalCount = document.getElementById("document-total-count");
-  if (documentResultsCount && documentTotalCount) {
-    documentResultsCount.textContent = allDocuments.length;
-    documentTotalCount.textContent = allDocuments.length;
-  }
-}
-
-function createDocumentCard(doc) {
-  const isLoggedIn = !!currentUser;
-
-  return `
-    <div class="card">
-      <div class="p-5">
-        <div class="flex items-center justify-between mb-4">
-          <div class="h-12 w-12 rounded-lg overflow-hidden">
-            <img src="${doc.image}" alt="${doc.title}" class="w-full h-full object-cover">
-          </div>
-          <span class="text-xs px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300">${doc.category}</span>
-        </div>
-        
-        <h3 class="mb-2 font-bold text-lg line-clamp-2">${doc.title}</h3>
-        <p class="mb-4 text-sm text-gray-600 dark:text-gray-400 line-clamp-2">${doc.description}</p>
-        
-        <div class="flex items-center justify-between mb-5">
-          <span class="text-xs text-gray-500 dark:text-gray-400">
-            <i class="fas fa-external-link-alt mr-1"></i> ${doc.source}
-          </span>
-          ${doc.pages ? `<span class="text-xs text-gray-500 dark:text-gray-400">${doc.pages} pages</span>` : ""}
-        </div>
-        
-        ${
-          isLoggedIn
-            ? `<a href="${doc.url}" target="_blank" class="btn btn-primary w-full view-document-btn text-sm py-2" data-doc-id="${doc.id}">
-                <i class="fas fa-external-link-alt mr-2"></i> View Document
-              </a>`
-            : `<button class="btn btn-outline w-full login-to-read-btn text-sm py-2" data-doc-id="${doc.id}">
-                <i class="fas fa-lock mr-2"></i> Login to Read
-              </button>`
-        }
-      </div>
-    </div>
-  `;
-}
-
-function updateDocumentFilters() {
-  const documentCategoriesFilter = document.getElementById(
-    "document-categories-filter",
-  );
-  if (!documentCategoriesFilter) return;
-
-  const uniqueCategories = [
-    ...new Set(documentData.map((doc) => doc.category)),
-  ];
-
-  const categoriesHtml = `
-    <button class="btn border border-gray-300 dark:border-gray-600 px-3 py-1.5 rounded-lg bg-purple-600 text-white text-sm" data-category="all">All</button>
-    ${uniqueCategories
-      .map(
-        (category) =>
-          `<button class="btn border border-gray-300 dark:border-gray-600 px-3 py-1.5 rounded-lg bg-transparent text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm" data-category="${category}">${category}</button>`,
-      )
-      .join("")}
-  `;
-
-  documentCategoriesFilter.innerHTML = categoriesHtml;
-
-  documentCategoriesFilter.querySelectorAll("button").forEach((button) => {
-    button.addEventListener("click", (e) => {
-      const category = e.target.dataset.category;
-      filterDocumentsByCategory(category);
-
-      document
-        .querySelectorAll("#document-categories-filter button")
-        .forEach((b) => {
-          b.classList.remove("bg-purple-600", "text-white");
-          b.classList.add("bg-transparent", "text-gray-700", "border-gray-300");
-        });
-      e.target.classList.add("bg-purple-600", "text-white");
-      e.target.classList.remove(
-        "bg-transparent",
-        "text-gray-700",
-        "border-gray-300",
-      );
-    });
-  });
-}
-
-function filterDocumentsByCategory(category) {
-  const allDocumentsGrid = document.getElementById("all-documents-grid");
-  const documentResultsCount = document.getElementById(
-    "document-results-count",
-  );
-
-  if (category === "all") {
-    if (allDocumentsGrid) {
-      allDocumentsGrid.innerHTML = allDocuments
-        .map((doc) => createDocumentCard(doc))
-        .join("");
-    }
-    if (documentResultsCount) {
-      documentResultsCount.textContent = allDocuments.length;
-    }
-  } else {
-    const filtered = allDocuments.filter((doc) => doc.category === category);
-    if (allDocumentsGrid) {
-      allDocumentsGrid.innerHTML = filtered
-        .map((doc) => createDocumentCard(doc))
-        .join("");
-    }
-    if (documentResultsCount) {
-      documentResultsCount.textContent = filtered.length;
-    }
-  }
-}
-
-function filterDocuments() {
-  const searchTerm = document
-    .getElementById("document-search")
-    .value.toLowerCase();
-  const filtered = allDocuments.filter(
-    (doc) =>
-      doc.title.toLowerCase().includes(searchTerm) ||
-      doc.description.toLowerCase().includes(searchTerm) ||
-      doc.category.toLowerCase().includes(searchTerm) ||
-      doc.source.toLowerCase().includes(searchTerm),
-  );
-
-  const allDocumentsGrid = document.getElementById("all-documents-grid");
-  const documentResultsCount = document.getElementById(
-    "document-results-count",
-  );
-
-  if (allDocumentsGrid) {
-    allDocumentsGrid.innerHTML = filtered
-      .map((doc) => createDocumentCard(doc))
-      .join("");
-  }
-
-  if (documentResultsCount) {
-    documentResultsCount.textContent = filtered.length;
   }
 }
 
 function showLoginNotice() {
   const loginNotice = document.getElementById("login-notice");
   if (loginNotice) {
-    if (!currentUser) {
-      loginNotice.classList.remove("hidden");
-    } else {
-      loginNotice.classList.add("hidden");
-    }
+    if (!currentUser) loginNotice.classList.remove("hidden");
+    else loginNotice.classList.add("hidden");
   }
 }
 
 function viewDocument(docId) {
   const doc = documentData.find((d) => d.id === docId);
   if (!doc) return;
-
   if (!currentUser) {
     showLoginModal();
     return;
   }
-
   window.open(doc.url, "_blank");
 }
 
 // ============================================
 // Auth Functions
 // ============================================
-
 function updateAuthUI() {
-  const guestButtons = document.getElementById("guest-buttons");
-  const userMenu = document.getElementById("user-menu");
-
-  const mobileGuestButtons = document.getElementById("mobile-guest-buttons");
-  const mobileUserMenu = document.getElementById("mobile-user-menu");
-  const mobileUserName = document.getElementById("mobile-user-name");
-  const mobileUserEmail = document.getElementById("mobile-user-email");
-
+  const els = {
+    guestButtons: document.getElementById("guest-buttons"),
+    userMenu: document.getElementById("user-menu"),
+    mobileGuestButtons: document.getElementById("mobile-guest-buttons"),
+    mobileUserMenu: document.getElementById("mobile-user-menu"),
+    mobileUserName: document.getElementById("mobile-user-name"),
+    mobileUserEmail: document.getElementById("mobile-user-email"),
+  };
   if (currentUser) {
-    if (guestButtons) {
-      guestButtons.style.display = "none";
-    }
-
-    if (userMenu) {
-      userMenu.style.display = "flex";
-    }
-
-    if (mobileGuestButtons) {
-      mobileGuestButtons.style.display = "none";
-    }
-
-    if (mobileUserMenu) {
-      mobileUserMenu.style.display = "flex";
-
-      if (mobileUserName) {
-        mobileUserName.textContent = currentUser.name;
-      }
-      if (mobileUserEmail) {
-        mobileUserEmail.textContent = currentUser.email;
-      }
+    if (els.guestButtons) els.guestButtons.style.display = "none";
+    if (els.userMenu) els.userMenu.style.display = "flex";
+    if (els.mobileGuestButtons) els.mobileGuestButtons.style.display = "none";
+    if (els.mobileUserMenu) {
+      els.mobileUserMenu.style.display = "flex";
+      if (els.mobileUserName) els.mobileUserName.textContent = currentUser.name;
+      if (els.mobileUserEmail)
+        els.mobileUserEmail.textContent = currentUser.email;
     }
   } else {
-    if (guestButtons) {
-      guestButtons.style.display = "flex";
-    }
-
-    if (userMenu) {
-      userMenu.style.display = "none";
-    }
-
-    if (mobileGuestButtons) {
-      mobileGuestButtons.style.display = "flex";
-    }
-
-    if (mobileUserMenu) {
-      mobileUserMenu.style.display = "none";
-    }
+    if (els.guestButtons) els.guestButtons.style.display = "flex";
+    if (els.userMenu) els.userMenu.style.display = "none";
+    if (els.mobileGuestButtons) els.mobileGuestButtons.style.display = "flex";
+    if (els.mobileUserMenu) els.mobileUserMenu.style.display = "none";
   }
-
   updateAllCourseCards();
 }
 
-function handleLogin(e) {
+async function handleLogin(e) {
   e.preventDefault();
   const email = document.getElementById("login-email").value;
   const password = document.getElementById("login-password").value;
-
   if (!email || !password) {
     showToast("Please fill in all fields", "error");
     return;
   }
 
-  const existingUsers = JSON.parse(
-    localStorage.getItem("learnhub_users") || "[]",
-  );
-  const existingUser = existingUsers.find((user) => user.email === email);
-
-  if (existingUser && existingUser.password === password) {
-    const user = {
-      id: existingUser.id,
-      name: existingUser.name,
-      email: existingUser.email,
-      createdAt: existingUser.createdAt,
+  const btn = e.target.querySelector('button[type="submit"]');
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = "Logging in...";
+  }
+  try {
+    const data = await apiFetch("/login", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+    });
+    localStorage.setItem("learnhub_token", data.token);
+    currentUser = {
+      id: data.user.id,
+      name: data.user.name,
+      email: data.user.email,
+      createdAt: data.user.created_at,
+      photo: data.user.photo,
     };
-
-    currentUser = user;
-    localStorage.setItem("learnhub_user", JSON.stringify(user));
-
-    loadUserData(user.id);
-
+    localStorage.setItem("learnhub_user", JSON.stringify(currentUser));
+    await loadUserDataFromAPI();
     updateAuthUI();
     closeLoginModal();
-
     const loginForm = document.getElementById("login-form");
-    if (loginForm) {
-      loginForm.reset();
-    }
-
+    if (loginForm) loginForm.reset();
     loadAllDocuments();
     loadFeaturedDocuments();
-
     showToast("Login successful! Welcome back.", "success");
-
     closeMobileMenu();
-
-    if (currentPage.includes("dashboard")) {
-      updateDashboard();
+    if (currentPage.includes("dashboard")) updateDashboard();
+    if (window.location.hash !== "#dashboard") window.location.hash = "home";
+  } catch (err) {
+    showToast(err.message || "Invalid email or password", "error");
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = "Login";
     }
-
-    if (window.location.hash !== "#dashboard") {
-      window.location.hash = "home";
-    }
-  } else {
-    showToast("Invalid email or password", "error");
   }
 }
 
-function handleRegister(e) {
+async function handleRegister(e) {
   e.preventDefault();
   const name = document.getElementById("register-name").value;
   const email = document.getElementById("register-email").value;
@@ -3908,107 +3129,141 @@ function handleRegister(e) {
     showToast("Please fill in all fields", "error");
     return;
   }
-
   if (password !== confirmPassword) {
     showToast("Passwords do not match", "error");
     return;
   }
-
   if (password.length < 6) {
     showToast("Password must be at least 6 characters", "error");
     return;
   }
 
-  const existingUsers = JSON.parse(
-    localStorage.getItem("learnhub_users") || "[]",
-  );
-  if (existingUsers.some((user) => user.email === email)) {
-    showToast("Email already registered. Please login instead.", "error");
-    return;
+  const btn = e.target.querySelector('button[type="submit"]');
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = "Registering...";
   }
-
-  const user = {
-    id: Date.now(),
-    name: name,
-    email: email,
-    password: password,
-    createdAt: new Date().toISOString(),
-  };
-
-  existingUsers.push(user);
-  localStorage.setItem("learnhub_users", JSON.stringify(existingUsers));
-
-  currentUser = {
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    createdAt: user.createdAt,
-  };
-
-  localStorage.setItem("learnhub_user", JSON.stringify(currentUser));
-
-  purchasedCourses = [];
-  transactions = [];
-  currentVideoProgress = {};
-
-  saveUserData(currentUser.id);
-
-  updateAuthUI();
-  closeRegisterModal();
-
-  const registerForm = document.getElementById("register-form");
-  if (registerForm) {
-    registerForm.reset();
+  try {
+    const data = await apiFetch("/register", {
+      method: "POST",
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+        password_confirmation: confirmPassword,
+      }),
+    });
+    localStorage.setItem("learnhub_token", data.token);
+    currentUser = {
+      id: data.user.id,
+      name: data.user.name,
+      email: data.user.email,
+      createdAt: data.user.created_at,
+      photo: data.user.photo,
+    };
+    localStorage.setItem("learnhub_user", JSON.stringify(currentUser));
+    purchasedCourses = [];
+    transactions = [];
+    currentVideoProgress = {};
+    updateAuthUI();
+    closeRegisterModal();
+    const registerForm = document.getElementById("register-form");
+    if (registerForm) registerForm.reset();
+    loadAllDocuments();
+    loadFeaturedDocuments();
+    showToast("Registration successful! Welcome to LearnHub.", "success");
+    closeMobileMenu();
+    window.location.hash = "dashboard";
+  } catch (err) {
+    showToast(err.message || "Registration failed. Please try again.", "error");
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = "Create Account";
+    }
   }
-
-  loadAllDocuments();
-  loadFeaturedDocuments();
-
-  showToast("Registration successful! Welcome to LearnHub.", "success");
-
-  closeMobileMenu();
-
-  window.location.hash = "dashboard";
 }
 
-function logout() {
-  if (currentUser) {
-    saveUserData(currentUser.id);
-  }
-
+async function logout() {
+  try {
+    await apiFetch("/logout", { method: "POST" });
+  } catch (e) {}
   currentUser = null;
   purchasedCourses = [];
   transactions = [];
   currentVideoProgress = {};
-
   localStorage.removeItem("learnhub_user");
-
+  localStorage.removeItem("learnhub_token");
   updateAuthUI();
-
   closeMobileMenu();
-
   loadAllDocuments();
   loadFeaturedDocuments();
-
-  if (currentPage === "documents") {
-    showLoginNotice();
-  }
-
+  if (currentPage === "documents") showLoginNotice();
   window.location.hash = "home";
   showToast("Logged out successfully", "success");
 }
 
 // ============================================
-// Modal Functions
+// User Data (localStorage)
 // ============================================
+function loadUserData(userId) {
+  try {
+    purchasedCourses = JSON.parse(
+      localStorage.getItem(`learnhub_purchased_${userId}`) || "[]",
+    ).map(Number);
+    transactions = JSON.parse(
+      localStorage.getItem(`learnhub_transactions_${userId}`) || "[]",
+    );
+    currentVideoProgress = JSON.parse(
+      localStorage.getItem(`learnhub_video_progress_${userId}`) || "{}",
+    );
+    return true;
+  } catch (e) {
+    purchasedCourses = [];
+    transactions = [];
+    currentVideoProgress = {};
+    return false;
+  }
+}
 
+function saveUserData(userId) {
+  try {
+    localStorage.setItem(
+      `learnhub_purchased_${userId}`,
+      JSON.stringify(purchasedCourses),
+    );
+    localStorage.setItem(
+      `learnhub_transactions_${userId}`,
+      JSON.stringify(transactions),
+    );
+    localStorage.setItem(
+      `learnhub_video_progress_${userId}`,
+      JSON.stringify(currentVideoProgress),
+    );
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function clearUserData() {
+  localStorage.removeItem("learnhub_user");
+  localStorage.removeItem("learnhub_token");
+  currentUser = null;
+  purchasedCourses = [];
+  transactions = [];
+  currentVideoProgress = {};
+}
+
+// ============================================
+// Modals
+// ============================================
 function showLoginModal() {
   let modal = document.getElementById("login-modal");
   if (!modal) {
     createLoginModal();
     modal = document.getElementById("login-modal");
   }
-
   if (modal) {
     modal.classList.remove("hidden");
     modal.classList.add("flex");
@@ -4017,59 +3272,46 @@ function showLoginModal() {
 }
 
 function createLoginModal() {
-  const modalHTML = `
-    <div id="login-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 items-center justify-center p-4">
-      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-auto">
-        <div class="p-6">
-          <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Login to LearnHub</h2>
-            <button onclick="closeLoginModal()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-              <i class="fas fa-times text-gray-600 dark:text-gray-300"></i>
-            </button>
-          </div>
-          
-          <form id="login-form" class="space-y-4">
-            <div>
-              <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
-              <input type="email" id="login-email" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="name@example.com" required>
+  document.body.insertAdjacentHTML(
+    "beforeend",
+    `
+        <div id="login-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 items-center justify-center p-4">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-auto">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold">Login to LearnHub</h2>
+                        <button onclick="closeLoginModal()" class="p-2 hover:bg-gray-100 rounded-lg"><i class="fas fa-times text-gray-600"></i></button>
+                    </div>
+                    <form id="login-form" class="space-y-4">
+                        <div>
+                            <label class="mb-2 block text-sm font-medium text-gray-700">Email</label>
+                            <input type="email" id="login-email" class="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="name@example.com" required>
+                        </div>
+                        <div>
+                            <label class="mb-2 block text-sm font-medium text-gray-700">Password</label>
+                            <div class="relative">
+                                <input type="password" id="login-password" class="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500 pr-10" placeholder="Enter your password" required>
+                                <button type="button" id="toggle-login-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-full py-2.5"><i class="fas fa-sign-in-alt mr-2"></i> Login</button>
+                    </form>
+                    <p class="mt-4 text-center text-sm text-gray-600">
+                        Don't have an account? <button onclick="closeLoginModal();showRegisterModal();" class="text-purple-600 hover:underline font-medium">Register here</button>
+                    </p>
+                </div>
             </div>
-            <div>
-              <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
-              <div class="relative">
-                <input type="password" id="login-password" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent pr-10" placeholder="Enter your password" required>
-                <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300" id="toggle-login-password">
-                  <i class="fas fa-eye"></i>
-                </button>
-              </div>
-            </div>
-            <button type="submit" class="btn btn-primary w-full py-2.5">
-              <i class="fas fa-sign-in-alt mr-2"></i> Login
-            </button>
-          </form>
-          
-          <p class="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
-            Don't have an account? <button onclick="closeLoginModal(); showRegisterModal();" class="text-purple-600 dark:text-purple-400 hover:underline font-medium">Register here</button>
-          </p>
-        </div>
-      </div>
-    </div>
-  `;
-
-  document.body.insertAdjacentHTML("beforeend", modalHTML);
-
+        </div>`,
+  );
   const loginForm = document.getElementById("login-form");
-  const togglePasswordBtn = document.getElementById("toggle-login-password");
-  const passwordInput = document.getElementById("login-password");
-
-  if (loginForm) {
-    loginForm.addEventListener("submit", handleLogin);
-  }
-
-  if (togglePasswordBtn && passwordInput) {
-    togglePasswordBtn.addEventListener("click", () => {
-      const type = passwordInput.type === "password" ? "text" : "password";
-      passwordInput.type = type;
-      togglePasswordBtn.innerHTML =
+  if (loginForm) loginForm.addEventListener("submit", handleLogin);
+  const toggleBtn = document.getElementById("toggle-login-password");
+  const passInput = document.getElementById("login-password");
+  if (toggleBtn && passInput) {
+    toggleBtn.addEventListener("click", () => {
+      const type = passInput.type === "password" ? "text" : "password";
+      passInput.type = type;
+      toggleBtn.innerHTML =
         type === "password"
           ? '<i class="fas fa-eye"></i>'
           : '<i class="fas fa-eye-slash"></i>';
@@ -4092,7 +3334,6 @@ function showRegisterModal() {
     createRegisterModal();
     modal = document.getElementById("register-modal");
   }
-
   if (modal) {
     modal.classList.remove("hidden");
     modal.classList.add("flex");
@@ -4101,67 +3342,54 @@ function showRegisterModal() {
 }
 
 function createRegisterModal() {
-  const modalHTML = `
-    <div id="register-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 items-center justify-center p-4">
-      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-auto">
-        <div class="p-6">
-          <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Create Account</h2>
-            <button onclick="closeRegisterModal()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-              <i class="fas fa-times text-gray-600 dark:text-gray-300"></i>
-            </button>
-          </div>
-          
-          <form id="register-form" class="space-y-4">
-            <div>
-              <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Full Name</label>
-              <input type="text" id="register-name" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="John Doe" required>
+  document.body.insertAdjacentHTML(
+    "beforeend",
+    `
+        <div id="register-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 items-center justify-center p-4">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-auto">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold">Create Account</h2>
+                        <button onclick="closeRegisterModal()" class="p-2 hover:bg-gray-100 rounded-lg"><i class="fas fa-times text-gray-600"></i></button>
+                    </div>
+                    <form id="register-form" class="space-y-4">
+                        <div>
+                            <label class="mb-2 block text-sm font-medium text-gray-700">Full Name</label>
+                            <input type="text" id="register-name" class="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="John Doe" required>
+                        </div>
+                        <div>
+                            <label class="mb-2 block text-sm font-medium text-gray-700">Email</label>
+                            <input type="email" id="register-email" class="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="name@example.com" required>
+                        </div>
+                        <div>
+                            <label class="mb-2 block text-sm font-medium text-gray-700">Password</label>
+                            <div class="relative">
+                                <input type="password" id="register-password" class="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500 pr-10" placeholder="Create a password" required>
+                                <button type="button" id="toggle-register-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="mb-2 block text-sm font-medium text-gray-700">Confirm Password</label>
+                            <input type="password" id="register-confirm-password" class="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Confirm your password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-full py-2.5"><i class="fas fa-user-plus mr-2"></i> Create Account</button>
+                    </form>
+                    <p class="mt-4 text-center text-sm text-gray-600">
+                        Already have an account? <button onclick="closeRegisterModal();showLoginModal();" class="text-purple-600 hover:underline font-medium">Login here</button>
+                    </p>
+                </div>
             </div>
-            <div>
-              <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
-              <input type="email" id="register-email" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="name@example.com" required>
-            </div>
-            <div>
-              <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
-              <div class="relative">
-                <input type="password" id="register-password" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent pr-10" placeholder="Create a password" required>
-                <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300" id="toggle-register-password">
-                  <i class="fas fa-eye"></i>
-                </button>
-              </div>
-            </div>
-            <div>
-              <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Confirm Password</label>
-              <input type="password" id="register-confirm-password" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Confirm your password" required>
-            </div>
-            <button type="submit" class="btn btn-primary w-full py-2.5">
-              <i class="fas fa-user-plus mr-2"></i> Create Account
-            </button>
-          </form>
-          
-          <p class="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
-            Already have an account? <button onclick="closeRegisterModal(); showLoginModal();" class="text-purple-600 dark:text-purple-400 hover:underline font-medium">Login here</button>
-          </p>
-        </div>
-      </div>
-    </div>
-  `;
-
-  document.body.insertAdjacentHTML("beforeend", modalHTML);
-
+        </div>`,
+  );
   const registerForm = document.getElementById("register-form");
-  const togglePasswordBtn = document.getElementById("toggle-register-password");
-  const passwordInput = document.getElementById("register-password");
-
-  if (registerForm) {
-    registerForm.addEventListener("submit", handleRegister);
-  }
-
-  if (togglePasswordBtn && passwordInput) {
-    togglePasswordBtn.addEventListener("click", () => {
-      const type = passwordInput.type === "password" ? "text" : "password";
-      passwordInput.type = type;
-      togglePasswordBtn.innerHTML =
+  if (registerForm) registerForm.addEventListener("submit", handleRegister);
+  const toggleBtn = document.getElementById("toggle-register-password");
+  const passInput = document.getElementById("register-password");
+  if (toggleBtn && passInput) {
+    toggleBtn.addEventListener("click", () => {
+      const type = passInput.type === "password" ? "text" : "password";
+      passInput.type = type;
+      toggleBtn.innerHTML =
         type === "password"
           ? '<i class="fas fa-eye"></i>'
           : '<i class="fas fa-eye-slash"></i>';
@@ -4179,62 +3407,63 @@ function closeRegisterModal() {
 }
 
 // ============================================
-// System & Utility Functions
+// Contact Form
 // ============================================
+async function handleContactSubmit(e) {
+  e.preventDefault();
+  const full_name = document.getElementById("contact-name").value;
+  const email = document.getElementById("contact-email").value;
+  const subject = document.getElementById("contact-subject").value;
+  const message = document.getElementById("contact-message").value;
+  try {
+    await apiFetch("/contact", {
+      method: "POST",
+      body: JSON.stringify({ full_name, email, subject, message }),
+    });
+    const contactSuccess = document.getElementById("contact-success");
+    if (contactSuccess) contactSuccess.classList.remove("hidden");
+    e.target.reset();
+    showToast(
+      "Message sent successfully! We'll get back to you soon.",
+      "success",
+    );
+    setTimeout(() => {
+      if (contactSuccess) contactSuccess.classList.add("hidden");
+    }, 5000);
+  } catch (err) {
+    showToast(err.message || "Failed to send message", "error");
+  }
+}
 
+// ============================================
+// System & Utility
+// ============================================
 function updateSystemStatusCard() {
-  const desktopSystemStatus = document.getElementById("desktop-system-status");
-  const mobileSystemStatus = document.getElementById("mobile-system-status");
-
   const isOpen = isSystemOpen();
-
   const statusHTML = isOpen
-    ? `
-    <div class="flex items-center">
-      <div class="mr-3">
-        <i class="fas fa-check-circle text-green-500 text-lg"></i>
-      </div>
-      <div>
-        <h4 class="font-bold text-green-600 dark:text-green-400 text-sm">System Open</h4>
-        <p class="text-xs text-gray-600 dark:text-gray-400">Purchases available</p>
-      </div>
-    </div>
-  `
-    : `
-    <div class="flex items-center">
-      <div class="mr-3">
-        <i class="fas fa-times-circle text-red-500 text-lg"></i>
-      </div>
-      <div>
-        <h4 class="font-bold text-red-600 dark:text-red-400 text-sm">System Closed</h4>
-        <p class="text-xs text-gray-600 dark:text-gray-400">Purchases unavailable 8AM-10PM</p>
-      </div>
-    </div>
-  `;
-
-  if (desktopSystemStatus) desktopSystemStatus.innerHTML = statusHTML;
-  if (mobileSystemStatus) mobileSystemStatus.innerHTML = statusHTML;
+    ? `<div class="flex items-center"><div class="mr-3"><i class="fas fa-check-circle text-green-500 text-lg"></i></div><div><h4 class="font-bold text-green-600 text-sm">System Open</h4><p class="text-xs text-gray-600">Purchases available</p></div></div>`
+    : `<div class="flex items-center"><div class="mr-3"><i class="fas fa-times-circle text-red-500 text-lg"></i></div><div><h4 class="font-bold text-red-600 text-sm">System Closed</h4><p class="text-xs text-gray-600">Purchases unavailable 8AM-10PM</p></div></div>`;
+  const desktopStatus = document.getElementById("desktop-system-status");
+  const mobileStatus = document.getElementById("mobile-system-status");
+  if (desktopStatus) desktopStatus.innerHTML = statusHTML;
+  if (mobileStatus) mobileStatus.innerHTML = statusHTML;
 }
 
 function isSystemOpen() {
-  const now = new Date();
-  const hour = now.getHours();
+  const hour = new Date().getHours();
   return hour >= 8 && hour < 22;
 }
 
 // ============================================
-// Mobile Menu Functions
+// Mobile Menu
 // ============================================
-
 function toggleMobileMenu() {
   if (mobileMenu && mobileMenuBtn) {
     mobileMenu.classList.toggle("hidden");
     const icon = mobileMenuBtn.querySelector("i");
-    if (mobileMenu.classList.contains("hidden")) {
+    if (mobileMenu.classList.contains("hidden"))
       icon.className = "fas fa-bars text-sm";
-    } else {
-      icon.className = "fas fa-times text-sm";
-    }
+    else icon.className = "fas fa-times text-sm";
   }
 }
 
@@ -4242,16 +3471,13 @@ function closeMobileMenu() {
   if (mobileMenu && mobileMenuBtn) {
     mobileMenu.classList.add("hidden");
     const icon = mobileMenuBtn.querySelector("i");
-    if (icon) {
-      icon.className = "fas fa-bars text-sm";
-    }
+    if (icon) icon.className = "fas fa-bars text-sm";
   }
 }
 
 // ============================================
-// Theme Functions
+// Theme
 // ============================================
-
 function setupTheme() {
   const savedTheme = localStorage.getItem("theme");
   if (savedTheme === "dark") {
@@ -4271,56 +3497,81 @@ function toggleTheme() {
 
 function updateThemeIcon(isDark) {
   const icon = document.querySelector("#theme-toggle i");
-  if (icon) {
-    if (isDark) {
-      icon.className = "fas fa-moon text-yellow-300";
-    } else {
-      icon.className = "fas fa-sun text-yellow-500";
-    }
-  }
+  if (icon)
+    icon.className = isDark
+      ? "fas fa-moon text-yellow-300"
+      : "fas fa-sun text-yellow-500";
 }
 
 // ============================================
-// Contact Form
+// Event Listeners
 // ============================================
-
-function handleContactSubmit(e) {
-  e.preventDefault();
-
-  const name = document.getElementById("contact-name").value;
-  const email = document.getElementById("contact-email").value;
-  const subject = document.getElementById("contact-subject").value;
-  const message = document.getElementById("contact-message").value;
-
-  const contactSuccess = document.getElementById("contact-success");
-  if (contactSuccess) {
-    contactSuccess.classList.remove("hidden");
+function setupEventListeners() {
+  if (themeToggle) themeToggle.addEventListener("click", toggleTheme);
+  if (logoutBtn) logoutBtn.addEventListener("click", logout);
+  if (mobileMenuBtn && mobileMenu) {
+    mobileMenuBtn.addEventListener("click", toggleMobileMenu);
+    document.addEventListener("click", (e) => {
+      if (
+        !mobileMenu.classList.contains("hidden") &&
+        !mobileMenu.contains(e.target) &&
+        !mobileMenuBtn.contains(e.target)
+      ) {
+        closeMobileMenu();
+      }
+    });
   }
-
+  const courseSearch = document.getElementById("course-search");
+  if (courseSearch) courseSearch.addEventListener("input", filterCourses);
+  const documentSearch = document.getElementById("document-search");
+  if (documentSearch) documentSearch.addEventListener("input", filterDocuments);
   const contactForm = document.getElementById("contact-form");
-  if (contactForm) {
-    contactForm.reset();
-  }
+  if (contactForm) contactForm.addEventListener("submit", handleContactSubmit);
+  const logoContainer = document.querySelector(".logo-container");
+  if (logoContainer)
+    logoContainer.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.location.hash = "home";
+    });
 
-  showToast(
-    "Message sent successfully! We'll get back to you soon.",
-    "success",
-  );
-
-  setTimeout(() => {
-    if (contactSuccess) {
-      contactSuccess.classList.add("hidden");
+  document.addEventListener("click", (e) => {
+    if (e.target.closest(".view-details-btn")) {
+      const btn = e.target.closest(".view-details-btn");
+      const courseId = parseInt(btn.dataset.courseId);
+      if (courseId) window.location.hash = `course-${courseId}`;
     }
-  }, 5000);
+    if (e.target.closest(".dashboard-watch-btn")) {
+      const btn = e.target.closest(".dashboard-watch-btn");
+      const courseId = parseInt(btn.dataset.courseId);
+      if (courseId) window.location.hash = `course-${courseId}`;
+    }
+    if (e.target.closest(".view-document-btn")) {
+      const btn = e.target.closest(".view-document-btn");
+      const docId = parseInt(btn.dataset.docId);
+      if (docId) viewDocument(docId);
+    }
+    if (e.target.closest(".login-to-read-btn")) showLoginModal();
+    if (e.target.closest(".course-card") && !e.target.closest("button")) {
+      const card = e.target.closest(".course-card");
+      const courseId = parseInt(card.dataset.courseId);
+      if (courseId) window.location.hash = `course-${courseId}`;
+    }
+  });
+
+  const links = document.querySelectorAll(".nav-link");
+  links.forEach((link) => {
+    link.addEventListener("click", function () {
+      links.forEach((l) => l.classList.remove("active"));
+      this.classList.add("active");
+    });
+  });
 }
 
 // ============================================
 // Toast Notification
 // ============================================
-
 function showToast(message, type = "success") {
   document.querySelectorAll(".toast").forEach((toast) => toast.remove());
-
   const icon =
     type === "success"
       ? "fa-check-circle"
@@ -4333,161 +3584,38 @@ function showToast(message, type = "success") {
       : type === "error"
         ? "bg-red-500"
         : "bg-blue-500";
-
   const toast = document.createElement("div");
   toast.className = `toast fixed bottom-4 right-4 ${bgColor} text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 z-50 animate-slide-up`;
   toast.innerHTML = `
-    <i class="fas ${icon}"></i>
-    <div class="flex-1">
-      <p class="text-sm font-medium">${message}</p>
-    </div>
-    <button class="text-white hover:text-gray-200" onclick="this.parentElement.remove()">
-      <i class="fas fa-times"></i>
-    </button>
-  `;
-
+        <i class="fas ${icon}"></i>
+        <div class="flex-1"><p class="text-sm font-medium">${message}</p></div>
+        <button class="text-white hover:text-gray-200" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>`;
   document.body.appendChild(toast);
-
   setTimeout(() => {
-    if (toast.parentElement) {
-      toast.remove();
-    }
+    if (toast.parentElement) toast.remove();
   }, 5000);
 }
 
 // ============================================
-// Initialize Application
+// Initialize
 // ============================================
-
 document.addEventListener("DOMContentLoaded", init);
-
 setInterval(updateSystemStatusCard, 60000);
 
+// CSS
 const style = document.createElement("style");
 style.textContent = `
-  @keyframes slide-up {
-    from {
-      transform: translateY(100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-  
-  .animate-slide-up {
-    animation: slide-up 0.3s ease-out;
-  }
-
-  .free-module .module-content {
-    border-left: 3px solid #10b981;
-  }
-
-  .module-item.locked .module-content {
-    opacity: 0.8;
-  }
-
-  .module-item.locked .module-content:hover {
-    opacity: 0.9;
-  }
-
-  #mobile-modules-overlay {
-    transition: opacity 0.3s ease;
-  }
-
-  #mobile-modules-overlay.hidden {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  #mobile-modules-overlay > div {
-    transform: translateX(0);
-    transition: transform 0.3s ease;
-  }
-
-  #mobile-modules-overlay.hidden > div {
-    transform: translateX(-100%);
-  }
-
-  #desktop-module-list {
-    max-height: 40vh;
-    overflow-y: auto;
-  }
-
-  #mobile-module-list {
-    overflow-y: auto;
-    max-height: calc(100vh - 280px);
-  }
-
-  #desktop-module-list::-webkit-scrollbar,
-  #mobile-module-list::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  #desktop-module-list::-webkit-scrollbar-track,
-  #mobile-module-list::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-  }
-
-  .dark #desktop-module-list::-webkit-scrollbar-track,
-  .dark #mobile-module-list::-webkit-scrollbar-track {
-    background: #374151;
-  }
-
-  #desktop-module-list::-webkit-scrollbar-thumb,
-  #mobile-module-list::-webkit-scrollbar-thumb {
-    background: #cbd5e0;
-    border-radius: 10px;
-  }
-
-  .dark #desktop-module-list::-webkit-scrollbar-thumb,
-  .dark #mobile-module-list::-webkit-scrollbar-thumb {
-    background: #6b7280;
-  }
-
-  #desktop-module-list::-webkit-scrollbar-thumb:hover,
-  #mobile-module-list::-webkit-scrollbar-thumb:hover {
-    background: #a0aec0;
-  }
-
-  .dark #desktop-module-list::-webkit-scrollbar-thumb:hover,
-  .dark #mobile-module-list::-webkit-scrollbar-thumb:hover {
-    background: #9ca3af;
-  }
-
-  .line-clamp-1 {
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  @media (max-width: 768px) {
-    .module-item .module-content {
-      padding: 0.75rem;
-    }
-    
-    .module-item h4 {
-      font-size: 0.9375rem;
-    }
-    
-    .module-item p {
-      font-size: 0.8125rem;
-    }
-  }
-
-  .btn:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
+    @keyframes slide-up { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .animate-slide-up { animation: slide-up 0.3s ease-out; }
+    .free-module .module-content { border-left: 3px solid #10b981; }
+    .module-item.locked .module-content { opacity: 0.8; }
+    #desktop-module-list { max-height: 40vh; overflow-y: auto; }
+    #mobile-module-list { overflow-y: auto; max-height: calc(100vh - 280px); }
+    #desktop-module-list::-webkit-scrollbar, #mobile-module-list::-webkit-scrollbar { width: 6px; }
+    #desktop-module-list::-webkit-scrollbar-track, #mobile-module-list::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+    #desktop-module-list::-webkit-scrollbar-thumb, #mobile-module-list::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 10px; }
+    .line-clamp-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+    .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .btn:disabled { opacity: 0.7; cursor: not-allowed; }
 `;
 document.head.appendChild(style);
