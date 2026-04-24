@@ -29,7 +29,7 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\RichEditor::make('name')
+                Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(100),
             ]);
@@ -40,6 +40,11 @@ class CategoryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->formatStateUsing(function ($state): string {
+                        $raw = is_string($state) ? $state : (string) $state;
+                        // Stored values may contain RichEditor HTML; display as plain text in tables.
+                        return trim(strip_tags($raw));
+                    })
                     ->searchable(),
             ])
             ->filters([

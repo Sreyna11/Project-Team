@@ -27,87 +27,69 @@ class FreeDocumentResource extends Resource
     protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
-    {
-        return $form->schema([
-            Forms\Components\Section::make('Document Info')
-                ->description('Basic information about the free document.')
-                ->icon('heroicon-o-document-text')
-                ->schema([
-                    Forms\Components\TextInput::make('title')
-                        ->required()
-                        ->maxLength(200)
-                        ->prefixIcon('heroicon-o-pencil-square')
-                        ->columnSpanFull(),
+{
+    return $form->schema([
 
-                    Forms\Components\TextInput::make('description')
-                        
-                        ->nullable()
-                        ->columnSpanFull(),
+        Forms\Components\TextInput::make('title')
+            ->required()
+            ->maxLength(200),
 
-                    Forms\Components\Grid::make(2)
-                        ->schema([
-                            Forms\Components\Select::make('category_id')
-                                ->label('Category')
-                                ->relationship('category', 'name')
-                                ->nullable()
-                                ->searchable()
-                                ->preload()
-                                ->prefixIcon('heroicon-o-tag'),
+        Forms\Components\Textarea::make('description')
+            ->nullable()
+            ->columnSpanFull(),
 
-                            Forms\Components\Select::make('header_id')
-                                ->label('Header Visibility')
-                                ->relationship('header', 'title')
-                                ->nullable()
-                                ->searchable()
-                                ->preload()
-                                ->prefixIcon('heroicon-o-view-columns'),
-                        ]),
-                ]),
+        Forms\Components\Select::make('category_id')
+            ->label('Category')
+            ->options(\App\Models\Category::all()->pluck('name', 'category_id'))
+            ->nullable()
+            ->searchable(),
 
-            Forms\Components\Section::make('Assets')
-                ->description('Logo and file link for the document.')
-                ->icon('heroicon-o-paper-clip')
-                ->schema([
-                    Forms\Components\TextInput::make('file')
-                        ->label('Document Download URL')
-                        ->required()
-                        ->url()
-                        ->maxLength(500)
-                        ->prefixIcon('heroicon-o-link'),
+        Forms\Components\Select::make('header_id')
+            ->label('Header')
+            ->options(\App\Models\Header::all()->pluck('title', 'header_id'))
+            ->nullable(),
 
-                    Forms\Components\FileUpload::make('logo')
-                        ->label('Logo / Thumbnail')
-                        ->image()
-                        ->disk('public')
-                        ->directory('documents')
-                        ->imageEditor()
-                        ->columnSpanFull(),
-                ]),
+        // ← Upload logo/image from computer
+        Forms\Components\FileUpload::make('logo')
+            ->label('Cover Image')
+            ->image()
+            ->imageEditor()
+            ->imageResizeMode('cover')
+            ->imageCropAspectRatio('3:4')
+            ->imageResizeTargetWidth('800')
+            ->disk('minio')
+            ->directory('documents/logos')
+            ->nullable(),
 
-            Forms\Components\Section::make('Visibility')
-                ->description('Control where and how this document is displayed.')
-                ->icon('heroicon-o-eye')
-                ->schema([
-                    Forms\Components\Toggle::make('is_active')
-                        ->label('Active Status')
-                        ->helperText('Enable or disable this document on the site.')
-                        ->default(true),
+        // ← Upload actual document file from computer
+        Forms\Components\FileUpload::make('file')
+            ->label('Document File (PDF)')
+            ->disk('public')
+            ->directory('documents/files')
+            ->acceptedFileTypes(['application/pdf', 'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'])
+            ->nullable()
+            ->columnSpanFull(),
 
-                    Forms\Components\Toggle::make('show_in_header')
-                        ->label('Show in Home Header')
-                        ->helperText('Feature this document in the "Free Learning Documents" section of the home page.')
-                        ->default(false),
-                ])->collapsible(),
-        ]);
-    }
+        Forms\Components\Toggle::make('is_active')
+            ->label('Active')
+            ->default(true),
+
+        Forms\Components\Toggle::make('show_in_header')
+            ->label('Show on Home Page')
+            ->default(false),
+
+    ]);
+}
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('logo')
+                Tables\Columns\TextColumn::make('thumbnail')
                     ->label('Thumb')
-                    ->circular(),
+                    ->html()
+                    ->state(fn ($record) => $record->logo ? '<img src="' . (\Illuminate\Support\Facades\Storage::disk('public')->exists($record->logo) ? \Illuminate\Support\Facades\Storage::disk('public')->url($record->logo) : url('/image/' . ltrim($record->logo, '/'))) . '" style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">' : '<span class="text-gray-400 text-[10px]">No image</span>'),
 
                 Tables\Columns\TextColumn::make('title')
                     ->label('Document Title')

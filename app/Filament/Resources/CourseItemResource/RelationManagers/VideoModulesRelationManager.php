@@ -103,7 +103,21 @@ class VideoModulesRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\CreateAction::make()
                     ->label('Add Video Module')
-                    ->icon('heroicon-o-plus'),
+                    ->icon('heroicon-o-plus')
+                    ->before(function (Tables\Actions\CreateAction $action, $ownerRecord) {
+                        $maxModules = $ownerRecord->max_modules ?? 10;
+                        $currentCount = $ownerRecord->videoModules()->where('is_active', true)->count();
+
+                        if ($currentCount >= $maxModules) {
+                            \Filament\Notifications\Notification::make()
+                                ->title("Module limit reached!")
+                                ->body("This course is limited to {$maxModules} modules. You cannot add more.")
+                                ->danger()
+                                ->send();
+
+                            $action->halt();
+                        }
+                    }),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

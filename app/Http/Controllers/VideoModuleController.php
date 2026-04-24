@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\VideoCourseItem;
 use App\Models\CourseItem;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Storage;
 class VideoModuleController extends Controller
 {
     // ✅ GET /api/courses/{courseId}/modules
@@ -25,42 +25,30 @@ class VideoModuleController extends Controller
     }
 
     // ✅ POST /api/admin/courses/{courseId}/modules
-    public function store(Request $request, $courseId)
-    {
-        $course = CourseItem::findOrFail($courseId);
+ public function store(Request $request)
+{
+    $request->validate([
+        'course_id' => 'required',
+        'title' => 'required',
+        'video' => 'required|file|mimes:mp4,mov,avi'
+    ]);
 
-        $request->validate([
-            'title' => 'required|string|max:200',
-            'description' => 'nullable|string',
-            'video_url' => 'nullable|string|max:500',
-            'duration' => 'nullable|string|max:50',
-            'is_free' => 'boolean',
-            'is_active' => 'boolean',
-            'order_num' => 'nullable|integer',
-        ]);
+    // ✅ Store in course-specific folder
+$path = Storage::disk('minio')->put(
+        "courses/{$request->course_id}/videos",
+        $request->file('video')
+    );
 
-        // Auto set order_num if not provided
-        $orderNum = $request->order_num ??
-            VideoCourseItem::where('course_item_id', $courseId)->count() + 1;
+    // ✅ Save correct path
+    VideoCourseItem::create([
+        'course_item_id' => $request->course_id,
+        'title' => $request->title,
+        'video_file' => $path,
+        'is_active' => true,
+    ]);
 
-        $module = VideoCourseItem::create([
-            'course_item_id' => $courseId,
-            'title' => $request->title,
-            'description' => $request->description,
-            'video_url' => $request->video_url,
-            'duration' => $request->duration,
-            'is_free' => $request->is_free ?? false,
-            'is_active' => $request->is_active ?? true,
-            'order_num' => $orderNum,
-            'drop_list' => '[]',
-        ]);
-
-        return response()->json([
-            'message' => 'Module added successfully!',
-            'module' => $module,
-        ], 201);
-    }
-
+    return back()->with('success', 'Video uploaded!');
+}
     // ✅ PUT /api/admin/courses/{courseId}/modules/{moduleId}
     public function update(Request $request, $courseId, $moduleId)
     {

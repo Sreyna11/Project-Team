@@ -1,0 +1,15 @@
+KHQR\Models\KHQRResponse Object
+(
+    [status] => Array
+        (
+            [code] => 0
+            [errorCode] => 
+            [message] => 
+        )
+
+    [data] => Array
+        (
+            [bakongAccountExists] => 1
+        )
+
+)

@@ -18,13 +18,14 @@ return [
         'token' => env('POSTMARK_TOKEN'),
     ],
 
-    'bakong' => [
-        'token'         => env('BAKONG_API_TOKEN'),
-        'account_id'    => env('BAKONG_ACCOUNT_ID'),
-        'merchant_name' => env('BAKONG_MERCHANT_NAME', 'My Store'),
-        'merchant_city' => env('BAKONG_MERCHANT_CITY', 'PHNOM PENH'),
-        'phone'         => env('BAKONG_PHONE'),
-    ],
+   'bakong' => [
+    'token'          => env('BAKONG_API_TOKEN'),
+    'account_id'     => env('BAKONG_ACCOUNT_ID'),
+    'merchant_name'  => env('BAKONG_MERCHANT_NAME', 'LearnHub'),
+    'merchant_city'  => env('BAKONG_MERCHANT_CITY', 'Phnom Penh'),
+    'phone'          => env('BAKONG_PHONE'),
+    'sandbox'        => env('BAKONG_SANDBOX', false),
+],
 
 
     'ses' => [
@@ -38,6 +39,12 @@ return [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
+    ],
+
+    'google' => [
+        'client_id'     => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect'      => env('GOOGLE_REDIRECT_URI', '/auth/google/callback'),
     ],
 
 ];

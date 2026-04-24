@@ -7,46 +7,64 @@ use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class SalesByCourseChart extends ApexChartWidget
 {
-    protected static ?string $chartId      = 'courseSalesChart';
-    protected static ?string $heading      = '📚 Sales by Course';
-    protected static ?int    $sort         = 4;
+    protected static ?string $chartId = 'salesByCourse';
+    protected static ?string $heading = '📊 Course Sales';
+    protected static ?int $sort = 4;
     protected int|string|array $columnSpan = 2;
 
     protected function getOptions(): array
     {
-        $courses = CourseItem::withCount(['payments' => function($q) {
-            $q->where('status', 'paid');
-        }])->orderByDesc('payments_count')->limit(8)->get();
+        $courses = CourseItem::withCount('payments')
+            ->orderByDesc('payments_count')
+            ->limit(6)
+            ->get();
+
+        $data = $courses->pluck('payments_count')->map(fn($v) => (int) $v)->toArray();
+
+        $labels = $courses->pluck('title')
+            ->map(fn($t) => str($t)->limit(30))
+            ->toArray();
+
+        // ✅ prevent empty chart
+        if (empty($data) || array_sum($data) === 0) {
+            $data = [1];
+            $labels = ['No Sales Data'];
+        }
 
         return [
             'chart' => [
-                'type' => 'donut',
+                'type' => 'bar',
                 'height' => 380,
-                'background' => 'transparent',
                 'toolbar' => ['show' => false],
             ],
-            'series' => $courses->pluck('payments_count')->map(fn($v) => (int) $v)->toArray(),
-            'labels' => $courses->pluck('title')->map(fn($t) => str($t)->limit(30))->toArray(),
-            'colors' => ['#7c3aed', '#f59e0b', '#10b981', '#0ea5e9', '#ef4444', '#8b5cf6'],
-            'legend' => [
-                'show' => true,
-                'position' => 'bottom',
-                'horizontalAlign' => 'center',
+
+            'series' => [
+                [
+                    'name' => 'Sales',
+                    'data' => $data,
+                ]
+            ],
+
+            'xaxis' => [
+                'categories' => $labels,
             ],
             'plotOptions' => [
-                'pie' => [
-                    'donut' => [
-                        'size' => '70%',
-                        'labels' => [
-                            'show' => true,
-                            'total' => [
-                                'show' => true,
-                                'label' => 'Total Sales',
-                            ],
-                        ],
-                    ],
+                'bar' => [
+                    'horizontal' => true,
+                    'borderRadius' => 8,
+                    'distributed' => true,
                 ],
             ],
+
+            'colors' => [
+                '#6366f1',
+                '#22c55e',
+                '#f59e0b',
+                '#ef4444',
+                '#3b82f6',
+                '#e988d6ff',
+            ],
+
             'dataLabels' => [
                 'enabled' => true,
             ],

@@ -9,7 +9,10 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
+
+class User extends Authenticatable implements FilamentUser
 {
     use HasRoles;
     /** @use HasFactory<UserFactory> */
@@ -54,5 +57,10 @@ class User extends Authenticatable
     public function progress()
     {
         return $this->hasMany(UserCourseProgress::class, 'user_id', 'id');
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->role === 'admin' || $this->hasRole('super_admin');
     }
 }

@@ -25,8 +25,9 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'photo' => $request->photo ?? null,
             'is_active' => true,
-            'role' => 'user',
         ]);
+
+        $user->assignRole('customer');
 
         $token = $user->createToken('learnhub-token')->plainTextToken;
 

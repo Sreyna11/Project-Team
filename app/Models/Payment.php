@@ -7,8 +7,8 @@ class Payment extends Model
 {
 
     use HasFactory;
-    protected $table = 'payment';
-    protected $primaryKey = 'payment_id';
+    protected $table = 'payments';
+    protected $primaryKey = 'id';
     public $timestamps = false;
     protected $fillable = ['user_id', 'course_item_id', 'promotion_id', 'invoice_number', 'md5', 'amount', 'status', 'paid_at'];
     protected $casts = ['amount' => 'float', 'paid_at' => 'datetime'];

@@ -141,7 +141,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/courses/{courseId}/modules/{moduleId}', [VideoModuleController::class, 'destroy']);
     });
 
-    Route::post('/khqr/generate',      [KhqrController::class, 'generate']);
-    Route::post('/khqr/check-status',  [KhqrController::class, 'checkStatus']);
+    Route::post('/khqr/generate',      [KhqrController::class, 'generate'])->name('khqr.generate');
+    Route::post('/khqr/check-status',  [KhqrController::class, 'checkStatus'])->name('khqr.check');
 });
 

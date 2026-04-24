@@ -4,6 +4,7 @@ namespace App\Filament\Resources\VideoCourseItemResource\Pages;
 
 use App\Filament\Resources\VideoCourseItemResource;
 use App\Models\VideoCourseItem;
+use App\Models\CourseItem;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Notifications\Notification;
@@ -24,6 +25,37 @@ class EditVideoCourseItem extends EditRecord
         return $this->getResource()::getUrl('index');
     }
 
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        $courseId    = $data['course_item_id'];
+        $course      = CourseItem::findOrFail($courseId);
+        $maxModules  = $course->max_modules ?? 10;
+        
+        $currentCount = VideoCourseItem::where('course_item_id', $courseId)
+            ->where('is_active', true)
+            ->where('videoCourseItem_id', '!=', $this->record->videoCourseItem_id) // Exclude current module
+            ->count();
+
+        $incomingCount = 1; // The main one (this record)
+        if (!empty($data['drop_list'])) {
+            $incomingCount += count($data['drop_list']);
+        }
+
+        if (($currentCount + $incomingCount) > $maxModules) {
+            Notification::make()
+                ->title("Module limit reached!")
+                ->body("Adding {$incomingCount} modules would exceed the limit of {$maxModules} (Current: {$currentCount}).")
+                ->danger()
+                ->persistent()
+                ->send();
+
+            $this->halt(); // ← Stop saving!
+        }
+
+        unset($data['drop_list']);
+        return $data;
+    }
+
     // ← Save each repeater item as separate DB row
     protected function afterSave(): void
     {
@@ -42,9 +74,6 @@ class EditVideoCourseItem extends EditRecord
                     'is_active'      => $module['is_active'] ?? true,
                 ]);
             }
-
-            // ← Clear drop_list after saving so it doesn't save to DB
-            $this->record->update(['drop_list' => '[]']);
 
             Notification::make()
                 ->title(count($data['drop_list']) . ' modules added successfully!')
