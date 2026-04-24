@@ -60,9 +60,9 @@ class AdminPanelProvider extends PanelProvider
             ->darkMode(true)
 
             // ── Global Search ──────────────────────
-            ->globalSearch(true)
-            ->globalSearchKeyBindings(['ctrl+k'])
-            ->globalSearchDebounce('300ms')
+            ->globalSearch(false)
+            // ->globalSearchKeyBindings(['ctrl+k'])
+            // ->globalSearchDebounce('300ms')
 
             // ── Navigation Groups ──────────────────
             ->navigationGroups([
@@ -75,14 +75,29 @@ class AdminPanelProvider extends PanelProvider
                 \Filament\Navigation\NavigationGroup::make('Settings')
                     ->icon('heroicon-o-cog-6-tooth')
                     ->collapsed(),
-                \Filament\Navigation\NavigationGroup::make('Filament Shield')
+                \Filament\Navigation\NavigationGroup::make('User Management')
                     ->icon('heroicon-o-shield-check')
                     ->collapsed(),
             ])
 
             // ── Plugins ────────────────────────────
             ->plugins([
-                FilamentShieldPlugin::make(),
+                FilamentShieldPlugin::make()
+                    ->gridColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                        'lg' => 3
+                    ])
+                    ->sectionColumnSpan(1)
+                    ->checkboxListColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                        'lg' => 4,
+                    ])
+                    ->resourceCheckboxListColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                    ]),
                 FilamentApexChartsPlugin::make(),
             ])
 

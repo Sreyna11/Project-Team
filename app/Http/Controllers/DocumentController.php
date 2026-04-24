@@ -11,27 +11,27 @@ class DocumentController extends Controller
     // ✅ GET /api/documents
     public function index(Request $request)
     {
-        $query = FreeDocument::with(['header', 'category']);
+        $query = FreeDocument::with(['category']);
 
         if ($request->has('category_id')) {
             $query->where('category_id', $request->category_id);
         }
-
         if ($request->has('search')) {
             $query->where('title', 'ilike', '%' . $request->search . '%');
         }
-
-        // ← featured for home page
         if ($request->has('featured')) {
             $query->where('show_in_header', true);
         }
 
-        $documents = $query->get();
-
-        $documents->each(function ($doc) {
+        $documents = $query->get()->map(function ($doc) {
+            // ← Convert stored path to full URL
             if ($doc->logo && !str_starts_with($doc->logo, 'http')) {
                 $doc->logo = asset('storage/' . $doc->logo);
             }
+            if ($doc->file && !str_starts_with($doc->file, 'http')) {
+                $doc->file = asset('storage/' . $doc->file);
+            }
+            return $doc;
         });
 
         return response()->json(['documents' => $documents]);

@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CourseItemResource\Pages;
 use App\Filament\Resources\CourseItemResource\RelationManagers;
 use App\Models\CourseItem;
+use App\Models\VideoCourseItem;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -19,6 +20,11 @@ class CourseItemResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
     protected static ?string $navigationGroup = 'Content';
+    
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->withCount('videoModules');
+    }
 
     public static function getNavigationIconColor(): ?string
     {
@@ -86,12 +92,30 @@ class CourseItemResource extends Resource
                         ]),
 
                     Forms\Components\FileUpload::make('image')
-                        ->label('Thumbnail')
-                        ->image()
-                        ->disk('public')
+                        ->label('Course Image')
+                        ->disk('minio')
                         ->directory('courses')
+                        ->image()
                         ->imageEditor()
+                        ->imageResizeMode('cover')
+                        ->imageCropAspectRatio('16:9')
+                        ->imageResizeTargetWidth('1200')
+                        ->nullable()
                         ->columnSpanFull(),
+                    Forms\Components\TextInput::make('max_modules')
+                        ->label('Max Video Modules')
+                        ->numeric()
+                        ->default(10)
+                        ->minValue(1)
+                        ->maxValue(100)
+                        ->helperText('Maximum number of video modules allowed for this course')
+                        ->prefixIcon('heroicon-o-film'),
+                    Forms\Components\Placeholder::make('usage')
+                        ->label('Current Usage')
+                        ->content(
+                            fn($record) =>
+                            $record ? VideoCourseItem::where('course_item_id', $record->courseItem_id)->count() . ' / ' . $record->max_modules . ' modules used' : 'Save course first'
+                        ),
                 ]),
 
             Forms\Components\Section::make('Advanced')
@@ -119,9 +143,10 @@ class CourseItemResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image')
+                Tables\Columns\TextColumn::make('thumbnail')
                     ->label('Thumb')
-                    ->square(),
+                    ->html()
+                    ->state(fn ($record) => $record->image ? '<img src="' . url('/image/' . ltrim($record->image, '/')) . '" style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">' : '<span class="text-gray-400 text-[10px]">No image</span>'),
 
                 Tables\Columns\TextColumn::make('title')
                     ->label('Course Name')
@@ -135,20 +160,11 @@ class CourseItemResource extends Resource
                     ->color('info')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('price')
-                    ->label('Price')
-                    ->money('USD')
-                    ->sortable(),
-
-                Tables\Columns\TextColumn::make('discount')
-                    ->label('Disc.')
-                    ->money('USD')
-                    ->color('danger')
-                    ->sortable(),
-
-                Tables\Columns\IconColumn::make('is_active')
-                    ->label('Active')
-                    ->boolean()
+                Tables\Columns\TextColumn::make('video_modules_count')
+                    ->label('Modules')
+                    ->suffix(fn($record) => ' / ' . $record->max_modules)
+                    ->badge()
+                    ->color(fn($record) => $record->video_modules_count >= $record->max_modules ? 'danger' : 'success')
                     ->sortable(),
 
                 Tables\Columns\IconColumn::make('show_in_header')

@@ -86,7 +86,8 @@ class PaymentResource extends Resource
                     ->color('success')
                     ->modalHeading('Scan to Pay')
                     ->modalSubmitAction(false)
-                    ->modalContent(fn(Payment $record, BakongService $bakongService) => 
+                    ->modalContent(
+                        fn(Payment $record, BakongService $bakongService) =>
                         new HtmlString('
                             <div class="flex flex-col items-center justify-center p-4">
                                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' . urlencode($bakongService->generateQr($record->amount)->data['qr']) . '" alt="KHQR" class="rounded-lg shadow-lg" />
@@ -95,6 +96,33 @@ class PaymentResource extends Resource
                             </div>
                         ')
                     ),
+                Tables\Actions\Action::make('verifyPayment')
+                    ->label('Verify')
+                    ->icon('heroicon-o-arrow-path')
+                    ->color('info')
+                    ->hidden(fn(Payment $record) => $record->status === 'paid')
+                    ->action(function (Payment $record) {
+                        $khqrService = new \App\Services\KHQRService();
+                        $result = $khqrService->checkPayment($record->md5);
+
+                        if (isset($result['responseCode']) && $result['responseCode'] === 0) {
+                            $record->update([
+                                'status' => 'paid',
+                                'paid_at' => now(),
+                            ]);
+
+                            Notification::make()
+                                ->title('Payment Verified!')
+                                ->success()
+                                ->send();
+                        } else {
+                            Notification::make()
+                                ->title('Still Unpaid')
+                                ->warning()
+                                ->body($result['responseMessage'] ?? 'No transaction found yet.')
+                                ->send();
+                        }
+                    }),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([

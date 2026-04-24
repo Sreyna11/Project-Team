@@ -67,6 +67,23 @@ class VideoCourseItemResource extends Resource
                                 ->prefixIcon('heroicon-o-clock'),
                         ]),
 
+                    Forms\Components\FileUpload::make('video_file')
+                        ->label('Video File')
+                        ->disk('minio')              // ← use minio disk
+                        ->directory('videos')
+                        ->acceptedFileTypes([
+                            'video/mp4',
+                            'video/webm',
+                            'video/ogg',
+                        ])
+                        ->maxSize(512000)            // 500MB
+                        ->nullable()
+                        ->columnSpanFull()
+                        ->visibility('public')
+                        ->helperText('Upload MP4 or WebM. Max 500MB.'),
+
+
+
                     Forms\Components\Grid::make(3)
                         ->schema([
                             Forms\Components\TextInput::make('order_num')
@@ -91,7 +108,7 @@ class VideoCourseItemResource extends Resource
                         ]),
                 ]),
 
-           Forms\Components\Section::make('Add More Modules')
+            Forms\Components\Section::make('Add More Modules')
                 ->description('Want to add multiple modules at once? Fill in the details below and save.')
                 ->icon('heroicon-o-rectangle-stack')
                 ->schema([
@@ -107,7 +124,7 @@ class VideoCourseItemResource extends Resource
 
                             Forms\Components\TextInput::make('description')
                                 ->label('Module Description')
-                                
+
                                 ->columnSpanFull(),
 
                             Forms\Components\TextInput::make('video_url')
@@ -123,13 +140,20 @@ class VideoCourseItemResource extends Resource
                                 ->placeholder('e.g. 10 min, 1h 30min')
                                 ->prefixIcon('heroicon-o-clock'),
 
+                            Forms\Components\FileUpload::make('video_file')
+                                ->disk('minio')
+                                ->directory('videos')
+                                ->visibility('public')
+                                ->acceptedFileTypes(['video/mp4', 'video/quicktime'])
+                                ->maxSize(512000),
+
                             Forms\Components\TextInput::make('order_num')
                                 ->label('Order')
                                 ->numeric()
                                 ->default(1)
                                 ->required(),
 
-                            
+
 
                             Forms\Components\Grid::make(2)
                                 ->schema([
@@ -221,4 +245,5 @@ class VideoCourseItemResource extends Resource
             'edit' => Pages\EditVideoCourseItem::route('/{record}/edit'),
         ];
     }
+
 }

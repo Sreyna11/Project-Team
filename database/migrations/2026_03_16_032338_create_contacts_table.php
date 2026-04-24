@@ -10,6 +10,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
+        if (Schema::hasTable('contact')) {
+            return;
+        }
+
         Schema::create('contact', function (Blueprint $table) {
             $table->increments('contact_id');
             $table->string('full_name', 100);
@@ -24,6 +28,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('contacts');
+        Schema::dropIfExists('contact');
     }
 };

@@ -10,6 +10,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
+        if (Schema::hasTable('free_document')) {
+            return;
+        }
+
         Schema::create('free_document', function (Blueprint $table) {
             $table->increments('freeDocument_id');
             $table->unsignedInteger('header_id')->nullable();
@@ -27,6 +31,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('free_documents');
+        Schema::dropIfExists('free_document');
     }
 };

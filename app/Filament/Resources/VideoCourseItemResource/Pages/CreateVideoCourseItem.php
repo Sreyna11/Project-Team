@@ -4,6 +4,7 @@ namespace App\Filament\Resources\VideoCourseItemResource\Pages;
 
 use App\Filament\Resources\VideoCourseItemResource;
 use App\Models\VideoCourseItem;
+use App\Models\CourseItem;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Notifications\Notification;
 
@@ -35,13 +36,39 @@ class CreateVideoCourseItem extends CreateRecord
                 ]);
             }
 
-            // ← Clear drop_list after saving
-            $this->record->update(['drop_list' => '[]']);
-
             Notification::make()
                 ->title(count($data['drop_list']) . ' extra modules added!')
                 ->success()
                 ->send();
         }
+    }
+     protected function mutateFormDataBeforeCreate(array $data): array
+    {
+         $courseId    = $data['course_item_id'];
+        $course      = CourseItem::findOrFail($courseId);
+        $maxModules  = $course->max_modules ?? 10;
+        
+        $currentCount = VideoCourseItem::where('course_item_id', $courseId)
+            ->where('is_active', true)
+            ->count();
+
+        $incomingCount = 1; // The main one
+        if (!empty($data['drop_list'])) {
+            $incomingCount += count($data['drop_list']);
+        }
+
+        if (($currentCount + $incomingCount) > $maxModules) {
+            Notification::make()
+                ->title("Module limit reached!")
+                ->body("Adding {$incomingCount} modules would exceed the limit of {$maxModules} (Current: {$currentCount}).")
+                ->danger()
+                ->persistent()
+                ->send();
+
+            $this->halt(); // ← Stop creation!
+        }
+
+        unset($data['drop_list']);
+        return $data;
     }
 }

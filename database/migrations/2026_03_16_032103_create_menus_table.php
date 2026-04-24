@@ -10,6 +10,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
+        if (Schema::hasTable('menu')) {
+            return;
+        }
+
         Schema::create('menu', function (Blueprint $table) {
             $table->increments('menu_id');
             $table->string('name', 100);
@@ -23,6 +27,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('menus');
+        Schema::dropIfExists('menu');
     }
 };

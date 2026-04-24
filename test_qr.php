@@ -1,12 +1,13 @@
 <?php
-require __DIR__.'/vendor/autoload.php';
 
-$app = require_once __DIR__.'/bootstrap/app.php';
-$app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+require 'vendor/autoload.php';
 
-$service = app(App\Services\KHQRService::class);
-$res = $service->generateMerchantQR(['amount' => 0.1, 'currency' => 'USD']);
-echo "QR: " . $res['data']['qr'] . "\n";
-$decode = \KHQR\BakongKHQR::decode($res['data']['qr']);
-echo "Decoded:\n";
-print_r($decode->data);
+use KHQR\BakongKHQR;
+
+$qr = "00020101021129190015aok_sreyna@bkrt52045999530384054041.505802KH5908LearnHub6010Phnom Penh6304E377";
+
+$decode = BakongKHQR::decode($qr);
+print_r($decode);
+
+$verify = BakongKHQR::verify($qr);
+print_r($verify);

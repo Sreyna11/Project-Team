@@ -13,9 +13,12 @@ return new class extends Migration {
         Schema::create('video_course_item', function (Blueprint $table) {
             $table->increments('videoCourseItem_id');
             $table->unsignedInteger('course_item_id')->nullable();
+            $table->uuid('uuid')->nullable()->unique();
             $table->string('title', 200);
             $table->text('description')->nullable();
             $table->string('video_url', 500)->nullable();
+            $table->string('video_file', 500)->nullable();
+            $table->string('duration', 50)->nullable();
             $table->boolean('is_free')->default(false);
             $table->boolean('is_active')->default(true);
             $table->integer('order_num')->default(0);
@@ -29,6 +32,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('video_course_items');
+        Schema::dropIfExists('video_course_item');
     }
 };

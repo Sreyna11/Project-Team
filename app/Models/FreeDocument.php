@@ -1,46 +1,62 @@
 <?php
+
 namespace App\Models;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 use Illuminate\Database\Eloquent\Model;
 
 class FreeDocument extends Model
 {
-
-    use HasFactory;
-    protected $table = 'free_document';
+    protected $table      = 'free_document';
     protected $primaryKey = 'freeDocument_id';
-    public $timestamps = false;
+    public $timestamps    = false;
+
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
+
+    // Auto-generate uuid on create
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->uuid)) {
+                $model->uuid = (string) \Illuminate\Support\Str::uuid();
+            }
+        });
+    }
+
+
     protected $fillable = [
-        'header_id',
-        'logo',
-        'title',
-        'description',
-        'file',
-        'category_id',
-        'is_active',
+        'uuid', 'header_id', 'category_id', 'logo', 'title',
+        'description', 'file', 'is_active',
         'show_in_header',
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
         'show_in_header' => 'boolean',
+        'sections'       => 'array',
     ];
 
-    public function getLogoAttribute($value)
+    public function category()
     {
-        if (!$value) return null;
-        if (filter_var($value, FILTER_VALIDATE_URL)) return $value;
-        return asset('storage/' . $value);
+        return $this->belongsTo(Category::class, 'category_id', 'category_id');
     }
 
     public function header()
     {
         return $this->belongsTo(Header::class, 'header_id', 'header_id');
     }
-
-    public function category()
+    public function getLogoUrlAttribute(): ?string
     {
-        return $this->belongsTo(Category::class, 'category_id', 'category_id');
+        $rawImage = $this->logo;
+        if (is_string($rawImage) && $rawImage !== '') {
+            if (str_starts_with($rawImage, 'http://') || str_starts_with($rawImage, 'https://')) {
+                return $rawImage;
+            }
+            return route('image.proxy', ['path' => $rawImage]);
+        }
+        return null;
     }
 }
-

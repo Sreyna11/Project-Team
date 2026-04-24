@@ -10,6 +10,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
+        if (Schema::hasTable('category')) {
+            return;
+        }
+
         Schema::create('category', function (Blueprint $table) {
             $table->increments('category_id');
             $table->string('name', 100);
@@ -21,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('category');
     }
 };

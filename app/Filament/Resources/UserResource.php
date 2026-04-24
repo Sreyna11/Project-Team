@@ -76,6 +76,10 @@ class UserResource extends Resource
                         Forms\Components\FileUpload::make('photo')
                             ->label('Avatar')
                             ->image()
+                            ->imageEditor()
+                            ->imageResizeMode('cover')
+                            ->imageCropAspectRatio('1:1')
+                            ->imageResizeTargetWidth('400')
                             ->directory('avatars')
                             ->avatar(),
                     ])->collapsible(),
@@ -100,6 +104,7 @@ class UserResource extends Resource
                     ->label('Roles')
                     ->badge()
                     ->color('info')
+                    ->formatStateUsing(fn ($state) => ucfirst($state))
                     ->searchable(),
 
                 Tables\Columns\IconColumn::make('is_active')

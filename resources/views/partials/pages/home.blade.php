@@ -41,12 +41,7 @@
 
                     <!-- Right side - Image -->
                     <div class="hero-image">
-                        <img src="Images/hero-image.png" alt="LearnHub - Tech Learning Platform" class="hero-img" />
-                        <div class="floating-elements">
-                            <div class="floating-1"></div>
-                            <div class="floating-2"></div>
-                            <div class="floating-3"></div>
-                        </div>
+                        <img src="Images/hero-image.png" alt="LearnHub - Tech Learning Platform" class="hero-img w-full transform hover:-translate-y-4 transition-transform duration-500 ease-out z-10 relative object-contain" />
                     </div>
                 </div>
             </div>

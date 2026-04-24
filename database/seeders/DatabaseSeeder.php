@@ -15,11 +15,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            ShieldSeeder::class,
         ]);
+
+        $admin = User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@learnhub.com',
+            'password' => \Hash::make('admin123'),
+            'role' => 'admin',
+        ]);
+
+        $admin->assignRole('super_admin');
     }
 }
