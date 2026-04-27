@@ -80,6 +80,12 @@ class PaymentController extends Controller
             STR_PAD_LEFT
         );
 
+        // Cleanup any previous unpaid attempts for this user/course
+        Payment::where('user_id', $user->id)
+            ->where('course_item_id', $course->courseItem_id)
+            ->where('status', 'unpaid')
+            ->delete();
+
         // Create payment
         $payment = Payment::create([
             'user_id' => $user->id,

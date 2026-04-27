@@ -56,10 +56,13 @@ class CourseController extends Controller
         // Check if current user owns this course
         $owned = false;
         if ($request->user()) {
-            $owned = Payment::where('user_id', $request->user()->id)
-                ->where('course_item_id', $course->courseItem_id)
-                ->where('status', 'paid')
-                ->exists();
+            $user = $request->user();
+            $owned = $user->role === 'admin' || 
+                     $user->hasRole('super_admin') ||
+                     Payment::where('user_id', $user->id)
+                        ->where('course_item_id', $course->courseItem_id)
+                        ->where('status', 'paid')
+                        ->exists();
         }
 
         return response()->json([

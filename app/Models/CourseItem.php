@@ -96,6 +96,16 @@ class CourseItem extends Model
             ->where('end_date', '>=', now()->toDateString())
             ->latest('promotion_id');
     }
+
+    public function getFinalPriceAttribute(): float
+    {
+        $promo = $this->activePromotion;
+        if ($promo) {
+            return $promo->finalPrice((float) $this->price);
+        }
+        return (float) $this->price;
+    }
+
     public function getThumbnailUrlAttribute(): ?string
     {
         $rawImage = $this->image;

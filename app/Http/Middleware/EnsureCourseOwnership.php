@@ -21,10 +21,13 @@ class EnsureCourseOwnership
             return $next($request);
         }
 
-        $owned = Payment::where('user_id', Auth::id())
-            ->where('course_item_id', $course->courseItem_id)
-            ->where('status', 'paid')
-            ->exists();
+        $user = Auth::user();
+        $owned = $user->role === 'admin' || 
+                 $user->hasRole('super_admin') ||
+                 Payment::where('user_id', $user->id)
+                    ->where('course_item_id', $course->courseItem_id)
+                    ->where('status', 'paid')
+                    ->exists();
 
         if (!$owned) {
             return redirect()->route('course.detail', $course->uuid)

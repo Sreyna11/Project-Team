@@ -31,24 +31,32 @@ class CourseDetail extends Component
     {
         $this->course = $course->load(['videoModules','category','activePromotion']);
 
-        $this->isOwned = Auth::check() && Payment::where('user_id', Auth::id())
-            ->where('course_item_id', $this->course->courseItem_id)
-            ->where('status', 'paid')
-            ->exists();
+        $user = Auth::user();
+        $this->isOwned = $user && (
+            $user->role === 'admin' || 
+            $user->hasRole('super_admin') ||
+            Payment::where('user_id', $user->id)
+                ->where('course_item_id', $this->course->courseItem_id)
+                ->where('status', 'paid')
+                ->exists()
+        );
 
         // Calculate prices
-        $promo = $this->course->activePromotion;
         $this->originalPrice = (float) $this->course->price;
-        $this->finalPrice = $promo 
-            ? $promo->finalPrice($this->originalPrice) 
-            : $this->originalPrice;
-        $this->hasDiscount = $this->finalPrice < $this->originalPrice;
+        $this->finalPrice    = (float) $this->course->final_price;
+        $this->hasDiscount   = $this->finalPrice < $this->originalPrice;
     }
 
     public function purchaseCourse(KHQRService $khqrService)
     {
         try {
             if ($this->isOwned || !Auth::check()) return;
+
+            // Cleanup any previous unpaid attempts for this user/course to avoid duplicates
+            Payment::where('user_id', Auth::id())
+                ->where('course_item_id', $this->course->courseItem_id)
+                ->where('status', 'unpaid')
+                ->delete();
 
             $transactionId = 'LH' . strtoupper(Str::random(8));
 
@@ -74,10 +82,16 @@ class CourseDetail extends Component
 
             $qrImage = 'data:image/svg+xml;base64,' . base64_encode($qrSvg);
 
+            // Calculate prices
+            $this->finalPrice = (float) $this->course->final_price;
+            $this->originalPrice = (float) $this->course->price;
+            $this->hasDiscount = $this->finalPrice < $this->originalPrice;
+
             // Save payment record
             Payment::create([
                 'user_id' => Auth::id(),
                 'course_item_id' => $this->course->courseItem_id,
+                'promotion_id' => $this->course->activePromotion?->promotion_id,
                 'amount' => $this->finalPrice,
                 'invoice_number' => $transactionId,
                 'md5' => $md5,
@@ -202,10 +216,15 @@ class CourseDetail extends Component
         $this->khqrData = [];
         $this->khqrStatus = 'pending';
 
-        $this->isOwned = Payment::where('user_id', Auth::id())
-            ->where('course_item_id', $this->course->courseItem_id)
-            ->where('status', 'paid')
-            ->exists();
+        $user = Auth::user();
+        $this->isOwned = $user && (
+            $user->role === 'admin' || 
+            $user->hasRole('super_admin') ||
+            Payment::where('user_id', $user->id)
+                ->where('course_item_id', $this->course->courseItem_id)
+                ->where('status', 'paid')
+                ->exists()
+        );
     }
 
     public function render()

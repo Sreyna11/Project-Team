@@ -46,7 +46,7 @@ class HeaderResource extends Resource
                             ->default(0)
                             ->prefixIcon('heroicon-o-list-bullet'),
 
-                        Forms\Components\RichEditor::make('description')
+                        Forms\Components\TextInput::make('description')
 
                             ->columnSpanFull(),
                     ])->columns(2),

@@ -33,22 +33,37 @@ class PaymentResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('user_id')
-                    ->numeric(),
-                Forms\Components\TextInput::make('course_item_id')
-                    ->numeric(),
-                Forms\Components\TextInput::make('promotion_id')
-                    ->numeric(),
+                Forms\Components\Select::make('user_id')
+                    ->relationship('user', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+                Forms\Components\Select::make('course_item_id')
+                    ->relationship('course', 'title')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+                Forms\Components\Select::make('promotion_id')
+                    ->relationship('promotion', 'promotion_name')
+                    ->searchable()
+                    ->preload()
+                    ->nullable(),
                 Forms\Components\TextInput::make('invoice_number')
                     ->maxLength(50),
                 Forms\Components\TextInput::make('amount')
                     ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('status')
+                    ->numeric()
+                    ->prefix('$'),
+                Forms\Components\Select::make('status')
+                    ->options([
+                        'unpaid' => 'Unpaid',
+                        'paid' => 'Paid',
+                        'failed' => 'Failed',
+                    ])
                     ->required()
-                    ->maxLength(255)
                     ->default('unpaid'),
                 Forms\Components\DateTimePicker::make('paid_at'),
+
             ]);
     }
 
@@ -56,20 +71,27 @@ class PaymentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('user.id')
+                    ->label('User ID')
+                    ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('course_item_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('course.title')
+                    ->label('Course')
+                    ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('promotion_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('promotion.promotion_name')
+                    ->label('Promotion')
+                    ->badge()
+                    ->color('danger')
+                    ->placeholder('No Promotion')
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('invoice_number')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('amount')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->money('USD'),
                 Tables\Columns\TextColumn::make('status')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('paid_at')
