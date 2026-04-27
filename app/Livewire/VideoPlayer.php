@@ -27,6 +27,7 @@ class VideoPlayer extends Component
 
         $user = Auth::user();
         $this->isOwned = $user && (
+            $user->role === 'admin' ||
             $user->hasRole(['super_admin', 'Sale']) ||
             Payment::where('user_id', $user->id)
                 ->where('course_item_id', $course->courseItem_id)

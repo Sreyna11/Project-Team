@@ -79,6 +79,12 @@ class KhqrController extends Controller
 
             $qrImage = 'data:image/svg+xml;base64,' . base64_encode($qrSvg);
 
+            // Cleanup any previous unpaid attempts for this user/course
+            Payment::where('user_id', $request->user()->id)
+                ->where('course_item_id', $course->courseItem_id)
+                ->where('status', 'unpaid')
+                ->delete();
+
             // Save unpaid payment record
             $payment = Payment::create([
                 'user_id' => $request->user()->id,

@@ -1,10 +1,13 @@
 @php
-    $isPurchased = auth()->check()
-        ? \App\Models\Payment::where('user_id', auth()->id())
+    $user = auth()->user();
+    $isPurchased = $user && (
+        $user->role === 'admin' || 
+        $user->hasRole('super_admin') ||
+        \App\Models\Payment::where('user_id', $user->id)
             ->where('course_item_id', $course->courseItem_id)
             ->where('status', 'paid')
             ->exists()
-        : false;
+    );
     $finalPrice    = $course->final_price ?? $course->price;
     $originalPrice = $course->price;
     $hasDiscount   = $finalPrice < $originalPrice;
