@@ -413,4 +413,70 @@
 </div>
 
 @endif
+
+    {{-- LOGIN MODAL --}}
+    @if($showLoginModal)
+        <div class="fixed inset-0 bg-black/70 z-[60] flex items-center justify-center p-4 backdrop-blur-sm"
+             wire:click.self="toggleLoginModal">
+            <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl max-w-md w-full overflow-hidden relative">
+                {{-- Close Button --}}
+                <button wire:click="toggleLoginModal" class="absolute top-5 right-5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors z-10">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
+
+                <div class="p-8">
+                    <div class="text-center mb-8">
+                        <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-user-lock text-2xl text-purple-600"></i>
+                        </div>
+                        <h2 class="text-2xl font-black text-gray-900 dark:text-white">Sign In</h2>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Login to access courses and your progress</p>
+                    </div>
+
+                    <form wire:submit.prevent="attemptLogin" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1.5">Email Address</label>
+                            <div class="relative">
+                                <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                <input type="email" wire:model="email" 
+                                       class="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:ring-2 focus:ring-purple-500 outline-none transition-all dark:text-white"
+                                       placeholder="name@example.com">
+                            </div>
+                            @error('email') <span class="text-xs text-red-500 mt-1">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1.5">Password</label>
+                            <div class="relative">
+                                <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                <input type="password" wire:model="password" 
+                                       class="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:ring-2 focus:ring-purple-500 outline-none transition-all dark:text-white"
+                                       placeholder="••••••••">
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between py-2">
+                            <label class="flex items-center gap-2 cursor-pointer group">
+                                <input type="checkbox" wire:model="remember" class="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                                <span class="text-xs text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-200 transition-colors">Remember me</span>
+                            </label>
+                            <a href="#" class="text-xs font-bold text-purple-600 hover:text-purple-700">Forgot?</a>
+                        </div>
+
+                        <button type="submit" 
+                                class="w-full py-4 rounded-xl font-black text-sm bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-95">
+                            Sign In Now
+                        </button>
+                    </form>
+
+                    <div class="mt-8 text-center border-t border-gray-100 dark:border-gray-700 pt-6">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            Don't have an account? 
+                            <a href="{{ route('register') }}" class="text-purple-600 font-bold hover:underline">Register here</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 </div>

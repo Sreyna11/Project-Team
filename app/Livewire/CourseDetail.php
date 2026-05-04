@@ -18,6 +18,12 @@ class CourseDetail extends Component
 
     public bool $isOwned = false;
     public bool $showKhqrModal = false;
+    public bool $showLoginModal = false;
+
+    // Login logic
+    public string $email = '';
+    public string $password = '';
+    public bool $remember = false;
 
     public array $khqrData = [];
     public string $khqrStatus = 'pending';
@@ -50,7 +56,11 @@ class CourseDetail extends Component
     public function purchaseCourse(KHQRService $khqrService)
     {
         try {
-            if ($this->isOwned || !Auth::check()) return;
+            if (!Auth::check()) {
+                $this->showLoginModal = true;
+                return;
+            }
+            if ($this->isOwned) return;
 
             // Cleanup any previous unpaid attempts for this user/course to avoid duplicates
             Payment::where('user_id', Auth::id())
@@ -225,6 +235,28 @@ class CourseDetail extends Component
                 ->where('status', 'paid')
                 ->exists()
         );
+    }
+
+    public function attemptLogin()
+    {
+        $this->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
+            session()->regenerate();
+            $this->showLoginModal = false;
+            $this->mount($this->course); // refresh state
+            return;
+        }
+
+        $this->addError('email', 'Invalid credentials.');
+    }
+
+    public function toggleLoginModal()
+    {
+        $this->showLoginModal = !$this->showLoginModal;
     }
 
     public function render()
