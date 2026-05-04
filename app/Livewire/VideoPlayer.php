@@ -161,9 +161,8 @@ class VideoPlayer extends Component
 
         if ($currentModule) {
             if ($currentModule->video_file) {
-                // ← Signed URL — expires in 2 hours
-                // Only works if user is authenticated
-                if (!Auth::check()) {
+                // If private video, check access
+                if (!$currentModule->is_free && !Auth::check()) {
                     return redirect()->route('login');
                 }
 
